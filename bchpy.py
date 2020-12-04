@@ -35,6 +35,21 @@ class Corxet(sp.Expr):
         return cls.eval(cls, A, B)
 
     def eval(cls, A, B):
+        if isinstance(A, sp.Add):
+            sargs = []
+            for term in A.args:
+                sargs.append(Corxet(term, B))
+            return sp.Add(*sargs)
+        if isinstance(B, sp.Add):
+            sargs = []
+            for term in B.args:
+                sargs.append(Corxet(A, term))
+            return sp.Add(*sargs)
+        cA, ncA = A.args_cnc()
+        cB, ncB = B.args_cnc()
+        c_part = cA + cB
+        if c_part:
+            return sp.Mul(sp.Mul(*c_part), cls(sp.Mul._from_args(ncA), sp.Mul._from_args(ncB)))
         if A.compare(B) == 1:
             return sp.S.NegativeOne*cls.eval(cls, B, A)
         i, j, k, l = A.i, A.j, B.i, B.j

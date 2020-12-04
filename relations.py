@@ -39,6 +39,6 @@ relE[2][1][4][2] = [[-1, 3, 6, 5], [-1, 3, 6, 6]]
 relE[2][1][4][3] = [[1, 1, 6, 8], [-1, 1, 6, 7]]
 
 def corxetErel(i, j, k, l):
-    if (i > len(tamE)) or (k > len(tamE)) or (j > tamE[i]) or (l > tamE[k]):
+    if (i > len(tamE)) or (k > len(tamE)) or (j > tamE[i - 1]) or (l > tamE[k - 1]):
         return [[0, 1, 0, 0]]
     return relE[i][j][k][l]
