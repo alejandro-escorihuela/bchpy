@@ -35,6 +35,10 @@ class Corxet(sp.Expr):
         return cls.eval(cls, A, B)
 
     def eval(cls, A, B):
+        if A == B:
+            return sp.S.Zero
+        if A.is_commutative or B.is_commutative:
+            return sp.S.Zero
         if isinstance(A, sp.Add):
             sargs = []
             for term in A.args:
@@ -62,9 +66,12 @@ class Corxet(sp.Expr):
 
 if __name__ == "__main__":
     print(Eel(0,0))
-    E11=Eel(1, 1)
-    E62=Eel(6, 2)
-    E21=Eel(2, 1)
+    E11 = Eel(1, 1)
+    E62 = Eel(6, 2)
+    E21 = Eel(2, 1)
     print(Corxet(E11, E21))
-    ec=Corxet(Eel(7,1), Eel(3,4))
+    ec = Corxet(Eel(7,1), Eel(3,4))
     print(ec)
+    x = sp.Symbol("x")
+    dif = sp.diff((Eel(1, 1)**2).subs(Eel(1, 1), x), x).subs(x, Eel(1,1))
+    print(dif)
