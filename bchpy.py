@@ -8,28 +8,44 @@ import numpy as np
 import sympy as sp
 import relations as rl
 import time as tm
-from sympy.physics.quantum.qexpr import QExpr, dispatch_method
 from sympy.printing.pretty.stringpict import prettyForm
 from sympy.printing.pretty.pretty_symbology import pretty_symbol
+from sympy.core.containers import Tuple
 
 class Eel(sp.Expr):
     is_commutative = False
     is_number = False
     is_zero = False
+
+    def __new__(cls, *args, **kwargs):
+        args = cls._eval_args(args, **kwargs)
+        return sp.Expr.__new__(cls, *args)
+    
+    @classmethod
+    def _eval_args(cls, args):
+        return tuple(Tuple(*args))
+ 
     def __init__(self, i = 1, j = 1):
         self.i = i
         self.j = j
-        if i == 0:
-            self.is_zero = True          
+        if i == 0 or j == 0:
+            self.is_zero = True
+    
     def _sympystr(self, printer, *args):
         if self.is_zero:
             return "0"
         return "E%s%s" % (printer._print(self.args[0]), printer._print(self.args[1]))
     
+    def _sympyrepr(self, printer, *args):
+        nom = self.__class__.__name__
+        return "%s(%d,%d)" % (nom, self.i, self.j)
+    
     def _pretty(self, printer, *args):
         if self.is_zero:
             return prettyForm(pretty_symbol("0"))
         return prettyForm(pretty_symbol("E_%s%s" % (printer._print(self.args[0]), printer._print(self.args[1]))))
+    def _latex(self, printer, *args):
+        return "E_{%d,%d}" % (self.i, self.j)
     
 class Corxet(sp.Expr):
     def __new__(cls, A, B):
@@ -88,9 +104,9 @@ def bch6(A, B):
     D += sp.Rational(-1, 24)*e42
     D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
     D += sp.Rational(1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
-    for i in range(len(rl.tamE)):
-        for j in range(rl.tamE[i]):
-            D = sp.collect(D, Eel(i + 1, j + 1))
+    # for i in range(len(rl.tamE)):
+    #     for j in range(rl.tamE[i]):
+    #         D = sp.collect(D, Eel(i + 1, j + 1))
     return D
 
 if __name__ == "__main__":
