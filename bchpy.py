@@ -81,6 +81,36 @@ class Corxet(sp.Expr):
             args.append(elem)
         return sp.Add(*args)
 
+def mat_sch(esq):
+    w = []
+    for i in range(len(rl.tamE)):
+        w.append([])
+        for j in range(rl.tamE[i]):
+            # we = sp.simplify(sp.diff(esq.subs(Eel(i + 1, j + 1), x), x)).subs(x, Eel(i + 1, j + 1))
+            we = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), x), x)).subs(x, Eel(i + 1, j + 1))
+            w[i].append(we)
+        w[i].insert(0, 0)
+    w.insert(0, [0, 0])
+    return w
+
+def col_sch(esq):
+    w = mat_sch(esq)
+    esq_col = sp.S(0)
+    for i in range(1, len(w)):
+        for j in range(1, len(w[i])):
+            esq_col += w[i][j]*Eel(i, j)
+    return esq_col
+
+def scheme(*args):
+    cofs = list(reversed(args))
+    esq = bch6(cofs[1]*Eel(1, 1), cofs[0]*Eel(1, 2))
+    esq = col_sch(esq)
+    for i in range(2, len(cofs)):
+        # print(i, 2 - (i%2))
+        esq = bch6(cofs[i]*Eel(1, 2 - (i%2)), esq)
+        esq = col_sch(esq)
+    return esq
+
 def bch6(A, B):
     e21 = Corxet(A, B)
     e31 = Corxet(A, e21)
@@ -104,32 +134,18 @@ def bch6(A, B):
     D += sp.Rational(-1, 24)*e42
     D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
     D += sp.Rational(1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
-    # for i in range(len(rl.tamE)):
-    #     for j in range(rl.tamE[i]):
-    #         D = sp.collect(D, Eel(i + 1, j + 1))
     return D
 
 if __name__ == "__main__":
-    print(Eel(0,0))
-    E11 = Eel(1, 1)
-    E62 = Eel(6, 2)
-    E21 = Eel(2, 1)
-    print(Corxet(E11, E21))
-    ec = Corxet(Eel(7,1), Eel(3,4))
-    print(ec)
-    # x = sp.Symbol("x")
-    # dif = sp.diff((Eel(1, 1)**2).subs(Eel(1, 1), x), x).subs(x, Eel(1,1))
-    # print(dif)
     print("BCH")
-    a1, a2, b1, h = sp.symbols("a1 a2 b1 h")
+    x, h = sp.symbols("x h")
+    a = sp.symbols("a0:3")
+    b = sp.symbols("b0:4")
     t0 = tm.time()
-    bch = bch6(b1*h*Eel(1, 2), a1*h*Eel(1, 1))
-    bch = bch6(a2*h*Eel(1, 1), bch)
-    bch = sp.collect(bch.expand(), h)
+    met = scheme(b[0], a[1], b[1], a[1], b[2], sp.Rational(1, 2) - a[1] - a[0], sp.S(1) - (sp.S(2)*(b[0] + b[1] + b[2])), sp.Rational(1, 2) - a[1] - a[0], b[2], a[1], b[1], a[0], b[0])
+    w = mat_sch(met)
+    for i in range(1, len(w)):
+        for j in range(1, len(w[i])):
+            print("w(" + str(i) + "," + str(j) + ") =", w[i][j])
     t1 = tm.time()
-    sp.pprint(bch)
-    for i in range(len(rl.tamE)):
-        for j in range(rl.tamE[i]):
-            w = bch.diff(Eel(i + 1, j + 1))/h**(i + 1)
-            print("w(" + str(i) + "," + str(j) + ")", w)
     print(t1-t0, "s")
