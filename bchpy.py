@@ -117,9 +117,9 @@ if __name__ == "__main__":
     print(Corxet(E11, E21))
     ec = Corxet(Eel(7,1), Eel(3,4))
     print(ec)
-    x = sp.Symbol("x")
-    dif = sp.diff((Eel(1, 1)**2).subs(Eel(1, 1), x), x).subs(x, Eel(1,1))
-    print(dif)
+    # x = sp.Symbol("x")
+    # dif = sp.diff((Eel(1, 1)**2).subs(Eel(1, 1), x), x).subs(x, Eel(1,1))
+    # print(dif)
     print("BCH")
     a1, a2, b1, h = sp.symbols("a1 a2 b1 h")
     t0 = tm.time()
@@ -128,4 +128,8 @@ if __name__ == "__main__":
     bch = sp.collect(bch.expand(), h)
     t1 = tm.time()
     sp.pprint(bch)
+    for i in range(len(rl.tamE)):
+        for j in range(rl.tamE[i]):
+            w = bch.diff(Eel(i + 1, j + 1))/h**(i + 1)
+            print("w(" + str(i) + "," + str(j) + ")", w)
     print(t1-t0, "s")
