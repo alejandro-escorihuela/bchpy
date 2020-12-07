@@ -106,7 +106,7 @@ def scheme(*args):
     esq = bch6(cofs[1]*Eel(1, 1), cofs[0]*Eel(1, 2))
     esq = col_sch(esq)
     for i in range(2, len(cofs)):
-        # print(i, 2 - (i%2))
+        print(i, 2 - (i%2))
         esq = bch6(cofs[i]*Eel(1, 2 - (i%2)), esq)
         esq = col_sch(esq)
     return esq
@@ -133,7 +133,7 @@ def bch6(A, B):
     D += sp.Rational(1, 12)*(e31 - e32)
     D += sp.Rational(-1, 24)*e42
     D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
-    D += sp.Rational(1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
+    D += sp.Rational(1, 1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
     return D
 
 if __name__ == "__main__":
@@ -142,7 +142,7 @@ if __name__ == "__main__":
     a = sp.symbols("a0:3")
     b = sp.symbols("b0:4")
     t0 = tm.time()
-    met = scheme(b[0], a[1], b[1], a[1], b[2], sp.Rational(1, 2) - a[1] - a[0], sp.S(1) - (sp.S(2)*(b[0] + b[1] + b[2])), sp.Rational(1, 2) - a[1] - a[0], b[2], a[1], b[1], a[0], b[0])
+    met = scheme(b[0], a[0], b[1], a[1], b[2], sp.Rational(1, 2) - a[1] - a[0], sp.S(1) - (sp.S(2)*(b[0] + b[1] + b[2])), sp.Rational(1, 2) - a[1] - a[0], b[2], a[1], b[1], a[0], b[0])
     w = mat_sch(met)
     for i in range(1, len(w)):
         for j in range(1, len(w[i])):
