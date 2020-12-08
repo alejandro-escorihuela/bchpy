@@ -50,3 +50,5 @@ if __name__ == "__main__":
     print("[E21, E41] - E63 + E62 =", r)
     r = sp.expand((Commutator(e11, e53) + sp.S(2)*e63 - e62).doit())
     print("[E11, E53] + 2*E63 - E62 =", r)
+    r = sp.expand((Commutator(e12, e53) + e64 + (sp.Rational(1, 3))*(e65 + e66)).doit())
+    print("[E12, E53] + E64 + (E65 + E66)/3 =", r)
