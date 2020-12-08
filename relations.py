@@ -5,8 +5,8 @@
 # relations.py
 
 # relacions de conmutació per a la base anidada
-tamE=[2, 1, 2, 3, 6, 9]
-relE=[[[[[[0, 1, 0, 0]] for l in range(tamE[-1] + 1)] for k in range(len(tamE) + 1)] for j in range(tamE[-1] + 1)] for i in range(len(tamE) + 1)]
+tamE = [2, 1, 2, 3, 6, 9]
+relE = [[[[[[0, 1, 0, 0]] for l in range(tamE[-1] + 1)] for k in range(len(tamE) + 1)] for j in range(tamE[-1] + 1)] for i in range(len(tamE) + 1)]
 relE[1][1][1][2] = [[1, 1, 2, 1]]
 relE[1][1][2][1] = [[1, 1, 3, 1]]
 relE[1][1][3][1] = [[1, 1, 4, 1]]
