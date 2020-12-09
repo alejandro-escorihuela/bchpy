@@ -81,35 +81,131 @@ class Corxet(sp.Expr):
             args.append(elem)
         return sp.Add(*args)
 
-def mat_sch(esq):
+
+def init_mat():
     w = []
-    x = sp.Symbol("x")
     for i in range(len(rl.tamE)):
         w.append([])
         for j in range(rl.tamE[i]):
-            we = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), x), x)).subs(x, Eel(i + 1, j + 1))
+            w[i].append(sp.S(0))
+        w[i].insert(0, sp.S(0))
+    w.insert(0, [sp.S(0), sp.S(0)])
+    return w
+
+def esq2mat(esq):
+    w = []
+    _x_diff_var = sp.Symbol("_x_diff_var")
+    for i in range(len(rl.tamE)):
+        w.append([])
+        for j in range(rl.tamE[i]):
+            we = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)).subs(_x_diff_var, Eel(i + 1, j + 1))
             w[i].append(we)
         w[i].insert(0, 0)
     w.insert(0, [0, 0])
     return w
 
-def col_sch(esq):
-    w = mat_sch(esq)
+def mat2esq(w):
+    esq = sp.S(0)
+    for i in range(1, len(w)):
+        for j in range(1, len(w[i])):
+            esq += w[i][j]*Eel(i, j)
+    return esq
+
+def col_esq(esq):
+    w = esq2mat(esq)
     esq_col = sp.S(0)
     for i in range(1, len(w)):
         for j in range(1, len(w[i])):
             esq_col += w[i][j]*Eel(i, j)
     return esq_col
 
-def schemeBAB(*args):
+def esqBAB(*args, debug = False):
     cofs = list(reversed(args))
+    if debug == True:
+        print("Iteració 1 BCH(Eel(1, 1), Eel(1, 2))")
     esq = bch6(cofs[1]*Eel(1, 1), cofs[0]*Eel(1, 2))
-    esq = col_sch(esq)
+    esq = col_esq(esq)
     for i in range(2, len(cofs)):
-        print(i, 2 - (i%2))
+        if debug == True:
+            print("Iteració", i, "amb Eel(1," + str(2 - (i%2)) + ")")
         esq = bch6(cofs[i]*Eel(1, 2 - (i%2)), esq)
-        esq = col_sch(esq)
+        esq = col_esq(esq)
     return esq
+
+def mat_esqBAB(*args, debug = False):
+    cofs = list(reversed(args))
+    w = init_mat()
+    w[1][2] = cofs[0]
+    for i in range(1, len(cofs)):
+        if debug == True:
+            print("Iteració", i, "amb Eel(1, " + str(2 - (i%2)) + ")")
+        w = recur_AB(cofs[i], w, (i - 1)%2)
+    return w
+
+def mat_esqABA(*args, debug = False):
+    cofs = list(reversed(args))
+    w = init_mat()
+    w[1][1] = cofs[0]
+    for i in range(1, len(cofs)):
+        if debug == True:
+            print("Iteració", i, "amb Eel(1, " + str((i%2) + 1) + ")")
+        w = recur_AB(cofs[i], w, i%2)
+    return w
+
+def recur_AB(x, alp, AB):
+    bet = init_mat()
+    if AB == 1:
+        bet[1][1] = alp[1][1]
+        bet[1][2] = x + alp[1][2]
+        bet[2][1] = -x*alp[1][1]/2 + alp[2][1]
+        bet[3][1] = x*alp[1][1]**2/12 + alp[3][1]
+        bet[3][2] = -x**2*alp[1][1]/12 + x*alp[1][1]*alp[1][2]/12 + x*alp[2][1]/2 + alp[3][2]
+        bet[4][1] = alp[4][1]
+        bet[4][2] = x**2*alp[1][1]**2/24 - x*alp[1][1]*alp[2][1]/12 + x*alp[3][1]/2 + alp[4][2]
+        bet[4][3] = -x**2*alp[1][1]*alp[1][2]/24 - x**2*alp[2][1]/12 + x*alp[1][2]*alp[2][1]/12 - x*alp[3][2]/2 + alp[4][3]
+        bet[5][1] = -x*alp[1][1]**4/720 + alp[5][1]
+        bet[5][2] = x**2*alp[1][1]**3/360 - x*alp[1][1]**3*alp[1][2]/720 + x*alp[1][1]*alp[3][1]/12 + x*alp[4][1]/2 + alp[5][2]
+        bet[5][3] = x**2*alp[1][1]**3/120 + x*alp[1][1]**3*alp[1][2]/360 + x*alp[1][1]*alp[3][1]/6 + alp[5][3]
+        bet[5][4] = x**3*alp[1][1]**2/120 - x**2*alp[1][1]**2*alp[1][2]/360 - x**2*alp[1][1]*alp[2][1]/24 + x**2*alp[3][1]/12 - x*alp[1][1]**2*alp[1][2]**2/360 + x*alp[1][1]*alp[3][2]/12 - x*alp[1][2]*alp[3][1]/12 + x*alp[2][1]**2/12 + x*alp[4][2]/2 + alp[5][4]
+        bet[5][5] = x**3*alp[1][1]**2/360 + x**2*alp[1][1]**2*alp[1][2]/120 + x*alp[1][1]**2*alp[1][2]**2/720 + x*alp[1][1]*alp[3][2]/6 + x*alp[2][1]**2/12 + alp[5][5]
+        bet[5][6] = -x**4*alp[1][1]/720 - x**3*alp[1][1]*alp[1][2]/180 + x**2*alp[1][1]*alp[1][2]**2/180 + x**2*alp[1][2]*alp[2][1]/24 - x**2*alp[3][2]/12 + x*alp[1][1]*alp[1][2]**3/720 + x*alp[1][2]*alp[3][2]/12 + x*alp[4][3]/2 + alp[5][6]
+        bet[6][1] = alp[6][1]
+        bet[6][2] = -x**2*alp[1][1]**4/1440 + x*alp[1][1]**3*alp[2][1]/720 + x*alp[1][1]*alp[4][1]/12 + x*alp[5][1]/2 + alp[6][2]
+        bet[6][3] = -x*alp[1][1]*alp[4][1]/6 + alp[6][3]
+        bet[6][4] = -x**3*alp[1][1]**3/240 - x**2*alp[1][1]**3*alp[1][2]/720 + x**2*alp[1][1]**2*alp[2][1]/120 - x**2*alp[1][1]*alp[3][1]/12 + x*alp[1][1]**2*alp[1][2]*alp[2][1]/360 - x*alp[1][1]*alp[4][2]/12 + x*alp[2][1]*alp[3][1]/12 - x*alp[5][3]/2 + alp[6][4]
+        bet[6][5] = -x**2*alp[1][1]**3*alp[1][2]/864 + x**2*alp[1][1]*alp[3][1]/72 + x**2*alp[4][1]/12 + x*alp[1][1]**2*alp[1][2]*alp[2][1]/432 + x*alp[1][1]*alp[4][2]/36 - x*alp[1][2]*alp[4][1]/12 + x*alp[5][2]/2 - x*alp[5][3]/6 + alp[6][5]
+        bet[6][6] = -x**3*alp[1][1]**3/720 - x**2*alp[1][1]**3*alp[1][2]/2160 + x**2*alp[1][1]**2*alp[2][1]/360 - x**2*alp[1][1]*alp[3][1]/36 + x*alp[1][1]**2*alp[1][2]*alp[2][1]/1080 + x*alp[1][1]*alp[4][2]/36 + x*alp[2][1]*alp[3][1]/12 - x*alp[5][3]/6 + alp[6][6]
+        bet[6][7] = x**3*alp[1][1]**2*alp[1][2]/144 + x**3*alp[1][1]*alp[2][1]/72 + x**2*alp[1][1]**2*alp[1][2]**2/288 - x**2*alp[1][1]*alp[1][2]*alp[2][1]/72 + x**2*alp[1][2]*alp[3][1]/12 - x**2*alp[2][1]**2/24 - x**2*alp[4][2]/6 - x*alp[1][1]*alp[1][2]**2*alp[2][1]/144 + x*alp[1][1]*alp[4][3]/12 + x*alp[1][2]*alp[4][2]/6 - x*alp[2][1]*alp[3][2]/12 - x*alp[5][4] + x*alp[5][5]/2 + alp[6][7]
+        bet[6][8] = x**4*alp[1][1]**2/1440 - x**3*alp[1][1]**2*alp[1][2]/720 - x**3*alp[1][1]*alp[2][1]/120 - x**2*alp[1][1]**2*alp[1][2]**2/720 + x**2*alp[1][1]*alp[1][2]*alp[2][1]/360 + x**2*alp[1][1]*alp[3][2]/24 - x**2*alp[1][2]*alp[3][1]/24 + x**2*alp[2][1]**2/24 + x**2*alp[4][2]/12 + x*alp[1][1]*alp[1][2]**2*alp[2][1]/360 - x*alp[1][1]*alp[4][3]/6 - x*alp[1][2]*alp[4][2]/12 + x*alp[2][1]*alp[3][2]/12 + x*alp[5][4]/2 + alp[6][8]
+        bet[6][9] = x**4*alp[1][1]*alp[1][2]/1440 + x**4*alp[2][1]/720 + x**3*alp[1][1]*alp[1][2]**2/360 + x**3*alp[1][2]*alp[2][1]/180 + x**2*alp[1][1]*alp[1][2]**3/1440 - x**2*alp[1][2]**2*alp[2][1]/180 + x**2*alp[1][2]*alp[3][2]/24 + x**2*alp[4][3]/12 - x*alp[1][2]**3*alp[2][1]/720 - x*alp[1][2]*alp[4][3]/12 + x*alp[5][6]/2 + alp[6][9]
+    else:
+        bet[1][1] = x + alp[1][1]
+        bet[1][2] = alp[1][2]
+        bet[2][1] = x*alp[1][2]/2 + alp[2][1]
+        bet[3][1] = x**2*alp[1][2]/12 - x*alp[1][1]*alp[1][2]/12 + x*alp[2][1]/2 + alp[3][1]
+        bet[3][2] = -x*alp[1][2]**2/12 + alp[3][2]
+        bet[4][1] = -x**2*alp[1][1]*alp[1][2]/24 + x**2*alp[2][1]/12 - x*alp[1][1]*alp[2][1]/12 + x*alp[3][1]/2 + alp[4][1]
+        bet[4][2] = -x**2*alp[1][2]**2/24 - x*alp[1][2]*alp[2][1]/12 + x*alp[3][2]/2 + alp[4][2]
+        bet[4][3] = alp[4][3]
+        bet[5][1] = -x**4*alp[1][2]/720 - x**3*alp[1][1]*alp[1][2]/180 + x**2*alp[1][1]**2*alp[1][2]/180 - x**2*alp[1][1]*alp[2][1]/24 + x**2*alp[3][1]/12 + x*alp[1][1]**3*alp[1][2]/720 - x*alp[1][1]*alp[3][1]/12 + x*alp[4][1]/2 + alp[5][1]
+        bet[5][2] = x**3*alp[1][2]**2/360 + x**2*alp[1][1]*alp[1][2]**2/120 + x*alp[1][1]**2*alp[1][2]**2/720 - x*alp[1][2]*alp[3][1]/6 + x*alp[2][1]**2/12 + alp[5][2]
+        bet[5][3] = x**3*alp[1][2]**2/120 - x**2*alp[1][1]*alp[1][2]**2/360 + x**2*alp[1][2]*alp[2][1]/24 - x**2*alp[3][2]/12 - x*alp[1][1]**2*alp[1][2]**2/360 + x*alp[1][1]*alp[3][2]/12 - x*alp[1][2]*alp[3][1]/12 + x*alp[2][1]**2/12 - x*alp[4][2]/2 + alp[5][3]
+        bet[5][4] = x**2*alp[1][2]**3/120 + x*alp[1][1]*alp[1][2]**3/360 - x*alp[1][2]*alp[3][2]/6 + alp[5][4]
+        bet[5][5] = x**2*alp[1][2]**3/360 - x*alp[1][1]*alp[1][2]**3/720 - x*alp[1][2]*alp[3][2]/12 + x*alp[4][3]/2 + alp[5][5]
+        bet[5][6] = -x*alp[1][2]**4/720 + alp[5][6]
+        bet[6][1] = x**4*alp[1][1]*alp[1][2]/1440 - x**4*alp[2][1]/720 + x**3*alp[1][1]**2*alp[1][2]/360 - x**3*alp[1][1]*alp[2][1]/180 + x**2*alp[1][1]**3*alp[1][2]/1440 + x**2*alp[1][1]**2*alp[2][1]/180 - x**2*alp[1][1]*alp[3][1]/24 + x**2*alp[4][1]/12 + x*alp[1][1]**3*alp[2][1]/720 - x*alp[1][1]*alp[4][1]/12 + x*alp[5][1]/2 + alp[6][1]
+        bet[6][2] = x**4*alp[1][2]**2/1440 - x**3*alp[1][1]*alp[1][2]**2/720 + x**3*alp[1][2]*alp[2][1]/120 - x**2*alp[1][1]**2*alp[1][2]**2/720 - x**2*alp[1][1]*alp[1][2]*alp[2][1]/360 + x**2*alp[1][1]*alp[3][2]/24 - x**2*alp[1][2]*alp[3][1]/24 + x**2*alp[2][1]**2/24 - x**2*alp[4][2]/12 - x*alp[1][1]**2*alp[1][2]*alp[2][1]/360 + x*alp[1][1]*alp[4][2]/12 - x*alp[1][2]*alp[4][1]/6 + x*alp[2][1]*alp[3][1]/12 + x*alp[5][3]/2 + alp[6][2]
+        bet[6][3] = x**3*alp[1][1]*alp[1][2]**2/144 - x**3*alp[1][2]*alp[2][1]/72 + x**2*alp[1][1]**2*alp[1][2]**2/288 + x**2*alp[1][1]*alp[1][2]*alp[2][1]/72 - x**2*alp[1][1]*alp[3][2]/12 - x**2*alp[2][1]**2/24 + x**2*alp[4][2]/6 + x*alp[1][1]**2*alp[1][2]*alp[2][1]/144 - x*alp[1][1]*alp[4][2]/6 + x*alp[1][2]*alp[4][1]/12 - x*alp[2][1]*alp[3][1]/12 + x*alp[5][2]/2 - x*alp[5][3] + alp[6][3]
+        bet[6][4] = x**3*alp[1][2]**3/240 + x**2*alp[1][1]*alp[1][2]**3/720 + x**2*alp[1][2]**2*alp[2][1]/120 - x**2*alp[1][2]*alp[3][2]/12 + x*alp[1][1]*alp[1][2]**2*alp[2][1]/360 - x*alp[1][2]*alp[4][2]/12 - x*alp[2][1]*alp[3][2]/12 + x*alp[5][4]/2 + alp[6][4]
+        bet[6][5] = -x*alp[1][2]*alp[4][2]/18 + x*alp[2][1]*alp[3][2]/18 + alp[6][5]
+        bet[6][6] = x**3*alp[1][2]**3/720 - x**2*alp[1][1]*alp[1][2]**3/1440 + x**2*alp[1][2]**2*alp[2][1]/360 - x**2*alp[1][2]*alp[3][2]/24 + x**2*alp[4][3]/12 - x*alp[1][1]*alp[1][2]**2*alp[2][1]/720 - x*alp[1][1]*alp[4][3]/12 - x*alp[1][2]*alp[4][2]/18 - x*alp[2][1]*alp[3][2]/36 + x*alp[5][5]/2 + alp[6][6]
+        bet[6][7] = -x*alp[1][2]*alp[4][3]/6 + alp[6][7]
+        bet[6][8] = -x**2*alp[1][2]**4/1440 - x*alp[1][2]**3*alp[2][1]/720 + x*alp[1][2]*alp[4][3]/12 + x*alp[5][6]/2 + alp[6][8]
+        bet[6][9] = alp[6][9]
+    for i in range(len(bet)):
+        for j in range(len(bet[i])):
+            bet[i][j] = bet[i][j].expand()
+    return bet;
 
 def bch6(A, B):
     e21 = Corxet(A, B)
