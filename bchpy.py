@@ -101,7 +101,7 @@ def col_sch(esq):
             esq_col += w[i][j]*Eel(i, j)
     return esq_col
 
-def scheme(*args):
+def schemeBAB(*args):
     cofs = list(reversed(args))
     esq = bch6(cofs[1]*Eel(1, 1), cofs[0]*Eel(1, 2))
     esq = col_sch(esq)
@@ -135,17 +135,3 @@ def bch6(A, B):
     D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
     D += sp.Rational(1, 1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
     return D
-
-if __name__ == "__main__":
-    print("BCH")
-    x, h = sp.symbols("x h")
-    a = sp.symbols("a0:3")
-    b = sp.symbols("b0:4")
-    t0 = tm.time()
-    met = scheme(b[0], a[0], b[1], a[1], b[2], sp.Rational(1, 2) - a[1] - a[0], sp.S(1) - (sp.S(2)*(b[0] + b[1] + b[2])), sp.Rational(1, 2) - a[1] - a[0], b[2], a[1], b[1], a[0], b[0])
-    w = mat_sch(met)
-    for i in range(1, len(w)):
-        for j in range(1, len(w[i])):
-            print("w(" + str(i) + "," + str(j) + ") =", w[i][j])
-    t1 = tm.time()
-    print(t1-t0, "s")
