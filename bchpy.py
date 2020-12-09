@@ -83,10 +83,10 @@ class Corxet(sp.Expr):
 
 def mat_sch(esq):
     w = []
+    x = sp.Symbol("x")
     for i in range(len(rl.tamE)):
         w.append([])
         for j in range(rl.tamE[i]):
-            # we = sp.simplify(sp.diff(esq.subs(Eel(i + 1, j + 1), x), x)).subs(x, Eel(i + 1, j + 1))
             we = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), x), x)).subs(x, Eel(i + 1, j + 1))
             w[i].append(we)
         w[i].insert(0, 0)

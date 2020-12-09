@@ -16,7 +16,7 @@ if __name__ == "__main__":
     a = sp.symbols("a0:3")
     b = sp.symbols("b0:4")
     t0 = tm.time()
-    met = schemeBAB(b[0], a[0], b[1], a[1], b[2], sp.Rational(1, 2) - a[1] - a[0], sp.S(1) - (sp.S(2)*(b[0] + b[1] + b[2])), sp.Rational(1, 2) - a[1] - a[0], b[2], a[1], b[1], a[0], b[0])
+    met = esquemaBAB(b[0], a[0], b[1], a[1], b[2], sp.Rational(1, 2) - a[1] - a[0], sp.S(1) - (sp.S(2)*(b[0] + b[1] + b[2])), sp.Rational(1, 2) - a[1] - a[0], b[2], a[1], b[1], a[0], b[0])
     w = mat_sch(met)
     for i in range(1, len(w)):
         for j in range(1, len(w[i])):
