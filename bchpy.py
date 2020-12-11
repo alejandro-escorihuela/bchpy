@@ -8,9 +8,13 @@ import numpy as np
 import sympy as sp
 import relations as rl
 import time as tm
+import datetime
 from sympy.printing.pretty.stringpict import prettyForm
 from sympy.printing.pretty.pretty_symbology import pretty_symbol
 from sympy.core.containers import Tuple
+from sympy.parsing.sympy_parser import parse_expr
+from termcolor import colored
+from re import sub as strsub
 
 class Eel(sp.Expr):
     is_commutative = False
@@ -122,12 +126,13 @@ def col_esq(esq):
 def esqBAB(*args, debug = False):
     cofs = list(reversed(args))
     if debug == True:
-        print("Iteració 1 BCH(Eel(1, 1), Eel(1, 2))")
+        printd("Iteració 1 BCH(Eel(1, 1), Eel(1, 2))")
     esq = bch6(cofs[1]*Eel(1, 1), cofs[0]*Eel(1, 2))
     esq = col_esq(esq)
     for i in range(2, len(cofs)):
         if debug == True:
-            print("Iteració", i, "amb Eel(1," + str(2 - (i%2)) + ")")
+            txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
+            printd(txt_p)
         esq = bch6(cofs[i]*Eel(1, 2 - (i%2)), esq)
         esq = col_esq(esq)
     return esq
@@ -138,7 +143,8 @@ def mat_esqBAB(*args, debug = False):
     w[1][2] = cofs[0]
     for i in range(1, len(cofs)):
         if debug == True:
-            print("Iteració", i, "amb Eel(1, " + str(2 - (i%2)) + ")")
+            txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
+            printd(txt_p)
         w = recur_AB(cofs[i], w, (i - 1)%2)
     return w
 
@@ -148,9 +154,45 @@ def mat_esqABA(*args, debug = False):
     w[1][1] = cofs[0]
     for i in range(1, len(cofs)):
         if debug == True:
-            print("Iteració", i, "amb Eel(1, " + str((i%2) + 1) + ")")
+            printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
         w = recur_AB(cofs[i], w, i%2)
     return w
+
+def printd(text):
+    print(colored("DEBUG:", "yellow", attrs=['bold']), text)
+
+def print_mat(w):
+    for i in range(1, len(w)):
+        ctxt = "green"
+        if i % 2 == 0:
+            ctxt = "cyan"
+        for j in range(1, len(w[i])):
+            txt_p = "w(" + str(i) + "," + str(j) + ")"
+            print(colored(txt_p, ctxt, attrs=['bold']), "=", w[i][j])
+            
+def mat_collectI(w):
+    for i in range(2, len(w), 2):
+        for j in range(1, len(w[i])):
+            w[i][j] = w[i][j].collect(sp.I)
+    return w
+
+def mat_exportC(w, nom_fitxer):
+    ara = datetime.datetime.now()
+    f = open(nom_fitxer, "w")
+    f.write("#!/usr/bin/env python\n# -*- coding: utf-8 -*-\n")
+    f.write("# " + str(ara.day) + "-" + str(ara.month) + "-" + str(ara.year) + "\n")
+    f.write("# Fitxer generat automàticament per bchpy. No tocar!\n")
+    f.write("# " + nom_fitxer + "\n\n")
+    for i in range(1, len(w)):
+        for j in range(1, len(w[i])):
+            cad = str(w[i][j])
+            cad = strsub(r'a([0-9]*)', r'a[\1]', cad)
+            cad = strsub(r're\(b([0-9]*)\)', r'br[\1]', cad)
+            cad = strsub(r'im\(b([0-9]*)\)', r'bi[\1]', cad)
+            cad = cad.replace("I*", "")
+            f.write("def w" + str(i) + str(j) + "(a, br, bi):\n")
+            f.write("    return " + cad + "\n\n")
+    f.close()
 
 def recur_AB(x, alp, AB):
     bet = init_mat()

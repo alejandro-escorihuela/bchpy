@@ -12,14 +12,14 @@ from bchpy import *
 
 if __name__ == "__main__":
     print("rc")
-    x, h = sp.symbols("x h")
-    a = sp.symbols("a0:2", real=True)
-    b = sp.symbols("b0:1")
+    a = sp.symbols("a0:4", real=True)
+    b = sp.symbols("b0:3")
 
     t0 = tm.time()
-    w = mat_esqABA(a[0], b[0].expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0])
-    for i in range(1, len(w)):
-        for j in range(1, len(w[i])):
-            print("w(" + str(i) + "," + str(j) + ") =", w[i][j])
+    #w = mat_esqABA(a[0], b[0].expand(complex=True), a[1], b[1].expand(complex=True), a[2], b[2].expand(complex=True), a[3], b[2].conjugate().expand(complex=True), a[2], b[1].conjugate().expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0], debug = True)
+    w = mat_esqABA(a[0], b[0].expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0], debug = True)
+    w = mat_collectI(w)
+    print_mat(w)
+    mat_exportC(w, "prova.py")
     t1 = tm.time()
     print(t1-t0, "s")    
