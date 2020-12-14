@@ -97,6 +97,8 @@ class Metode():
         self.w = self.__init_mat()
         
     def setBAB(self, *args, debug = False):
+        if self.setw == True:
+            self.w = self.__init_mat()
         self.cofs = list(args)
         cofsR = list(reversed(args))
         self.w[1][2] = cofsR[0]
@@ -108,6 +110,8 @@ class Metode():
         self.setw = True
 
     def setABA(self, *args, debug = False):
+        if self.setw == True:
+            self.w = self.__init_mat()
         self.cofs = list(args)
         cofsR = list(reversed(args))
         self.w[1][1] = cofsR[0]
@@ -247,82 +251,11 @@ class Metode():
                 bet[i][j] = bet[i][j].expand()
         self.w = bet.copy()
 
-# def esq2mat(esq):
-#     w = []
-#     _x_diff_var = sp.Symbol("_x_diff_var")
-#     for i in range(len(rl.tamE)):
-#         w.append([])
-#         for j in range(rl.tamE[i]):
-#             we = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)).subs(_x_diff_var, Eel(i + 1, j + 1))
-#             w[i].append(we)
-#         w[i].insert(0, 0)
-#     w.insert(0, [0, 0])
-#     return w
-
-# def mat2esq(w):
-#     esq = sp.S(0)
-#     for i in range(1, len(w)):
-#         for j in range(1, len(w[i])):
-#             esq += w[i][j]*Eel(i, j)
-#     return esq
-
-# def col_esq(esq):
-#     w = esq2mat(esq)
-#     esq_col = sp.S(0)
-#     for i in range(1, len(w)):
-#         for j in range(1, len(w[i])):
-#             esq_col += w[i][j]*Eel(i, j)
-#     return esq_col
-
-def esqBAB(*args, debug = False):
-    cofs = list(reversed(args))
-    if debug == True:
-        printd("Iteració 1 BCH(Eel(1, 1), Eel(1, 2))")
-    esq = bch6(cofs[1]*Eel(1, 1), cofs[0]*Eel(1, 2))
-    esq = col_esq(esq)
-    for i in range(2, len(cofs)):
-        if debug == True:
-            txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
-            printd(txt_p)
-        esq = bch6(cofs[i]*Eel(1, 2 - (i%2)), esq)
-        esq = col_esq(esq)
-    return esq
-
-# def mat_esqBAB(*args, debug = False):
-#     cofs = list(reversed(args))
-#     w = init_mat()
-#     w[1][2] = cofs[0]
-#     for i in range(1, len(cofs)):
-#         if debug == True:
-#             txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
-#             printd(txt_p)
-#         w = recur_AB(cofs[i], w, (i - 1)%2)
-#     return w
-
-# def mat_esqABA(*args, debug = False):
-#     cofs = list(reversed(args))
-#     w = init_mat()
-#     w[1][1] = cofs[0]
-#     for i in range(1, len(cofs)):
-#         if debug == True:
-#             printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
-#         w = recur_AB(cofs[i], w, i%2)
-#     return w
-
 def printd(text):
     print(colored("DEBUG:", "yellow", attrs=['bold']), text)
     
 def printe(text):
     print(colored("ERROR:", "red", attrs=['bold']), text)
-    
-# def print_mat(w):
-#     for i in range(1, len(w)):
-#         ctxt = "green"
-#         if i % 2 == 0:
-#             ctxt = "cyan"
-#         for j in range(1, len(w[i])):
-#             txt_p = "w(" + str(i) + "," + str(j) + ")"
-#             print(colored(txt_p, ctxt, attrs=['bold']), "=", w[i][j])
 
 def bch6(A, B):
     e21 = Corxet(A, B)

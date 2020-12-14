@@ -20,10 +20,9 @@ if __name__ == "__main__":
         for j in range(rl.tamE[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
     esq = bch6(x*Eel(1,2), esq)
-    bet = esq2mat(esq)
-    for i in range(1, len(bet)):
-        for j in range(1, len(bet[i])):
-            print("bet(" + str(i) + "," + str(j) + ") =", bet[i][j])
+    metBD = Metode()
+    metBD.importFromExpr(esq)
+    print(metBD)
     t1 = tm.time()
     print(t1 - t0, "s")
     print("\n")
@@ -36,9 +35,8 @@ if __name__ == "__main__":
         for j in range(rl.tamE[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
     esq = bch6(y*Eel(1,1), esq)
-    gam = esq2mat(esq)
-    for i in range(1, len(gam)):
-        for j in range(1, len(gam[i])):
-            print("gam(" + str(i) + "," + str(j) + ") =", gam[i][j])
+    metAD = Metode()
+    metAD.importFromExpr(esq)
+    print(metAD)
     t1 = tm.time()
     print(t1 - t0, "s")
