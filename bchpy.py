@@ -142,6 +142,16 @@ class Metode():
             for j in range(rl.tamE[i]):
                 self.w[i + 1][j + 1] = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)).subs(_x_diff_var, Eel(i + 1, j + 1))
         self.setw = True  
+
+    def save(self, nom_fitxer):
+        f = open(nom_fitxer, "w")
+        f.write(str(self.depth) + "\n")
+        f.write(str(self.cofs))
+        f.write("\n")
+        for i in range(self.depth + 1):
+            f.write(str(self.w[i]))
+            f.write("\n")
+        f.close()
         
     def exportpy(self, nom_fitxer):
         if self.setw == False:
