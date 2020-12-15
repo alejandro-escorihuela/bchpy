@@ -87,13 +87,13 @@ class Corxet(sp.Expr):
 
 
 class Metode():
-    depth = 6
+    depth = 0
     w = []
     setw = False
     cofs = []
     
     def __init__(self, depth = 6):
-        depth = len(rl.tamE) if depth >= len(rl.tamE) else depth
+        self.depth = len(rl.tamE) if depth >= len(rl.tamE) else depth
         self.w = self.__init_mat()
         
     def setBAB(self, *args, debug = False):
@@ -137,17 +137,11 @@ class Metode():
         return esq
 
     def importFromExpr(self, esq):
-        self.w = []
-        self.depth = len(rl.tamE)
         _x_diff_var = sp.Symbol("_x_diff_var")
         for i in range(self.depth):
-            self.w.append([])
             for j in range(rl.tamE[i]):
-                we = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)).subs(_x_diff_var, Eel(i + 1, j + 1))
-                self.w[i].append(we)
-            self.w[i].insert(0, 0)
-        self.w.insert(0, [0, 0])
-        self.setw = True
+                self.w[i + 1][j + 1] = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)).subs(_x_diff_var, Eel(i + 1, j + 1))
+        self.setw = True  
         
     def exportpy(self, nom_fitxer):
         if self.setw == False:
@@ -178,6 +172,13 @@ class Metode():
             for j in range(1, len(self.w[i])):
                 txt_p = "w(" + str(i) + "," + str(j) + ")"
                 print(colored(txt_p, ctxt, attrs=['bold']), "=", self.w[i][j])
+
+    def latex(self):
+        print("\begin{flalign*}")
+        for i in range(1, len(self.w)):
+            for j in range(1, len(self.w[i])):
+                print("\omega_{" + str(i) + "," + str(j) + "} &= "+ sp.latex(self.w[i][j]) + "\\\ ")
+        print("\end{flalign*}")
         
     def __init_mat(self):
         wret = []
@@ -207,21 +208,23 @@ class Metode():
             bet[4][1] = self.w[4][1]
             bet[4][2] = x**2*self.w[1][1]**2/24 - x*self.w[1][1]*self.w[2][1]/12 + x*self.w[3][1]/2 + self.w[4][2]
             bet[4][3] = -x**2*self.w[1][1]*self.w[1][2]/24 - x**2*self.w[2][1]/12 + x*self.w[1][2]*self.w[2][1]/12 - x*self.w[3][2]/2 + self.w[4][3]
-            bet[5][1] = -x*self.w[1][1]**4/720 + self.w[5][1]
-            bet[5][2] = x**2*self.w[1][1]**3/360 - x*self.w[1][1]**3*self.w[1][2]/720 + x*self.w[1][1]*self.w[3][1]/12 + x*self.w[4][1]/2 + self.w[5][2]
-            bet[5][3] = x**2*self.w[1][1]**3/120 + x*self.w[1][1]**3*self.w[1][2]/360 + x*self.w[1][1]*self.w[3][1]/6 + self.w[5][3]
-            bet[5][4] = x**3*self.w[1][1]**2/120 - x**2*self.w[1][1]**2*self.w[1][2]/360 - x**2*self.w[1][1]*self.w[2][1]/24 + x**2*self.w[3][1]/12 - x*self.w[1][1]**2*self.w[1][2]**2/360 + x*self.w[1][1]*self.w[3][2]/12 - x*self.w[1][2]*self.w[3][1]/12 + x*self.w[2][1]**2/12 + x*self.w[4][2]/2 + self.w[5][4]
-            bet[5][5] = x**3*self.w[1][1]**2/360 + x**2*self.w[1][1]**2*self.w[1][2]/120 + x*self.w[1][1]**2*self.w[1][2]**2/720 + x*self.w[1][1]*self.w[3][2]/6 + x*self.w[2][1]**2/12 + self.w[5][5]
-            bet[5][6] = -x**4*self.w[1][1]/720 - x**3*self.w[1][1]*self.w[1][2]/180 + x**2*self.w[1][1]*self.w[1][2]**2/180 + x**2*self.w[1][2]*self.w[2][1]/24 - x**2*self.w[3][2]/12 + x*self.w[1][1]*self.w[1][2]**3/720 + x*self.w[1][2]*self.w[3][2]/12 + x*self.w[4][3]/2 + self.w[5][6]
-            bet[6][1] = self.w[6][1]
-            bet[6][2] = -x**2*self.w[1][1]**4/1440 + x*self.w[1][1]**3*self.w[2][1]/720 + x*self.w[1][1]*self.w[4][1]/12 + x*self.w[5][1]/2 + self.w[6][2]
-            bet[6][3] = -x*self.w[1][1]*self.w[4][1]/6 + self.w[6][3]
-            bet[6][4] = -x**3*self.w[1][1]**3/240 - x**2*self.w[1][1]**3*self.w[1][2]/720 + x**2*self.w[1][1]**2*self.w[2][1]/120 - x**2*self.w[1][1]*self.w[3][1]/12 + x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/360 - x*self.w[1][1]*self.w[4][2]/12 + x*self.w[2][1]*self.w[3][1]/12 - x*self.w[5][3]/2 + self.w[6][4]
-            bet[6][5] = -x**2*self.w[1][1]**3*self.w[1][2]/864 + x**2*self.w[1][1]*self.w[3][1]/72 + x**2*self.w[4][1]/12 + x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/432 + x*self.w[1][1]*self.w[4][2]/36 - x*self.w[1][2]*self.w[4][1]/12 + x*self.w[5][2]/2 - x*self.w[5][3]/6 + self.w[6][5]
-            bet[6][6] = -x**3*self.w[1][1]**3/720 - x**2*self.w[1][1]**3*self.w[1][2]/2160 + x**2*self.w[1][1]**2*self.w[2][1]/360 - x**2*self.w[1][1]*self.w[3][1]/36 + x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/1080 + x*self.w[1][1]*self.w[4][2]/36 + x*self.w[2][1]*self.w[3][1]/12 - x*self.w[5][3]/6 + self.w[6][6]
-            bet[6][7] = x**3*self.w[1][1]**2*self.w[1][2]/144 + x**3*self.w[1][1]*self.w[2][1]/72 + x**2*self.w[1][1]**2*self.w[1][2]**2/288 - x**2*self.w[1][1]*self.w[1][2]*self.w[2][1]/72 + x**2*self.w[1][2]*self.w[3][1]/12 - x**2*self.w[2][1]**2/24 - x**2*self.w[4][2]/6 - x*self.w[1][1]*self.w[1][2]**2*self.w[2][1]/144 + x*self.w[1][1]*self.w[4][3]/12 + x*self.w[1][2]*self.w[4][2]/6 - x*self.w[2][1]*self.w[3][2]/12 - x*self.w[5][4] + x*self.w[5][5]/2 + self.w[6][7]
-            bet[6][8] = x**4*self.w[1][1]**2/1440 - x**3*self.w[1][1]**2*self.w[1][2]/720 - x**3*self.w[1][1]*self.w[2][1]/120 - x**2*self.w[1][1]**2*self.w[1][2]**2/720 + x**2*self.w[1][1]*self.w[1][2]*self.w[2][1]/360 + x**2*self.w[1][1]*self.w[3][2]/24 - x**2*self.w[1][2]*self.w[3][1]/24 + x**2*self.w[2][1]**2/24 + x**2*self.w[4][2]/12 + x*self.w[1][1]*self.w[1][2]**2*self.w[2][1]/360 - x*self.w[1][1]*self.w[4][3]/6 - x*self.w[1][2]*self.w[4][2]/12 + x*self.w[2][1]*self.w[3][2]/12 + x*self.w[5][4]/2 + self.w[6][8]
-            bet[6][9] = x**4*self.w[1][1]*self.w[1][2]/1440 + x**4*self.w[2][1]/720 + x**3*self.w[1][1]*self.w[1][2]**2/360 + x**3*self.w[1][2]*self.w[2][1]/180 + x**2*self.w[1][1]*self.w[1][2]**3/1440 - x**2*self.w[1][2]**2*self.w[2][1]/180 + x**2*self.w[1][2]*self.w[3][2]/24 + x**2*self.w[4][3]/12 - x*self.w[1][2]**3*self.w[2][1]/720 - x*self.w[1][2]*self.w[4][3]/12 + x*self.w[5][6]/2 + self.w[6][9]
+            if self.depth >= 5:
+                bet[5][1] = -x*self.w[1][1]**4/720 + self.w[5][1]
+                bet[5][2] = x**2*self.w[1][1]**3/360 - x*self.w[1][1]**3*self.w[1][2]/720 + x*self.w[1][1]*self.w[3][1]/12 + x*self.w[4][1]/2 + self.w[5][2]
+                bet[5][3] = x**2*self.w[1][1]**3/120 + x*self.w[1][1]**3*self.w[1][2]/360 + x*self.w[1][1]*self.w[3][1]/6 + self.w[5][3]
+                bet[5][4] = x**3*self.w[1][1]**2/120 - x**2*self.w[1][1]**2*self.w[1][2]/360 - x**2*self.w[1][1]*self.w[2][1]/24 + x**2*self.w[3][1]/12 - x*self.w[1][1]**2*self.w[1][2]**2/360 + x*self.w[1][1]*self.w[3][2]/12 - x*self.w[1][2]*self.w[3][1]/12 + x*self.w[2][1]**2/12 + x*self.w[4][2]/2 + self.w[5][4]
+                bet[5][5] = x**3*self.w[1][1]**2/360 + x**2*self.w[1][1]**2*self.w[1][2]/120 + x*self.w[1][1]**2*self.w[1][2]**2/720 + x*self.w[1][1]*self.w[3][2]/6 + x*self.w[2][1]**2/12 + self.w[5][5]
+                bet[5][6] = -x**4*self.w[1][1]/720 - x**3*self.w[1][1]*self.w[1][2]/180 + x**2*self.w[1][1]*self.w[1][2]**2/180 + x**2*self.w[1][2]*self.w[2][1]/24 - x**2*self.w[3][2]/12 + x*self.w[1][1]*self.w[1][2]**3/720 + x*self.w[1][2]*self.w[3][2]/12 + x*self.w[4][3]/2 + self.w[5][6]
+            if self.depth >= 6:
+                bet[6][1] = self.w[6][1]
+                bet[6][2] = -x**2*self.w[1][1]**4/1440 + x*self.w[1][1]**3*self.w[2][1]/720 + x*self.w[1][1]*self.w[4][1]/12 + x*self.w[5][1]/2 + self.w[6][2]
+                bet[6][3] = -x*self.w[1][1]*self.w[4][1]/6 + self.w[6][3]
+                bet[6][4] = -x**3*self.w[1][1]**3/240 - x**2*self.w[1][1]**3*self.w[1][2]/720 + x**2*self.w[1][1]**2*self.w[2][1]/120 - x**2*self.w[1][1]*self.w[3][1]/12 + x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/360 - x*self.w[1][1]*self.w[4][2]/12 + x*self.w[2][1]*self.w[3][1]/12 - x*self.w[5][3]/2 + self.w[6][4]
+                bet[6][5] = -x**2*self.w[1][1]**3*self.w[1][2]/864 + x**2*self.w[1][1]*self.w[3][1]/72 + x**2*self.w[4][1]/12 + x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/432 + x*self.w[1][1]*self.w[4][2]/36 - x*self.w[1][2]*self.w[4][1]/12 + x*self.w[5][2]/2 - x*self.w[5][3]/6 + self.w[6][5]
+                bet[6][6] = -x**3*self.w[1][1]**3/720 - x**2*self.w[1][1]**3*self.w[1][2]/2160 + x**2*self.w[1][1]**2*self.w[2][1]/360 - x**2*self.w[1][1]*self.w[3][1]/36 + x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/1080 + x*self.w[1][1]*self.w[4][2]/36 + x*self.w[2][1]*self.w[3][1]/12 - x*self.w[5][3]/6 + self.w[6][6]
+                bet[6][7] = x**3*self.w[1][1]**2*self.w[1][2]/144 + x**3*self.w[1][1]*self.w[2][1]/72 + x**2*self.w[1][1]**2*self.w[1][2]**2/288 - x**2*self.w[1][1]*self.w[1][2]*self.w[2][1]/72 + x**2*self.w[1][2]*self.w[3][1]/12 - x**2*self.w[2][1]**2/24 - x**2*self.w[4][2]/6 - x*self.w[1][1]*self.w[1][2]**2*self.w[2][1]/144 + x*self.w[1][1]*self.w[4][3]/12 + x*self.w[1][2]*self.w[4][2]/6 - x*self.w[2][1]*self.w[3][2]/12 - x*self.w[5][4] + x*self.w[5][5]/2 + self.w[6][7]
+                bet[6][8] = x**4*self.w[1][1]**2/1440 - x**3*self.w[1][1]**2*self.w[1][2]/720 - x**3*self.w[1][1]*self.w[2][1]/120 - x**2*self.w[1][1]**2*self.w[1][2]**2/720 + x**2*self.w[1][1]*self.w[1][2]*self.w[2][1]/360 + x**2*self.w[1][1]*self.w[3][2]/24 - x**2*self.w[1][2]*self.w[3][1]/24 + x**2*self.w[2][1]**2/24 + x**2*self.w[4][2]/12 + x*self.w[1][1]*self.w[1][2]**2*self.w[2][1]/360 - x*self.w[1][1]*self.w[4][3]/6 - x*self.w[1][2]*self.w[4][2]/12 + x*self.w[2][1]*self.w[3][2]/12 + x*self.w[5][4]/2 + self.w[6][8]
+                bet[6][9] = x**4*self.w[1][1]*self.w[1][2]/1440 + x**4*self.w[2][1]/720 + x**3*self.w[1][1]*self.w[1][2]**2/360 + x**3*self.w[1][2]*self.w[2][1]/180 + x**2*self.w[1][1]*self.w[1][2]**3/1440 - x**2*self.w[1][2]**2*self.w[2][1]/180 + x**2*self.w[1][2]*self.w[3][2]/24 + x**2*self.w[4][3]/12 - x*self.w[1][2]**3*self.w[2][1]/720 - x*self.w[1][2]*self.w[4][3]/12 + x*self.w[5][6]/2 + self.w[6][9]
         else:
             bet[1][1] = x + self.w[1][1]
             bet[1][2] = self.w[1][2]
@@ -231,21 +234,23 @@ class Metode():
             bet[4][1] = -x**2*self.w[1][1]*self.w[1][2]/24 + x**2*self.w[2][1]/12 - x*self.w[1][1]*self.w[2][1]/12 + x*self.w[3][1]/2 + self.w[4][1]
             bet[4][2] = -x**2*self.w[1][2]**2/24 - x*self.w[1][2]*self.w[2][1]/12 + x*self.w[3][2]/2 + self.w[4][2]
             bet[4][3] = self.w[4][3]
-            bet[5][1] = -x**4*self.w[1][2]/720 - x**3*self.w[1][1]*self.w[1][2]/180 + x**2*self.w[1][1]**2*self.w[1][2]/180 - x**2*self.w[1][1]*self.w[2][1]/24 + x**2*self.w[3][1]/12 + x*self.w[1][1]**3*self.w[1][2]/720 - x*self.w[1][1]*self.w[3][1]/12 + x*self.w[4][1]/2 + self.w[5][1]
-            bet[5][2] = x**3*self.w[1][2]**2/360 + x**2*self.w[1][1]*self.w[1][2]**2/120 + x*self.w[1][1]**2*self.w[1][2]**2/720 - x*self.w[1][2]*self.w[3][1]/6 + x*self.w[2][1]**2/12 + self.w[5][2]
-            bet[5][3] = x**3*self.w[1][2]**2/120 - x**2*self.w[1][1]*self.w[1][2]**2/360 + x**2*self.w[1][2]*self.w[2][1]/24 - x**2*self.w[3][2]/12 - x*self.w[1][1]**2*self.w[1][2]**2/360 + x*self.w[1][1]*self.w[3][2]/12 - x*self.w[1][2]*self.w[3][1]/12 + x*self.w[2][1]**2/12 - x*self.w[4][2]/2 + self.w[5][3]
-            bet[5][4] = x**2*self.w[1][2]**3/120 + x*self.w[1][1]*self.w[1][2]**3/360 - x*self.w[1][2]*self.w[3][2]/6 + self.w[5][4]
-            bet[5][5] = x**2*self.w[1][2]**3/360 - x*self.w[1][1]*self.w[1][2]**3/720 - x*self.w[1][2]*self.w[3][2]/12 + x*self.w[4][3]/2 + self.w[5][5]
-            bet[5][6] = -x*self.w[1][2]**4/720 + self.w[5][6]
-            bet[6][1] = x**4*self.w[1][1]*self.w[1][2]/1440 - x**4*self.w[2][1]/720 + x**3*self.w[1][1]**2*self.w[1][2]/360 - x**3*self.w[1][1]*self.w[2][1]/180 + x**2*self.w[1][1]**3*self.w[1][2]/1440 + x**2*self.w[1][1]**2*self.w[2][1]/180 - x**2*self.w[1][1]*self.w[3][1]/24 + x**2*self.w[4][1]/12 + x*self.w[1][1]**3*self.w[2][1]/720 - x*self.w[1][1]*self.w[4][1]/12 + x*self.w[5][1]/2 + self.w[6][1]
-            bet[6][2] = x**4*self.w[1][2]**2/1440 - x**3*self.w[1][1]*self.w[1][2]**2/720 + x**3*self.w[1][2]*self.w[2][1]/120 - x**2*self.w[1][1]**2*self.w[1][2]**2/720 - x**2*self.w[1][1]*self.w[1][2]*self.w[2][1]/360 + x**2*self.w[1][1]*self.w[3][2]/24 - x**2*self.w[1][2]*self.w[3][1]/24 + x**2*self.w[2][1]**2/24 - x**2*self.w[4][2]/12 - x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/360 + x*self.w[1][1]*self.w[4][2]/12 - x*self.w[1][2]*self.w[4][1]/6 + x*self.w[2][1]*self.w[3][1]/12 + x*self.w[5][3]/2 + self.w[6][2]
-            bet[6][3] = x**3*self.w[1][1]*self.w[1][2]**2/144 - x**3*self.w[1][2]*self.w[2][1]/72 + x**2*self.w[1][1]**2*self.w[1][2]**2/288 + x**2*self.w[1][1]*self.w[1][2]*self.w[2][1]/72 - x**2*self.w[1][1]*self.w[3][2]/12 - x**2*self.w[2][1]**2/24 + x**2*self.w[4][2]/6 + x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/144 - x*self.w[1][1]*self.w[4][2]/6 + x*self.w[1][2]*self.w[4][1]/12 - x*self.w[2][1]*self.w[3][1]/12 + x*self.w[5][2]/2 - x*self.w[5][3] + self.w[6][3]
-            bet[6][4] = x**3*self.w[1][2]**3/240 + x**2*self.w[1][1]*self.w[1][2]**3/720 + x**2*self.w[1][2]**2*self.w[2][1]/120 - x**2*self.w[1][2]*self.w[3][2]/12 + x*self.w[1][1]*self.w[1][2]**2*self.w[2][1]/360 - x*self.w[1][2]*self.w[4][2]/12 - x*self.w[2][1]*self.w[3][2]/12 + x*self.w[5][4]/2 + self.w[6][4]
-            bet[6][5] = -x*self.w[1][2]*self.w[4][2]/18 + x*self.w[2][1]*self.w[3][2]/18 + self.w[6][5]
-            bet[6][6] = x**3*self.w[1][2]**3/720 - x**2*self.w[1][1]*self.w[1][2]**3/1440 + x**2*self.w[1][2]**2*self.w[2][1]/360 - x**2*self.w[1][2]*self.w[3][2]/24 + x**2*self.w[4][3]/12 - x*self.w[1][1]*self.w[1][2]**2*self.w[2][1]/720 - x*self.w[1][1]*self.w[4][3]/12 - x*self.w[1][2]*self.w[4][2]/18 - x*self.w[2][1]*self.w[3][2]/36 + x*self.w[5][5]/2 + self.w[6][6]
-            bet[6][7] = -x*self.w[1][2]*self.w[4][3]/6 + self.w[6][7]
-            bet[6][8] = -x**2*self.w[1][2]**4/1440 - x*self.w[1][2]**3*self.w[2][1]/720 + x*self.w[1][2]*self.w[4][3]/12 + x*self.w[5][6]/2 + self.w[6][8]
-            bet[6][9] = self.w[6][9]
+            if self.depth >= 5:
+                bet[5][1] = -x**4*self.w[1][2]/720 - x**3*self.w[1][1]*self.w[1][2]/180 + x**2*self.w[1][1]**2*self.w[1][2]/180 - x**2*self.w[1][1]*self.w[2][1]/24 + x**2*self.w[3][1]/12 + x*self.w[1][1]**3*self.w[1][2]/720 - x*self.w[1][1]*self.w[3][1]/12 + x*self.w[4][1]/2 + self.w[5][1]
+                bet[5][2] = x**3*self.w[1][2]**2/360 + x**2*self.w[1][1]*self.w[1][2]**2/120 + x*self.w[1][1]**2*self.w[1][2]**2/720 - x*self.w[1][2]*self.w[3][1]/6 + x*self.w[2][1]**2/12 + self.w[5][2]
+                bet[5][3] = x**3*self.w[1][2]**2/120 - x**2*self.w[1][1]*self.w[1][2]**2/360 + x**2*self.w[1][2]*self.w[2][1]/24 - x**2*self.w[3][2]/12 - x*self.w[1][1]**2*self.w[1][2]**2/360 + x*self.w[1][1]*self.w[3][2]/12 - x*self.w[1][2]*self.w[3][1]/12 + x*self.w[2][1]**2/12 - x*self.w[4][2]/2 + self.w[5][3]
+                bet[5][4] = x**2*self.w[1][2]**3/120 + x*self.w[1][1]*self.w[1][2]**3/360 - x*self.w[1][2]*self.w[3][2]/6 + self.w[5][4]
+                bet[5][5] = x**2*self.w[1][2]**3/360 - x*self.w[1][1]*self.w[1][2]**3/720 - x*self.w[1][2]*self.w[3][2]/12 + x*self.w[4][3]/2 + self.w[5][5]
+                bet[5][6] = -x*self.w[1][2]**4/720 + self.w[5][6]
+            if self.depth >= 6:
+                bet[6][1] = x**4*self.w[1][1]*self.w[1][2]/1440 - x**4*self.w[2][1]/720 + x**3*self.w[1][1]**2*self.w[1][2]/360 - x**3*self.w[1][1]*self.w[2][1]/180 + x**2*self.w[1][1]**3*self.w[1][2]/1440 + x**2*self.w[1][1]**2*self.w[2][1]/180 - x**2*self.w[1][1]*self.w[3][1]/24 + x**2*self.w[4][1]/12 + x*self.w[1][1]**3*self.w[2][1]/720 - x*self.w[1][1]*self.w[4][1]/12 + x*self.w[5][1]/2 + self.w[6][1]
+                bet[6][2] = x**4*self.w[1][2]**2/1440 - x**3*self.w[1][1]*self.w[1][2]**2/720 + x**3*self.w[1][2]*self.w[2][1]/120 - x**2*self.w[1][1]**2*self.w[1][2]**2/720 - x**2*self.w[1][1]*self.w[1][2]*self.w[2][1]/360 + x**2*self.w[1][1]*self.w[3][2]/24 - x**2*self.w[1][2]*self.w[3][1]/24 + x**2*self.w[2][1]**2/24 - x**2*self.w[4][2]/12 - x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/360 + x*self.w[1][1]*self.w[4][2]/12 - x*self.w[1][2]*self.w[4][1]/6 + x*self.w[2][1]*self.w[3][1]/12 + x*self.w[5][3]/2 + self.w[6][2]
+                bet[6][3] = x**3*self.w[1][1]*self.w[1][2]**2/144 - x**3*self.w[1][2]*self.w[2][1]/72 + x**2*self.w[1][1]**2*self.w[1][2]**2/288 + x**2*self.w[1][1]*self.w[1][2]*self.w[2][1]/72 - x**2*self.w[1][1]*self.w[3][2]/12 - x**2*self.w[2][1]**2/24 + x**2*self.w[4][2]/6 + x*self.w[1][1]**2*self.w[1][2]*self.w[2][1]/144 - x*self.w[1][1]*self.w[4][2]/6 + x*self.w[1][2]*self.w[4][1]/12 - x*self.w[2][1]*self.w[3][1]/12 + x*self.w[5][2]/2 - x*self.w[5][3] + self.w[6][3]
+                bet[6][4] = x**3*self.w[1][2]**3/240 + x**2*self.w[1][1]*self.w[1][2]**3/720 + x**2*self.w[1][2]**2*self.w[2][1]/120 - x**2*self.w[1][2]*self.w[3][2]/12 + x*self.w[1][1]*self.w[1][2]**2*self.w[2][1]/360 - x*self.w[1][2]*self.w[4][2]/12 - x*self.w[2][1]*self.w[3][2]/12 + x*self.w[5][4]/2 + self.w[6][4]
+                bet[6][5] = -x*self.w[1][2]*self.w[4][2]/18 + x*self.w[2][1]*self.w[3][2]/18 + self.w[6][5]
+                bet[6][6] = x**3*self.w[1][2]**3/720 - x**2*self.w[1][1]*self.w[1][2]**3/1440 + x**2*self.w[1][2]**2*self.w[2][1]/360 - x**2*self.w[1][2]*self.w[3][2]/24 + x**2*self.w[4][3]/12 - x*self.w[1][1]*self.w[1][2]**2*self.w[2][1]/720 - x*self.w[1][1]*self.w[4][3]/12 - x*self.w[1][2]*self.w[4][2]/18 - x*self.w[2][1]*self.w[3][2]/36 + x*self.w[5][5]/2 + self.w[6][6]
+                bet[6][7] = -x*self.w[1][2]*self.w[4][3]/6 + self.w[6][7]
+                bet[6][8] = -x**2*self.w[1][2]**4/1440 - x*self.w[1][2]**3*self.w[2][1]/720 + x*self.w[1][2]*self.w[4][3]/12 + x*self.w[5][6]/2 + self.w[6][8]
+                bet[6][9] = self.w[6][9]
         for i in range(len(bet)):
             for j in range(len(bet[i])):
                 bet[i][j] = bet[i][j].expand()
@@ -257,27 +262,29 @@ def printd(text):
 def printe(text):
     print(colored("ERROR:", "red", attrs=['bold']), text)
 
-def bch6(A, B):
+def bch6(A, B, depth = 6):
     e21 = Corxet(A, B)
     e31 = Corxet(A, e21)
     e32 = Corxet(B, e21)
     e41 = Corxet(A, e31)
     e42 = Corxet(A, e32)
     e43 = Corxet(B, -e32)
-    e51 = Corxet(A, e41)
-    e52 = Corxet(B, e41)
-    e53 = Corxet(A, -e42)
-    e54 = Corxet(B, e42)
-    e55 = Corxet(A, e43)
-    e56 = Corxet(B, e43)
-    e62 = Corxet(B, e51)
-    e64 = Corxet(A, e54)
-    e66 = Corxet(A, e55)
-    e68 = Corxet(A, e56)
     D = A + B
     D += sp.Rational(1, 2)*e21
     D += sp.Rational(1, 12)*(e31 - e32)
     D += sp.Rational(-1, 24)*e42
-    D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
-    D += sp.Rational(1, 1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
+    if (depth >= 5):
+        e51 = Corxet(A, e41)
+        e52 = Corxet(B, e41)
+        e53 = Corxet(A, -e42)
+        e54 = Corxet(B, e42)
+        e55 = Corxet(A, e43)
+        e56 = Corxet(B, e43)
+        D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
+    if (depth >= 6):
+        e62 = Corxet(B, e51)
+        e64 = Corxet(A, e54)
+        e66 = Corxet(A, e55)
+        e68 = Corxet(A, e56)
+        D += sp.Rational(1, 1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
     return D

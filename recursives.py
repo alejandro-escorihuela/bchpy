@@ -11,16 +11,17 @@ import time as tm
 from bchpy import *
 
 if __name__ == "__main__":
+    ord_bch = 4
     print("exp(bet(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
     x = sp.Symbol("x")
     t0 = tm.time()
     esq = sp.S(0)
-    alp = sp.MatrixSymbol("alp", len(rl.tamE) + 1, rl.tamE[-1] + 1)
-    for i in range(len(rl.tamE)):
+    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch] + 1)
+    for i in range(ord_bch):
         for j in range(rl.tamE[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
-    esq = bch6(x*Eel(1,2), esq)
-    metBD = Metode()
+    esq = bch6(x*Eel(1,2), esq, depth = ord_bch)
+    metBD = Metode(ord_bch)
     metBD.importFromExpr(esq)
     print(metBD)
     t1 = tm.time()
@@ -31,11 +32,11 @@ if __name__ == "__main__":
     y = sp.Symbol("y")
     t0 = tm.time()
     esq = sp.S(0)
-    for i in range(len(rl.tamE)):
+    for i in range(ord_bch):
         for j in range(rl.tamE[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
-    esq = bch6(y*Eel(1,1), esq)
-    metAD = Metode()
+    esq = bch6(y*Eel(1,1), esq, depth = ord_bch)
+    metAD = Metode(ord_bch)
     metAD.importFromExpr(esq)
     print(metAD)
     t1 = tm.time()
