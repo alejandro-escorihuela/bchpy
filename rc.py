@@ -54,7 +54,6 @@ if __name__ == "__main__":
             b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True))
     met.collectI()
     met.exportpy(nom + ".py")
-    met.save("rk.dat")
     t1 = tm.time()
     print("\tComposició BAB: 7 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")     
 

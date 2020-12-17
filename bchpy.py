@@ -9,6 +9,7 @@ import sympy as sp
 import relations as rl
 import time as tm
 import datetime
+from sympy import re, im
 from sympy.printing.pretty.stringpict import prettyForm
 from sympy.printing.pretty.pretty_symbology import pretty_symbol
 from sympy.core.containers import Tuple
@@ -151,6 +152,22 @@ class Metode():
         for i in range(self.depth + 1):
             f.write(str(self.w[i]))
             f.write("\n")
+        f.close()
+
+    def read(self, nom_fitxer):
+        f = open(nom_fitxer, "r")
+        linies = f.readlines()
+        self.depth = int(linies[0].replace("\n", ""))
+        cofs_txt = list(linies[1].replace("\n", "").replace("[", "").replace("]", "").split(","))
+        self.cofs = []
+        for i in range(len(cofs_txt)):
+            self.cofs.append(sp.sympify(cofs_txt[i]))
+        self.w = self.__init_mat()
+        linies_w = linies[2:]
+        for i in range(len(linies_w)):
+            lin_txt = list(linies_w[i].replace("\n", "").replace("[", "").replace("]", "").split(","))
+            for j in range(len(lin_txt)):
+                self.w[i][j] = sp.sympify(lin_txt[j])
         f.close()
         
     def exportpy(self, nom_fitxer):
