@@ -186,6 +186,7 @@ class Metode():
                 cad = strsub(r'a([0-9]*)', r'a[\1]', cad)
                 cad = strsub(r're\(b([0-9]*)\)', r'br[\1]', cad)
                 cad = strsub(r'im\(b([0-9]*)\)', r'bi[\1]', cad)
+                cad = strsub(r'b([0-9]*)', r'br[\1]', cad)
                 cad = cad.replace("I*", "")
                 f.write("def w" + str(i) + str(j) + "(a, br, bi):\n")
                 f.write("    return " + cad + "\n\n")
