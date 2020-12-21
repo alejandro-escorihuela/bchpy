@@ -19,7 +19,8 @@ if __name__ == "__main__":
     # t0 = tm.time()
     # met = Metode()
     # met.setABA(a[0], b[0].expand(complex=True), a[1], b[1].expand(complex=True), a[2], b[2].expand(complex=True), a[3],
-    #            b[2].conjugate().expand(complex=True), a[2], b[1].conjugate().expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0], debug = True)
+    #            b[2].conjugate().expand(complex=True), a[2], b[1].conjugate().expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0],
+    #            debug = True)
     # met.collectI()
     # met.exportpy(nom + ".py")
     # t1 = tm.time()
@@ -29,7 +30,8 @@ if __name__ == "__main__":
     # t0 = tm.time()
     # met = Metode()
     # met.setBAB(b[0].expand(complex=True), a[0], b[1].expand(complex=True), a[1], b[2].expand(complex=True), a[2],
-    #            b[2].conjugate().expand(complex=True), a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True), debug = True)   
+    #            b[2].conjugate().expand(complex=True), a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True),
+    #            debug = True)   
     # met.collectI()
     # met.exportpy(nom + ".py")
     # t1 = tm.time()
@@ -39,23 +41,36 @@ if __name__ == "__main__":
     # t0 = tm.time()
     # met = Metode()
     # met.setBAB(b[0].expand(complex=True), a[0], b[1].expand(complex=True), a[1], b[2].expand(complex=True), a[2], b[3],
-    #            a[2], b[2].conjugate().expand(complex=True), a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True), debug = True)
+    #            a[2], b[2].conjugate().expand(complex=True), a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True),
+    #            debug = True)
     # met.collectI()
     # met.exportpy(nom + ".py")
     # t1 = tm.time()
     # print("\tComposició BAB: 13 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")  
 
-    # print("RKN: Ordre 6 projectat, ordre 5 sense projectar. rknc36")
-    # nom = "rknc56BAB15"
-    # t0 = tm.time()
-    # met = Metode()
-    # met.setBAB(b[0].expand(complex=True), a[0], b[1].expand(complex=True), a[1], b[2].expand(complex=True), a[2], b[3].expand(complex=True), a[3],
-    #         b[3].conjugate().expand(complex=True), a[2], b[2].conjugate().expand(complex=True), a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True))
-    # met.collectI()
-    # met.exportpy(nom + ".py")
-    # t1 = tm.time()
-    # print("\tComposició BAB: 15 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")  
+    print("RKN: Ordre 6 projectat, ordre 5 sense projectar. rknc56")
+    nom = "rknc56BAB15"
+    t0 = tm.time()
+    met = Metode()
+    met.setBAB(b[0].expand(complex=True), a[0], b[1].expand(complex=True), a[1], b[2].expand(complex=True), a[2], b[3].expand(complex=True), a[3],
+               b[3].conjugate().expand(complex=True), a[2], b[2].conjugate().expand(complex=True), a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True),
+               debug = True)
+    met.collectI()
+    met.exportpy(nom + ".py")
+    t1 = tm.time()
+    print("\tComposició BAB: 15 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")  
 
+    nom = "rknc56ABA15"
+    t0 = tm.time()
+    met = Metode()
+    met.setABA(a[0], b[0].expand(complex=True), a[1], b[1].expand(complex=True), a[2], b[2].expand(complex=True), a[3], b[3],
+               a[3], b[2].conjugate().expand(complex=True), a[2], b[1].conjugate().expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0],
+               debug = True)
+    met.collectI()
+    met.exportpy(nom + ".py")
+    t1 = tm.time()
+    print("\tComposició ABA: 15 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")
+    
     # print("RKN: Ordre 4 projectat, ordre 3 sense projectar. rknc34")
     # nom = "rknc34ABA7"
     # t0 = tm.time()
@@ -77,33 +92,33 @@ if __name__ == "__main__":
     # t1 = tm.time()
     # print("\tComposició BAB: 7 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")    
 
-    print("RKN: Ordre 4 projectat, ordre 4 sense projectar. rknc44")
-    nom = "rknc44ABA9"
-    t0 = tm.time()
-    met = Metode()
-    met.setABA(a[0], b[0].expand(complex=True), a[1], b[1].expand(complex=True), a[2],
-               b[1].conjugate().expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0])
-    met.collectI()
-    met.exportpy(nom + ".py")
-    t1 = tm.time()
-    print("\tComposició ABA: 9 fluxes ->", nom, "\t(" + str(t1-t0) + " s)") 
+    # print("RKN: Ordre 4 projectat, ordre 4 sense projectar. rknc44")
+    # nom = "rknc44ABA9"
+    # t0 = tm.time()
+    # met = Metode()
+    # met.setABA(a[0], b[0].expand(complex=True), a[1], b[1].expand(complex=True), a[2],
+    #            b[1].conjugate().expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0])
+    # met.collectI()
+    # met.exportpy(nom + ".py")
+    # t1 = tm.time()
+    # print("\tComposició ABA: 9 fluxes ->", nom, "\t(" + str(t1-t0) + " s)") 
 
-    nom = "rknc44ABA11"
-    t0 = tm.time()
-    met = Metode()
-    met.setABA(a[0], b[0].expand(complex=True), a[1], b[1].expand(complex=True), a[2], b[2],
-               a[2], b[1].conjugate().expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0])
-    met.collectI()
-    met.exportpy(nom + ".py")
-    t1 = tm.time()
-    print("\tComposició ABA: 11 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")     
+    # nom = "rknc44ABA11"
+    # t0 = tm.time()
+    # met = Metode()
+    # met.setABA(a[0], b[0].expand(complex=True), a[1], b[1].expand(complex=True), a[2], b[2],
+    #            a[2], b[1].conjugate().expand(complex=True), a[1], b[0].conjugate().expand(complex=True), a[0])
+    # met.collectI()
+    # met.exportpy(nom + ".py")
+    # t1 = tm.time()
+    # print("\tComposició ABA: 11 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")     
 
-    nom = "rknc44BAB9"
-    t0 = tm.time()
-    met = Metode()
-    met.setBAB(b[0].expand(complex=True), a[0], b[1].expand(complex=True), a[1], b[2],
-               a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True))
-    met.collectI()
-    met.exportpy(nom + ".py")
-    t1 = tm.time()
-    print("\tComposició BAB: 9 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")  
+    # nom = "rknc44BAB9"
+    # t0 = tm.time()
+    # met = Metode()
+    # met.setBAB(b[0].expand(complex=True), a[0], b[1].expand(complex=True), a[1], b[2],
+    #            a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True))
+    # met.collectI()
+    # met.exportpy(nom + ".py")
+    # t1 = tm.time()
+    # print("\tComposició BAB: 9 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")  
