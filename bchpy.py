@@ -147,8 +147,7 @@ class Metode():
     def save(self, nom_fitxer):
         f = open(nom_fitxer, "w")
         f.write(str(self.depth) + "\n")
-        f.write(str(self.cofs))
-        f.write("\n")
+        f.write(str(self.cofs) + "\n")
         for i in range(self.depth + 1):
             f.write(str(self.w[i]))
             f.write("\n")
@@ -178,8 +177,10 @@ class Metode():
         f = open(nom_fitxer, "w")
         f.write("#!/usr/bin/env python\n# -*- coding: utf-8 -*-\n")
         f.write("# " + str(ara.day) + "-" + str(ara.month) + "-" + str(ara.year) + "\n")
+        f.write("# " + nom_fitxer + "\n")
         f.write("# Fitxer generat automàticament per bchpy. No tocar!\n")
-        f.write("# " + nom_fitxer + "\n\n")
+        cof_txt = str(self.cofs).replace("[", "").replace("]", "")
+        f.write("# Esquema: " + cof_txt + "\n\n")
         for i in range(1, len(self.w)):
             for j in range(1, len(self.w[i])):
                 cad = str(self.w[i][j])
