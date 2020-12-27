@@ -11,19 +11,19 @@ import time as tm
 from bchpy import *
 
 if __name__ == "__main__":
-    ord_bch = 4
+    ord_bch = 6
     print("exp(bet(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
     x = sp.Symbol("x")
     t0 = tm.time()
     esq = sp.S(0)
-    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch] + 1)
+    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
     for i in range(ord_bch):
         for j in range(rl.tamE[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
     esq = bch6(x*Eel(1,2), esq, depth = ord_bch)
     metBD = Metode(ord_bch)
     metBD.importFromExpr(esq)
-    print(metBD)
+    print(metBD.latex())
     t1 = tm.time()
     print(t1 - t0, "s")
     print("\n")

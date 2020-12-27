@@ -202,12 +202,16 @@ class Metode():
                 txt_p = "w(" + str(i) + "," + str(j) + ")"
                 print(colored(txt_p, ctxt, attrs=['bold']), "=", self.w[i][j])
 
-    def latex(self):
-        print("\begin{flalign*}")
+    def latex_str(self):
+        cad = "\\begin{align}\n"
         for i in range(1, len(self.w)):
             for j in range(1, len(self.w[i])):
-                print("\omega_{" + str(i) + "," + str(j) + "} &= "+ sp.latex(self.w[i][j]) + "\\\ ")
-        print("\end{flalign*}")
+                cad = cad + "\omega_{" + str(i) + "," + str(j) + "} &= "+ sp.latex(self.w[i][j]) + "\\\ \n"
+        cad = cad + "\end{align}"
+        return cad
+                
+    def latex(self):
+        print(self.latex_str())
         
     def __init_mat(self):
         wret = []
