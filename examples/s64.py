@@ -6,9 +6,11 @@
 
 import numpy as np
 import sympy as sp
-import relations as rl
 import time as tm
+import sys
+sys.path.insert(0, '../')
 from bchpy import *
+import relations as rl
 
 if __name__ == "__main__":
     print("s64")

@@ -5,8 +5,10 @@
 # test_relE.py
 
 import sympy as sp
-import relations as rl
 from sympy.physics.quantum import Operator, Commutator
+import sys
+sys.path.insert(0, '../')
+import relations as rl
 
 if __name__ == "__main__":
     A = Operator("A")

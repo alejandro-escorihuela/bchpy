@@ -6,9 +6,11 @@
 
 import numpy as np
 import sympy as sp
-import relations as rl
 import time as tm
+import sys
+sys.path.insert(0, '../')
 from bchpy import *
+import relations as rl
 
 if __name__ == "__main__":
     ord_bch = 6
@@ -23,7 +25,7 @@ if __name__ == "__main__":
     esq = bch6(x*Eel(1,2), esq, depth = ord_bch)
     metBD = Metode(ord_bch)
     metBD.importFromExpr(esq)
-    print(metBD.latex())
+    print(metBD)
     t1 = tm.time()
     print(t1 - t0, "s")
     print("\n")
