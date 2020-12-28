@@ -6,10 +6,12 @@
 
 import numpy as np
 import sympy as sp
-import relations as rl
 import time as tm
 import mpmath
+import sys
+sys.path.insert(0, '../')
 from bchpy import *
+import relations as rl
 
 if __name__ == "__main__":
     a = sp.symbols("a0:4", real=True)
