@@ -1,19 +1,43 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
-# 07-12-2020
+# 28-12-2020
 # alex
-# test_relE.py
+# relE7.py
 
 import sympy as sp
 from sympy.physics.quantum import Operator, Commutator
+import itertools
 import sys
 sys.path.insert(0, '../')
+from bchpy import *
 import relations as rl
 
+def resoldre(exprEsq, exprDre):
+    eqs = []
+    for i in exprDre.args:
+        cnc_i = i.args_cnc()
+        equ = sp.S(0)
+        for j in exprEsq.args:
+            cnc_j = j.args_cnc()
+            if cnc_i[1] == cnc_j[1]:
+                equ_esq = sp.S(1)
+                for elem in cnc_j[0]:
+                    equ_esq *= elem
+                equ += equ_esq
+        equ_dre = sp.S(1)
+        for elem in cnc_i[0]:
+            equ_dre *= elem
+        equ -= equ_dre
+        if equ not in eqs:
+            eqs.append(equ)
+    return sp.solve(eqs)
+
+            
 if __name__ == "__main__":
     A = Operator("A")
     B = Operator("B")
-    E = [[0 for j in range(rl.tamE[-1] + 1)] for i in range(len(rl.tamE) + 1)]
+    c = sp.symbols("c1:19")
+    E = [[0 for j in range(19)] for i in range(8)]
     E[1][1] = A
     E[1][2] = B
     E[2][1] = Commutator(A,B)
@@ -40,29 +64,25 @@ if __name__ == "__main__":
     for i in range(1, 10):
         E[7][2*i - 1] = Commutator(A, E[6][i])  
         E[7][2*i] = Commutator(B, E[6][i])
-        
-    for i in range(len(rl.tamE)):
-        for j in range(rl.tamE[i - 1]):
-            for k in range(len(rl.tamE)):
-                for l in range(rl.tamE[k]):
-                    if rl.relE[i + 1][j + 1][k + 1][l + 1][0][0] != 0:
-                        res = rl.relE[i + 1][j + 1][k + 1][l + 1]
-                        cad = "[E" + str(i + 1) + str(j + 1) + ", E" + str(k + 1) + str(l + 1) + "] - ("
-                        primer = True
-                        resq = sp.S(0)
-                        for m in res:
-                            resq += sp.Rational(m[0], m[1])*E[m[2]][m[3]]
-                            if m[0] > 0 and primer == False:
-                                cad += "+ "
-                            elif m[0] < 0:
-                                cad += "- "
-                            primer = False
-                            if abs(m[0]) > 1:
-                                cad += str(abs(m[0])) + "*"
-                            cad += "E" + str(m[2]) + str(m[3]) + ""
-                            if m[1] != 1:
-                                cad += "/" + str(m[1])
-                            cad += " "
-                        cad = cad[:-1] + ") ="
-                        r = (Commutator(E[i + 1][j + 1], E[k + 1][l + 1]) - resq).doit().expand()
-                        print(cad, r)
+    cesq = sp.S(0)
+    for i in range(1, 19):
+        cesq += c[i - 1]*E[7][i]
+    cesq = cesq.doit().expand()
+    for ind in ([[1, 6], [2, 5], [3, 4]]):
+        i, k = ind
+        for j, l in itertools.product(range(1, rl.tamE[i - 1] + 1), range(1, rl.tamE[k - 1] + 1)):
+            cdre = Commutator(E[i][j], E[k][l]).doit().expand()
+            sol = resoldre(cesq, cdre)
+            cad = "[E" + str(i) + str(j) + ", E" + str(k) + str(l) + "] = "
+            cadrel = "relE[" + str(i) + "][" + str(j) + "][" + str(k) + "][" + str(l) + "] = ["
+            for m in sol:
+                if sol[m] != 0:
+                    if sol[m] < 0:
+                        cad += str(sol[m]) + "*E7" + str(c.index(m) + 1)
+                    else:
+                        cad += "+" + str(sol[m]) + "*E7" + str(c.index(m) + 1)
+                    nume, deno = sp.fraction(sol[m])
+                    cadrel += "[" + str(nume) + ", " + str(deno) + ", 7, " + str(c.index(m) + 1) + "], "
+            cadrel = cadrel[:-2] + "]"
+            # print(cad)
+            print(cadrel)
