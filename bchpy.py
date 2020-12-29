@@ -325,6 +325,11 @@ def bch7(A, B, depth = 7):
         c = []
         ca1 = Corxet(B, Corxet(A, e42))
         ca2 = Corxet(B, e54)
+        e61 = Corxet(A, e51)
+        e63 = Corxet(A, e52)
+        e65 = Corxet(B, e52)
+        e67 = Corxet(B, e55)
+        e69 = Corxet(B, e56)
         c.append(Corxet(A, e61))
         c.append(Corxet(A, e63))
         c.append(Corxet(A, e64))
@@ -344,7 +349,7 @@ def bch7(A, B, depth = 7):
         c.append(Corxet(B, ca2))
         c.append(Corxet(B, -e69))
         c7 = sp.S(0)
-        for i in range(0, 18):
+        for i in range(0, len(c)):
             c7 += cc[i]*c[i]
         D += sp.Rational(1, 30240)*c7
     return D

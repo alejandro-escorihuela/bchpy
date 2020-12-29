@@ -13,7 +13,7 @@ from bchpy import *
 import relations as rl
 
 if __name__ == "__main__":
-    ord_bch = 6
+    ord_bch = 7
     print("exp(bet(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
     x = sp.Symbol("x")
     t0 = tm.time()
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     for i in range(ord_bch):
         for j in range(rl.tamE[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
-    esq = bch6(x*Eel(1,2), esq, depth = ord_bch)
+    esq = bch7(x*Eel(1,2), esq, depth = ord_bch)
     metBD = Metode(ord_bch)
     metBD.importFromExpr(esq)
     print(metBD)
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     for i in range(ord_bch):
         for j in range(rl.tamE[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
-    esq = bch6(y*Eel(1,1), esq, depth = ord_bch)
+    esq = bch7(y*Eel(1,1), esq, depth = ord_bch)
     metAD = Metode(ord_bch)
     metAD.importFromExpr(esq)
     print(metAD)
