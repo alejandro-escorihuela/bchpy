@@ -295,7 +295,7 @@ def printd(text):
 def printe(text):
     print(colored("ERROR:", "red", attrs=['bold']), text)
 
-def bch6(A, B, depth = 6):
+def bch7(A, B, depth = 7):
     e21 = Corxet(A, B)
     e31 = Corxet(A, e21)
     e32 = Corxet(B, e21)
@@ -320,4 +320,31 @@ def bch6(A, B, depth = 6):
         e66 = Corxet(A, e55)
         e68 = Corxet(A, e56)
         D += sp.Rational(1, 1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
+    if (depth >= 7):
+        cc = sp.S([1, 6, -3, 3, 30, 6, -4, 9, 3, -3, -24, -18, 9, -9, -12, 4, 3, -1])
+        c = []
+        ca1 = Corxet(B, Corxet(A, e42))
+        ca2 = Corxet(B, e54)
+        c.append(Corxet(A, e61))
+        c.append(Corxet(A, e63))
+        c.append(Corxet(A, e64))
+        c.append(Corxet(A, e62))
+        c.append(Corxet(A, ca1))
+        c.append(Corxet(A, -e67))
+        c.append(Corxet(A, e65))
+        c.append(Corxet(A, ca2))
+        c.append(Corxet(A, -e69))
+        c.append(Corxet(B, e61))
+        c.append(Corxet(B, e63))
+        c.append(Corxet(B, e64))
+        c.append(Corxet(B, e62))
+        c.append(Corxet(B, ca1))
+        c.append(Corxet(B, -e67))
+        c.append(Corxet(B, e65))
+        c.append(Corxet(B, ca2))
+        c.append(Corxet(B, -e69))
+        c7 = sp.S(0)
+        for i in range(0, 18):
+            c7 += cc[i]*c[i]
+        D += sp.Rational(1, 30240)*c7
     return D
