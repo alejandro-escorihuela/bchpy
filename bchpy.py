@@ -209,9 +209,9 @@ class Metode():
                 cad = cad + "\omega_{" + str(i) + "," + str(j) + "} &= "+ sp.latex(self.w[i][j]) + "\\\ \n"
         cad = cad + "\end{align}"
         return cad
-                
-    def latex(self):
-        print(self.latex_str())
+
+    def _latex(self, printer, *args):
+        return self.latex_str()
         
     def __init_mat(self):
         wret = []
