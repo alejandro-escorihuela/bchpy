@@ -86,9 +86,10 @@ if __name__ == "__main__":
     # t0 = tm.time()
     # met = Metode()
     # met.setABA(a[0], b[0].expand(complex=True), a[1], b[1],
-    #            a[1], b[0].conjugate().expand(complex=True), a[0])
+    #            a[1], b[0].conjugate().expand(complex=True), a[0], debug = True)
     # met.collectI()
     # met.exportpy(nom + ".py")
+    # met.cprint()
     # t1 = tm.time()
     # print("\tComposició ABA: 7 fluxes ->", nom, "\t(" + str(t1-t0) + " s)")  
     
