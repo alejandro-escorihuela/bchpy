@@ -11,36 +11,77 @@ import itertools
 # sys.path.insert(0, '../')
 # from bchpy import *
         
-def resoldre(exprEsq, exprDre, debug = False):
+# def resoldre(exprEsq, exprDre, debug = False):
+#     eqs = []
+#     for i in exprDre.args:
+#         cnc_i = i.args_cnc()
+#         equ = sp.S(0)
+#         for j in exprEsq.args:
+#             cnc_j = j.args_cnc()
+#             if cnc_i[1] == cnc_j[1]:
+#                 equ_esq = sp.S(1)
+#                 for elem in cnc_j[0]:
+#                     equ_esq *= elem
+#                 equ += equ_esq
+#         equ_dre = sp.S(1)
+#         for elem in cnc_i[0]:
+#             equ_dre *= elem
+#         equ -= equ_dre
+#         if equ not in eqs and -equ not in eqs:
+#             eqs.append(equ) 
+#     if debug == True:
+#         for i in eqs:
+#             print(i)
+#     return sp.solve(eqs)
+
+def resoldre(exprEsq, exprDre):
     eqs = []
-    for i in exprDre.args:
-        cnc_i = i.args_cnc()
+    cpe = exprEsq
+    eDre_arg = exprDre.args
+    eEsq_arg = exprEsq.args
+    for i in range(len(eDre_arg)):
+        cnc_i = eDre_arg[i].args_cnc()
         equ = sp.S(0)
-        for j in exprEsq.args:
-            cnc_j = j.args_cnc()
+        for j in range(len(eEsq_arg)):
+            cnc_j = eEsq_arg[j].args_cnc()
             if cnc_i[1] == cnc_j[1]:
-                equ_esq = sp.S(1)
-                for elem in cnc_j[0]:
-                    equ_esq *= elem
-                equ += equ_esq
-        equ_dre = sp.S(1)
-        for elem in cnc_i[0]:
-            equ_dre *= elem
-        equ -= equ_dre
+                equ += sp.prod(cnc_j[0])
+                cpe -= eEsq_arg[j] 
+        equ -= sp.prod(cnc_i[0])   
         if equ not in eqs and -equ not in eqs:
-            eqs.append(equ) 
-    if debug == True:
-        for i in eqs:
-            print(i)
-    return sp.solve(eqs)
+            eqs.append(equ)
+    sol = sp.solve(eqs)
+    if sol:
+        tot_num = True
+        for elem in sol:
+            tot_num = tot_num and sol[elem].is_number
+        if tot_num == False:
+            cpe_arg = cpe.args
+            pos_afg = []
+            for i in range(len(cpe_arg)):
+                cnc_i = cpe_arg[i].args_cnc()
+                equ = sp.S(0)
+                for j in range(i, len(cpe_arg)):
+                    cnc_j = cpe_arg[j].args_cnc()
+                    if cnc_i[1] == cnc_j[1] and j not in pos_afg:
+                        pos_afg.append(j)
+                        equ += sp.prod(cnc_j[0])
+                if (len(equ.args) > 0) and equ not in eqs and -equ not in eqs:
+                    eqs.append(equ)
+            sol = sp.solve(eqs)
+    return sol
 
 def escl(can, En):
     if len(En) == 1:
         return False
     sim = sp.symbols("s1:" + str(len(En)))
     cesq = sp.S(0)
+    numA = can.count(A)
     for i in range(1, len(En)):
-        cesq += sim[i - 1]*En[i]
+        if numA == En[i].count(A):
+            cesq += sim[i - 1]*En[i]
+    if cesq == 0:
+        return False
     cesq = cesq.doit().expand()
     cane = can.doit().expand()
     if resoldre(cesq, cane):
@@ -53,7 +94,7 @@ def pcorxets(E):
             print("E_{" + str(i) + ", " + str(j) + "} =", E[i][j])
             
 if __name__ == "__main__":
-    n_max = 8
+    n_max = 12
     A = Operator("A")
     B = Operator("B")
 
@@ -101,27 +142,13 @@ if __name__ == "__main__":
 
     for n in range(8, n_max + 1):
         E.append([0])
+        print("Base n = " + str(n - 1) + " -> " + str(len(E[n - 1]) - 1) + " elements.")
         for i, j in itertools.product(range(1, len(E[n - 1])), range(1, len(E[1]))):
-            #print("Construint la base n = " + str(n) + ". Analitzant candidat: [E_{1, " + str(j) + "}, E_{" + str(n - 1) + ", " + str(i) + "}]")
+            print("Construint la base n = " + str(n) + ". Analitzant candidat: [E_{1, " + str(j) + "}, E_{" + str(n - 1) + ", " + str(i) + "}]")
             can = Commutator(E[1][j], E[n - 1][i])
             if not escl(can, E[n]):
                 E[n].append(can)
-
-
-    ## Test resoldre
-    c = [0]
-    for i in range(1, len(E)):
-        c.append(sp.symbols(chr(96 + i) + "1:" + str(len(E[i]))))
-    cesq = sp.S(0)
-    for i in range(1, len(E[8])):
-        cesq += c[8][i - 1]*E[8][i]
-    cesq = cesq.doit().expand()
-    cdre = Commutator(A, E[7][11]).doit().expand()
-    sol = resoldre(cesq, cdre, debug = True)
-    print(sol)
-    exit(-1)
-    ## Fi test
-                
+               
     pcorxets(E)
           
     c = [0]
@@ -148,13 +175,12 @@ if __name__ == "__main__":
                         cadrel = "relE[" + str(i) + "][" + str(j) + "][" + str(k) + "][" + str(l) + "] = ["
                         for m in sol:
                             if sol[m] != 0:
-                                #print(sol[m])
-                                # if sol[m] < 0:
-                                #     cad += str(sol[m]) + "*E" + str(n) + str(c[n].index(m) + 1)
-                                # else:
-                                #     cad += "+" + str(sol[m]) + "*E" + str(n) + str(c[n].index(m) + 1)
+                                if sol[m] < 0:
+                                    cad += str(sol[m]) + "*E" + str(n) + str(c[n].index(m) + 1)
+                                else:
+                                    cad += "+" + str(sol[m]) + "*E" + str(n) + str(c[n].index(m) + 1)
                                 nume, deno = sp.fraction(sol[m])
                                 cadrel += "[" + str(nume) + ", " + str(deno) + ", " + str(n) + ", " + str(c[n].index(m) + 1) + "], "
                         cadrel = cadrel[:-2] + "]"
-                        #print(cad)
-                        print(cadrel)
+                        print(cad)
+                        #print(cadrel)
