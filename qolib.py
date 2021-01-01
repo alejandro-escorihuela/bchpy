@@ -4,6 +4,9 @@
 # alex
 # qolib.py
 
+import sympy as sp
+from sympy.physics.quantum import Operator, Commutator
+
 def resoldre(exprEsq, exprDre):
     eqs = []
     cpe = exprEsq
@@ -41,7 +44,7 @@ def resoldre(exprEsq, exprDre):
             sol = sp.solve(eqs)
     return sol
 
-def escl(can, En):
+def escl(can, En, A):
     if len(En) == 1:
         return False
     sim = sp.symbols("s1:" + str(len(En)))
