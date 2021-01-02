@@ -14,7 +14,7 @@ from qolib import *
 
 if __name__ == "__main__":
     impfits = True
-    n_max = 8
+    n_max = 12
     
     A = Operator("A")
     B = Operator("B")
@@ -75,20 +75,32 @@ if __name__ == "__main__":
         E[7].append(Commutator(E[1][j], E[6][i]))
         Ep[7].append(("A" if j == 1 else "B") + Ep[6][i])
 
+
+    aux1 = []
+    aux2 = []
+    for i in range(0, len(E)):
+        aux1.append([[]]*len(E[i]))
+        aux2.append([[]]*len(E[i]))
+    solvec = [0, aux1, aux2]
     for n in range(8, n_max + 1):
         E.append([0])
         Ep.append([0])
         print("Base n = " + str(n - 1) + " -> " + str(len(E[n - 1]) - 1) + " elements.")
+        l = 1
         for i, j in itertools.product(range(1, len(E[n - 1])), range(1, len(E[1]))):
             print("Construint la base n = " + str(n) + ". Analitzant candidat: [E_{1, " + str(j) + "}, E_{" + str(n - 1) + ", " + str(i) + "}]")
             can = Commutator(E[1][j], E[n - 1][i])
+            sol = escl(can, E[n], A)
             if not escl(can, E[n], A):
                 E[n].append(can)
                 Ep[n].append(("A" if j == 1 else "B") + Ep[n - 1][i])
-               
+                solvec[j][n - 1][i] = {sp.Symbol("s" + str(l)):1}
+                l += 1
+            else:
+                solvec[j][n - 1][i] = sol
     pcorxets(E)
 
-    if impfits == True:
+    if impfits:
         fitC = open("cniats.txt", "w")
         fitL = open("tex.txt", "w") 
         fitR = open("relArray.txt", "w")
@@ -108,7 +120,7 @@ if __name__ == "__main__":
 
     c = [0]
     for i in range(1, len(E)):
-        c.append(sp.symbols(chr(96 + i) + "1:" + str(len(E[i]))))
+        c.append(sp.symbols("s1:" + str(len(E[i]))))
 
     for n in range(5, n_max + 1):
         print("Ordre " + str(n) + ":")
@@ -119,19 +131,23 @@ if __name__ == "__main__":
             i, k = ind
             for j, l in itertools.product(range(1, len(E[i])), range(1, len(E[k]))):
                 if not (i == k and j > l):
-                    cdre = Commutator(E[i][j], E[k][l])
-                    cesq = sp.S(0)
-                    for m in range(1, len(E[n])):
-                        if cdre.count(A) == E[n][m].count(A):
-                            cesq += c[n][m - 1]*E[n][m]
-                    cesq = cesq.doit().expand()
-                    cdre = cdre.doit().expand()
-                    sol = resoldre(cesq, cdre)
+                    if i == 1 and solvec[j][k][l]:
+                        sol = solvec[j][k][l]
+                    else:
+                        cdre = Commutator(E[i][j], E[k][l])
+                        cesq = sp.S(0)
+                        for m in range(1, len(E[n])):
+                            if cdre.count(A) == E[n][m].count(A):
+                                cesq += c[n][m - 1]*E[n][m]
+                        cesq = cesq.doit().expand()
+                        cdre = cdre.doit().expand()
+                        sol = resoldre(cesq, cdre)
                     if sol:
                         cad = "[E" + str(i) + str(j) + ", E" + str(k) + str(l) + "] = "
                         cadrel = "relE[" + str(i) + "][" + str(j) + "][" + str(k) + "][" + str(l) + "] = ["
                         cadtex = "\left[E_{" + str(i) + "," + str(j) + "},E_{" + str(k) + "," + str(l) + "} \\right] = "
                         for m in sol:
+                            #print(sol)
                             if sol[m] != 0:
                                 if sol[m] < 0:
                                     cad += str(sol[m]) + "*E" + str(n) + str(c[n].index(m) + 1)
@@ -147,9 +163,9 @@ if __name__ == "__main__":
                                 cadtex += "+" + factex + "E_{" + str(n) + "," + str(c[n].index(m) + 1) + "}"
                         cadrel = cadrel[:-2] + "]"
                         print(cad)
-                        if impfits == True
+                        if impfits:
                             fitR.write(cadrel + "\n")
                             fitL.write(cadtex + "\n")
-    if impfits == True:
+    if impfits:
         fitR.close()
         fitL.close()

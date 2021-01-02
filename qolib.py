@@ -46,7 +46,7 @@ def resoldre(exprEsq, exprDre):
 
 def escl(can, En, A):
     if len(En) == 1:
-        return False
+        return []
     sim = sp.symbols("s1:" + str(len(En)))
     cesq = sp.S(0)
     numA = can.count(A)
@@ -54,12 +54,10 @@ def escl(can, En, A):
         if numA == En[i].count(A):
             cesq += sim[i - 1]*En[i]
     if cesq == 0:
-        return False
+        return []
     cesq = cesq.doit().expand()
     cane = can.doit().expand()
-    if resoldre(cesq, cane):
-        return True
-    return False
+    return resoldre(cesq, cane)
 
 def pcorxets(E):
     for i in range(1, len(E)):
