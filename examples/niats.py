@@ -78,14 +78,17 @@ if __name__ == "__main__":
 
     aux1 = []
     aux2 = []
-    for i in range(0, len(E)):
+    for i in range(0, len(E) - 1):
         aux1.append([[]]*len(E[i]))
         aux2.append([[]]*len(E[i]))
     solvec = [0, aux1, aux2]
+    
     for n in range(8, n_max + 1):
         E.append([0])
         Ep.append([0])
         print("Base n = " + str(n - 1) + " -> " + str(len(E[n - 1]) - 1) + " elements.")
+        solvec[1].append([[]]*len(E[n - 1]))
+        solvec[2].append([[]]*len(E[n - 1]))
         l = 1
         for i, j in itertools.product(range(1, len(E[n - 1])), range(1, len(E[1]))):
             print("Construint la base n = " + str(n) + ". Analitzant candidat: [E_{1, " + str(j) + "}, E_{" + str(n - 1) + ", " + str(i) + "}]")
@@ -147,7 +150,6 @@ if __name__ == "__main__":
                         cadrel = "relE[" + str(i) + "][" + str(j) + "][" + str(k) + "][" + str(l) + "] = ["
                         cadtex = "\left[E_{" + str(i) + "," + str(j) + "},E_{" + str(k) + "," + str(l) + "} \\right] = "
                         for m in sol:
-                            #print(sol)
                             if sol[m] != 0:
                                 if sol[m] < 0:
                                     cad += str(sol[m]) + "*E" + str(n) + str(c[n].index(m) + 1)
