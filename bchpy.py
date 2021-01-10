@@ -248,7 +248,7 @@ def printd(text):
 def printe(text):
     print(colored("ERROR:", "red", attrs=['bold']), text)
 
-def bch7(A, B, depth = 7):
+def bch9(A, B, depth = 6):
     e21 = Corxet(A, B)
     e31 = Corxet(A, e21)
     e32 = Corxet(B, e21)
