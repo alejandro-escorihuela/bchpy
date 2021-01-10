@@ -14,7 +14,7 @@ from qolib import *
 
 if __name__ == "__main__":
     impfits = True
-    n_max = 10
+    n_max = 9
     
     A = Operator("A")
     B = Operator("B")
