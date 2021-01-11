@@ -13,7 +13,7 @@ from bchpy import *
 import relations as rl
 
 if __name__ == "__main__":
-    ord_bch = 7
+    ord_bch = 8
     print("exp(bet(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
     x = sp.Symbol("x")
     t0 = tm.time()

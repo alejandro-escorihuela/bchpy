@@ -138,10 +138,12 @@ class Metode():
                 esq += self.w[i][j]*Eel(i, j)
         return esq
 
-    def importFromExpr(self, esq):
+    def importFromExpr(self, esq, debug = False):
         _x_diff_var = sp.Symbol("_x_diff_var")
         for i in range(self.depth):
             for j in range(rl.tamE[i]):
+                if debug == True:
+                    printd("Important Eel(" + str(i + 1) + "," + str(j + 1) + ")")
                 self.w[i + 1][j + 1] = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)).subs(_x_diff_var, Eel(i + 1, j + 1))
         self.setw = True  
 
@@ -302,5 +304,25 @@ def bch9(A, B, depth = 6):
         c7 = sp.S(0)
         for i in range(0, len(den)):
             c7 += sp.Rational(1, den[i])*f7[i]
-        D += c7        
+        D += c7
+    if (depth >= 8):
+        f8 = [sp.S(0)]*13
+        f8[0]  = Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
+        f8[1]  = Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))
+        f8[2]  = Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
+        f8[3]  = Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))
+        f8[4]  = Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))) 
+        f8[5]  = Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
+        f8[6]  = Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))
+        f8[7]  = Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))
+        f8[8]  = Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
+        f8[9]  = Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))
+        f8[10] = Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))
+        f8[11] = Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))
+        f8[12] = Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))
+        den = sp.S([sp.Rational(-24192, 5), 2520, 20160, 15120, -2016, -20160, 20160, -10080, -60480, -60480, 20160, -5040, 20160])
+        c8 = sp.S(0)
+        for i in range(0, len(den)):
+            c8 += sp.Rational(1, den[i])*f8[i]
+        D += c8        
     return D
