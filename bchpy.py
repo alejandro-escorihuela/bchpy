@@ -250,7 +250,9 @@ def printd(text):
 def printe(text):
     print(colored("ERROR:", "red", attrs=['bold']), text)
 
-def bch9(A, B, depth = 6):
+def bch9(A, B, depth = 6, debug = False):
+    if debug == True:
+        printd("BCH d'ordre 1 a 4")
     e21 = Corxet(A, B)
     e31 = Corxet(A, e21)
     e32 = Corxet(B, e21)
@@ -262,6 +264,8 @@ def bch9(A, B, depth = 6):
     D += sp.Rational(1, 12)*(e31 - e32)
     D += sp.Rational(-1, 24)*e42
     if (depth >= 5):
+        if debug == True:
+            printd("BCH d'ordre 5")
         e51 = Corxet(A, e41)
         e52 = Corxet(B, e41)
         e53 = Corxet(A, -e42)
@@ -270,6 +274,8 @@ def bch9(A, B, depth = 6):
         e56 = Corxet(B, e43)
         D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
     if (depth >= 6):
+        if debug == True:
+            printd("BCH d'ordre 6")
         f6 = [sp.S(0)]*4
         f6[0] = Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))) 
         f6[1] = Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))
@@ -281,6 +287,8 @@ def bch9(A, B, depth = 6):
             c6 += sp.Rational(1, den[i])*f6[i]
         D += c6
     if (depth >= 7):
+        if debug == True:
+            printd("BCH d'ordre 7")
         f7 = [sp.S(0)]*18
         f7[0]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))
         f7[1]  = Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
@@ -306,6 +314,8 @@ def bch9(A, B, depth = 6):
             c7 += sp.Rational(1, den[i])*f7[i]
         D += c7
     if (depth >= 8):
+        if debug == True:
+            printd("BCH d'ordre 8")
         f8 = [sp.S(0)]*13
         f8[0]  = Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
         f8[1]  = Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))
@@ -326,6 +336,8 @@ def bch9(A, B, depth = 6):
             c8 += sp.Rational(1, den[i])*f8[i]
         D += c8
     if (depth >= 9):
+        if debug == True:
+            printd("BCH d'ordre 9")
         f9 = [sp.S(0)]*38
         f9[0]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
         f9[1]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))))
