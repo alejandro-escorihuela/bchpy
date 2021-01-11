@@ -268,41 +268,39 @@ def bch9(A, B, depth = 6):
         e56 = Corxet(B, e43)
         D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
     if (depth >= 6):
-        e62 = Corxet(B, e51)
-        e64 = Corxet(A, e54)
-        e66 = Corxet(A, e55)
-        e68 = Corxet(A, e56)
-        D += sp.Rational(1, 1440)*(e62 - e68 + sp.S(2)*e66 + sp.S(6)*e64)
+        f6 = [sp.S(0)]*4
+        f6[0] = Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))) 
+        f6[1] = Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))
+        f6[2] = Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))
+        f6[3] = Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))      
+        den = sp.S([-720, 240, 1440, 1440])
+        c6 = sp.S(0)
+        for i in range(0, len(den)):
+            c6 += sp.Rational(1, den[i])*f6[i]
+        D += c6
     if (depth >= 7):
-        cc = sp.S([1, 6, -3, 3, 30, 6, -4, 9, 3, -3, -24, -18, 9, -9, -12, 4, 3, -1])
-        c = []
-        ca1 = Corxet(B, Corxet(A, e42))
-        ca2 = Corxet(B, e54)
-        e61 = Corxet(A, e51)
-        e63 = Corxet(A, e52)
-        e65 = Corxet(B, e52)
-        e67 = Corxet(B, e55)
-        e69 = Corxet(B, e56)
-        c.append(Corxet(A, e61))
-        c.append(Corxet(A, e63))
-        c.append(Corxet(A, e64))
-        c.append(Corxet(A, e62))
-        c.append(Corxet(A, ca1))
-        c.append(Corxet(A, -e67))
-        c.append(Corxet(A, e65))
-        c.append(Corxet(A, ca2))
-        c.append(Corxet(A, -e69))
-        c.append(Corxet(B, e61))
-        c.append(Corxet(B, e63))
-        c.append(Corxet(B, e64))
-        c.append(Corxet(B, e62))
-        c.append(Corxet(B, ca1))
-        c.append(Corxet(B, -e67))
-        c.append(Corxet(B, e65))
-        c.append(Corxet(B, ca2))
-        c.append(Corxet(B, -e69))
+        f7 = [sp.S(0)]*18
+        f7[0]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))
+        f7[1]  = Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
+        f7[2]  = Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))
+        f7[3]  = Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))) 
+        f7[4]  = Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))
+        f7[5]  = Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))) 
+        f7[6]  = Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
+        f7[7]  = Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))
+        f7[8]  = Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))
+        f7[9]  = Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))) 
+        f7[10] = Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
+        f7[11] = Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))) 
+        f7[12] = Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))) 
+        f7[13] = Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))) 
+        f7[14] = Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))) 
+        f7[15] = Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
+        f7[16] = Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))
+        f7[17] = Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))
+        den = sp.S([30240, 5040, -10080, 10080, 1008, 5040, -7560, 3360, 10080, -10080, -1260, -1680, 3360, -3360, -2520, 7560, 10080, -30240])
         c7 = sp.S(0)
-        for i in range(0, len(c)):
-            c7 += cc[i]*c[i]
-        D += sp.Rational(1, 30240)*c7
+        for i in range(0, len(den)):
+            c7 += sp.Rational(1, den[i])*f7[i]
+        D += c7        
     return D
