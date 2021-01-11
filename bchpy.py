@@ -87,7 +87,6 @@ class Corxet(sp.Expr):
             args.append(elem)
         return sp.Add(*args)
 
-
 class Metode():
     depth = 0
     w = []
@@ -266,13 +265,25 @@ def bch9(A, B, depth = 6, debug = False):
     if (depth >= 5):
         if debug == True:
             printd("BCH d'ordre 5")
-        e51 = Corxet(A, e41)
-        e52 = Corxet(B, e41)
-        e53 = Corxet(A, -e42)
-        e54 = Corxet(B, e42)
-        e55 = Corxet(A, e43)
-        e56 = Corxet(B, e43)
-        D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
+        # e51 = Corxet(A, e41)
+        # e52 = Corxet(B, e41)
+        # e53 = Corxet(A, -e42)
+        # e54 = Corxet(B, e42)
+        # e55 = Corxet(A, e43)
+        # e56 = Corxet(B, e43)
+        # D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
+        f5 = [sp.S(0)]*6
+        f5[0] = Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))
+        f5[1] = Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))
+        f5[2] = Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))
+        f5[3] = Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))
+        f5[4] = Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))
+        f5[5] = Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))
+        den = sp.S([-720, -120, -360, 360, 120, 720])
+        c5 = sp.S(0)
+        for i in range(0, len(den)):
+            c5 += sp.Rational(1, den[i])*f5[i]
+        D += c5
     if (depth >= 6):
         if debug == True:
             printd("BCH d'ordre 6")

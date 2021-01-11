@@ -23,8 +23,8 @@ if __name__ == "__main__":
         for j in range(rl.tamE[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
     #esq = bch9(x*Eel(1, 2), esq, depth = ord_bch)
-    esq = bch9(Eel(1, 2), Eel(1, 1), depth = ord_bch, debug = True)
-    esq = bch9(Eel(1, 1), esq, depth = ord_bch)
+    esq = bch9(Eel(1, 1), Eel(1, 2), depth = ord_bch, debug = True)
+    esq = bch9(Eel(1, 2), esq, depth = ord_bch, debug = True)
     metBD = Metode(ord_bch)
     metBD.importFromExpr(esq, debug = True)
     metBD.save("recB.dat")
