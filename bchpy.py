@@ -139,11 +139,12 @@ class Metode():
 
     def importFromExpr(self, esq, debug = False):
         _x_diff_var = sp.Symbol("_x_diff_var")
+        if debug == True:
+            printd("Important esquema")
+        esq_e = sp.expand(esq)
         for i in range(self.depth):
             for j in range(rl.tamE[i]):
-                if debug == True:
-                    printd("Important Eel(" + str(i + 1) + "," + str(j + 1) + ")")
-                self.w[i + 1][j + 1] = sp.expand(sp.diff(esq.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)).subs(_x_diff_var, Eel(i + 1, j + 1))
+                self.w[i + 1][j + 1] = sp.diff(esq_e.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)
         self.setw = True  
 
     def save(self, nom_fitxer):
@@ -265,21 +266,14 @@ def bch9(A, B, depth = 6, debug = False):
     if (depth >= 5):
         if debug == True:
             printd("BCH d'ordre 5")
-        # e51 = Corxet(A, e41)
-        # e52 = Corxet(B, e41)
-        # e53 = Corxet(A, -e42)
-        # e54 = Corxet(B, e42)
-        # e55 = Corxet(A, e43)
-        # e56 = Corxet(B, e43)
-        # D += sp.Rational(1, 720)*(-e51 - e56 + sp.S(6)*e53 + sp.S(6)*e54 + sp.S(2)*e55 + sp.S(2)*e52)
-        f5 = [sp.S(0)]*6
+        den = sp.S([-720, -120, -360, 360, 120, 720])
+        f5 = [sp.S(0)]*len(den)
         f5[0] = Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))
         f5[1] = Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))
         f5[2] = Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))
         f5[3] = Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))
         f5[4] = Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))
         f5[5] = Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))
-        den = sp.S([-720, -120, -360, 360, 120, 720])
         c5 = sp.S(0)
         for i in range(0, len(den)):
             c5 += sp.Rational(1, den[i])*f5[i]
@@ -287,12 +281,12 @@ def bch9(A, B, depth = 6, debug = False):
     if (depth >= 6):
         if debug == True:
             printd("BCH d'ordre 6")
-        f6 = [sp.S(0)]*4
+        den = sp.S([-720, 240, 1440, 1440])
+        f6 = [sp.S(0)]*len(den)
         f6[0] = Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))) 
         f6[1] = Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))
         f6[2] = Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))
         f6[3] = Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))      
-        den = sp.S([-720, 240, 1440, 1440])
         c6 = sp.S(0)
         for i in range(0, len(den)):
             c6 += sp.Rational(1, den[i])*f6[i]
@@ -300,7 +294,8 @@ def bch9(A, B, depth = 6, debug = False):
     if (depth >= 7):
         if debug == True:
             printd("BCH d'ordre 7")
-        f7 = [sp.S(0)]*18
+        den = sp.S([30240, 5040, -10080, 10080, 1008, 5040, -7560, 3360, 10080, -10080, -1260, -1680, 3360, -3360, -2520, 7560, 10080, -30240])          
+        f7 = [sp.S(0)]*len(den)
         f7[0]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))
         f7[1]  = Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
         f7[2]  = Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))
@@ -319,7 +314,6 @@ def bch9(A, B, depth = 6, debug = False):
         f7[15] = Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
         f7[16] = Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))
         f7[17] = Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))
-        den = sp.S([30240, 5040, -10080, 10080, 1008, 5040, -7560, 3360, 10080, -10080, -1260, -1680, 3360, -3360, -2520, 7560, 10080, -30240])
         c7 = sp.S(0)
         for i in range(0, len(den)):
             c7 += sp.Rational(1, den[i])*f7[i]
@@ -327,7 +321,8 @@ def bch9(A, B, depth = 6, debug = False):
     if (depth >= 8):
         if debug == True:
             printd("BCH d'ordre 8")
-        f8 = [sp.S(0)]*13
+        den = sp.S([sp.Rational(-24192, 5), 2520, 20160, 15120, -2016, -20160, 20160, -10080, -60480, -60480, 20160, -5040, 20160])   
+        f8 = [sp.S(0)]*len(den)
         f8[0]  = Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
         f8[1]  = Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))
         f8[2]  = Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
@@ -341,7 +336,6 @@ def bch9(A, B, depth = 6, debug = False):
         f8[10] = Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))
         f8[11] = Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))
         f8[12] = Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))
-        den = sp.S([sp.Rational(-24192, 5), 2520, 20160, 15120, -2016, -20160, 20160, -10080, -60480, -60480, 20160, -5040, 20160])
         c8 = sp.S(0)
         for i in range(0, len(den)):
             c8 += sp.Rational(1, den[i])*f8[i]
@@ -349,7 +343,8 @@ def bch9(A, B, depth = 6, debug = False):
     if (depth >= 9):
         if debug == True:
             printd("BCH d'ordre 9")
-        f9 = [sp.S(0)]*38
+        den = sp.S([-1209600, -302400, 113400, -40320, -120960, sp.Rational(604800, 13), 24192, 30240, -60480, -20160, sp.Rational(-604800, 11), -151200, -20160, -10080, 40320, 18900, -20160, -17280, -120960, -302400, 302400, 50400, 120960, 20160, -40320, 10080, 30240, 151200, 302400, 20160, -30240, 60480, sp.Rational(-604800, 13), -90720, 120960, 453600, 302400, 1209600])
+        f9 = [sp.S(0)]*len(den)
         f9[0]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
         f9[1]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))))
         f9[2]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))))))
@@ -388,7 +383,6 @@ def bch9(A, B, depth = 6, debug = False):
         f9[35] = Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))))
         f9[36] = Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))))
         f9[37] = Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
-        den = sp.S([-1209600, -302400, 113400, -40320, -120960, sp.Rational(604800, 13), 24192, 30240, -60480, -20160, sp.Rational(-604800, 11), -151200, -20160, -10080, 40320, 18900, -20160, -17280, -120960, -302400, 302400, 50400, 120960, 20160, -40320, 10080, 30240, 151200, 302400, 20160, -30240, 60480, sp.Rational(-604800, 13), -90720, 120960, 453600, 302400, 1209600])
         c9 = sp.S(0)
         for i in range(0, len(den)):
             c9 += sp.Rational(1, den[i])*f9[i]
