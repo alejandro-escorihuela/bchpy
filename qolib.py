@@ -7,6 +7,49 @@
 import sympy as sp
 from sympy.physics.quantum import Operator, Commutator
 
+def expOp(A, n):
+    fac = sp.S(1)
+    ex = sp.S(1)
+    for i in range(1, n):
+        fac *= sp.S(i)
+        ex += A**i/fac
+    return ex
+
+def logOp(O, n):
+    lg = sp.S(1)
+    sig = -1
+    for i in range(1, n):
+        sig *= -1
+        f = sp.Rational(sig, i)
+        op = O - sp.S(1)
+        op = delterms(op, Operator("A"), Operator("B"), n - i + 1)
+        lg += f*op**i
+    return lg
+
+def bchOp(A, B, n):
+    expo = sp.expand(expOp(A, n)*expOp(B, n))
+    expo = delterms(expo, A, B, n)
+    loga = sp.expand(logOp(expo, n))
+    loga = delterms(loga, A, B, n)
+    return loga
+
+def countDim(expre, opA, opB):
+    dim = 0
+    acnc = expre.args_cnc()[1]
+    for i in range(0, len(acnc)):
+        if len(acnc[i].args) > 1:
+            dim += acnc[i].args[1]
+        else:
+            dim += 1
+    return dim
+
+def delterms(expre, opA, opB, n):
+    retex = sp.S(0)
+    for arg in expre.args:
+        if countDim(arg, opA, opB) < n:
+            retex += arg
+    return retex
+    
 def resoldre(exprEsq, exprDre):
     eqs = []
     cpe = exprEsq
