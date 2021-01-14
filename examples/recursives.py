@@ -14,20 +14,24 @@ import relations as rl
 
 if __name__ == "__main__":
     ord_bch = 8
-    print("exp(bet(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
+    # print("exp(bet(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
     x = sp.Symbol("x")
     t0 = tm.time()
     esq = sp.S(0)
     alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
-    for i in range(ord_bch):
-        for j in range(rl.tamE[i]):
-            esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
-    #esq = bch9(x*Eel(1, 2), esq, depth = ord_bch)
+    # for i in range(ord_bch):
+    #     for j in range(rl.tamE[i]):
+    #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
+    # esq = bch9(x*Eel(1, 2), esq, depth = ord_bch)
+    esq = sp.S(0)
+    print(esq.expand())
     esq = bch9(Eel(1, 1), Eel(1, 2), depth = ord_bch, debug = True)
-    esq = bch9(Eel(1, 2), esq, depth = ord_bch, debug = True)
+    print(esq.expand())
+    esq = bch9(Eel(1, 2), esq.expand(), depth = ord_bch, debug = True)
+    print(esq.expand())
     metBD = Metode(ord_bch)
     metBD.importFromExpr(esq, debug = True)
-    metBD.save("recB.dat")
+    # metBD.save("recB.dat")
     print(metBD)
     t1 = tm.time()
     print(t1 - t0, "s")

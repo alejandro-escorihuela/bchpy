@@ -49,6 +49,31 @@ def delterms(expre, opA, opB, n):
         if countDim(arg, opA, opB) < n:
             retex += arg
     return retex
+
+def llegir_base(txt, opA, opB):
+    f = open(txt, "r")
+    linies = f.readlines()
+    E = []
+    E.append([0])
+    i = 1
+    for lin in linies:
+        E.append([0])
+        ls = lin.replace("\n", "").split(" ")[:-1]
+        for j in range(0, len(ls)):
+            item = ls[j].replace("[", "").replace("]", "")
+            item_rev = item[::-1]
+            com = opA
+            if item_rev[0] == "B":
+                com = opB
+            for k in range(1, len(item_rev)):
+                if item_rev[k] == "A":
+                    com = Commutator(opA, com)
+                else:
+                    com = Commutator(opB, com)
+            E[i].append(com)
+        i += 1
+    return E
+
     
 def resoldre(exprEsq, exprDre):
     eqs = []
