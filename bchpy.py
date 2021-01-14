@@ -265,6 +265,7 @@ def bch9(A, B, depth = 6, debug = False):
     D += sp.Rational(1, 12)*(e31 - e32)
     D += sp.Rational(-1, 24)*Corxet(B, Corxet(A, Corxet(A, B)))
     #D += sp.Rational(-1, 24)*e42
+    
     print((Corxet(B, Corxet(A, Corxet(A, B)))))
     print(e42)
     if (Corxet(B, Corxet(A, Corxet(A, B)))-e42).expand() != 0:
