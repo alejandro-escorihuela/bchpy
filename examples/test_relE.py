@@ -16,14 +16,14 @@ if __name__ == "__main__":
     B = Operator("B")
 
     E = llegir_base("niats_base.txt", A, B)
-    
-    for i in range(len(rl.tamE)):
-        for j in range(rl.tamE[i - 1]):
-            for k in range(len(rl.tamE)):
-                for l in range(rl.tamE[k]):
-                    if rl.relE[i + 1][j + 1][k + 1][l + 1][0][0] != 0:
-                        res = rl.relE[i + 1][j + 1][k + 1][l + 1]
-                        cad = "[E" + str(i + 1) + str(j + 1) + ", E" + str(k + 1) + str(l + 1) + "] - ("
+    ord_bch = len(rl.tamE) + 1
+    for i in range(1, ord_bch):
+        for j in range(1, rl.tamE[i - 1] + 1):
+            for k in range(1, ord_bch):
+                for l in range(1, rl.tamE[k - 1] + 1):
+                    if rl.relE[i][j][k][l][0][0] != 0:
+                        res = rl.relE[i][j][k][l]
+                        cad = "[E" + str(i) + str(j) + ", E" + str(k) + str(l) + "] - ("
                         primer = True
                         resq = sp.S(0)
                         for m in res:
@@ -40,5 +40,6 @@ if __name__ == "__main__":
                                 cad += "/" + str(m[1])
                             cad += " "
                         cad = cad[:-1] + ") ="
-                        r = (Commutator(E[i + 1][j + 1], E[k + 1][l + 1]) - resq).doit().expand()
-                        print(cad, r)
+                        r = (Commutator(E[i][j], E[k][l]) - resq).doit().expand()
+                        if (r != 0):
+                            print(cad, r)

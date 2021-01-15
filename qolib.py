@@ -93,23 +93,19 @@ def resoldre(exprEsq, exprDre):
             eqs.append(equ)
     sol = sp.solve(eqs)
     if sol:
-        tot_num = True
-        for elem in sol:
-            tot_num = tot_num and sol[elem].is_number
-        if tot_num == False:
-            cpe_arg = cpe.args
-            pos_afg = []
-            for i in range(len(cpe_arg)):
-                cnc_i = cpe_arg[i].args_cnc()
-                equ = sp.S(0)
-                for j in range(i, len(cpe_arg)):
-                    cnc_j = cpe_arg[j].args_cnc()
-                    if cnc_i[1] == cnc_j[1] and j not in pos_afg:
-                        pos_afg.append(j)
-                        equ += sp.prod(cnc_j[0])
-                if (len(equ.args) > 0) and equ not in eqs and -equ not in eqs:
-                    eqs.append(equ)
-            sol = sp.solve(eqs)
+        cpe_arg = cpe.args
+        pos_afg = []
+        for i in range(len(cpe_arg)):
+            cnc_i = cpe_arg[i].args_cnc()
+            equ = sp.S(0)
+            for j in range(i, len(cpe_arg)):
+                cnc_j = cpe_arg[j].args_cnc()
+                if cnc_i[1] == cnc_j[1] and j not in pos_afg:
+                    pos_afg.append(j)
+                    equ += sp.prod(cnc_j[0])
+            if (len(equ.args) > 0) and equ not in eqs and -equ not in eqs:
+                eqs.append(equ)
+        sol = sp.solve(eqs)
     return sol
 
 def escl(can, En, A):

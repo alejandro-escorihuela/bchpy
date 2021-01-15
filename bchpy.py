@@ -263,14 +263,14 @@ def bch9(A, B, depth = 6, debug = False):
     D = A + B
     D += sp.Rational(1, 2)*e21
     D += sp.Rational(1, 12)*(e31 - e32)
-    D += sp.Rational(-1, 24)*Corxet(B, Corxet(A, Corxet(A, B)))
-    #D += sp.Rational(-1, 24)*e42
+    # D += sp.Rational(-1, 24)*Corxet(B, Corxet(A, Corxet(A, B)))
+    D += sp.Rational(-1, 24)*e42
     
-    print((Corxet(B, Corxet(A, Corxet(A, B)))))
-    print(e42)
-    if (Corxet(B, Corxet(A, Corxet(A, B)))-e42).expand() != 0:
-        print((Corxet(B, Corxet(A, Corxet(A, B)))-e42).expand())
-        exit(-1)
+    # print((Corxet(B, Corxet(A, Corxet(A, B)))))
+    # print(e42)
+    # if (Corxet(B, Corxet(A, Corxet(A, B)))-e42).expand() != 0:
+    #     print((Corxet(B, Corxet(A, Corxet(A, B)))-e42).expand())
+    #     exit(-1)
     if (depth >= 5):
         if debug == True:
             printd("BCH d'ordre 5")

@@ -14,7 +14,7 @@ from qolib import *
 
 if __name__ == "__main__":
     impfits = True
-    n_max = 8
+    n_max = 9
     
     A = Operator("A")
     B = Operator("B")
@@ -29,7 +29,7 @@ if __name__ == "__main__":
     c = [0]
     for i in range(1, len(E)):
         c.append(sp.symbols("s1:" + str(len(E[i]))))
-
+    
     for n in range(1, n_max + 1):
         print("Ordre " + str(n) + ":")
         llistes = []
