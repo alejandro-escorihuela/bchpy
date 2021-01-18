@@ -244,6 +244,15 @@ class Metode():
                 bet[i][j] = bet[i][j].expand()
         self.w = bet.copy()
 
+def collectEsq(esq):
+    esqn = sp.S(0)
+    _x_diff_var = sp.Symbol("_x_diff_var")
+    esq_e = sp.expand(esq)
+    for i in range(len(rl.tamE)):
+        for j in range(rl.tamE[i]):
+            esqn += sp.diff(esq_e.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)*Eel(i + 1, j + 1)    
+    return esqn
+
 def printi(text):
     print(colored("INFO :", "blue", attrs=['bold']), text)
         
@@ -252,7 +261,7 @@ def printd(text):
     
 def printe(text):
     print(colored("ERROR:", "red", attrs=['bold']), text)
-
+   
 def bch9(A, B, depth = 6, debug = False):  
     if debug == True:
         printd("BCH d'ordre 1 a 4")
