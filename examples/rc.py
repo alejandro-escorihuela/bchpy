@@ -32,16 +32,16 @@ if __name__ == "__main__":
     # A = sp.nsolve((met.w[1][1].subs({a[3]:0.1}) - 1, met.w[1][2].subs({a[3]:0.1}) - 1, met.w[2][1].subs({a[3]:0.1}), met.w[3][1].subs({a[3]:0.1}), met.w[3][2].subs({a[3]:0.1}), met.w[5][1].subs({a[3]:0.1}), met.w[5][2].subs({a[3]:0.1}), met.w[5][3].subs({a[3]:0.1}), met.w[5][4].subs({a[3]:0.1})), (a[0], a[1], a[2], re(b[0]), im(b[0]), re(b[1]), im(b[1]), re(b[2]), im(b[2])), (0.10484227087758856, 0.07919999262986678, 0.26595773649254467, 0.2439523773350367, -0.13191937900572379, 0.03013968250054609, 0.19570179373295757, 0.2259079401644172, -0.1940906708013141))
     # print(A)
     
-    # nom = "rknc36BAB11"
-    # t0 = tm.time()
-    # met = Metode()
-    # met.setBAB(b[0].expand(complex=True), a[0], b[1].expand(complex=True), a[1], b[2].expand(complex=True), a[2],
-    #            b[2].conjugate().expand(complex=True), a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True),
-    #            debug = True)   
-    # met.collectI()
+    nom = "rknc36BAB11"
+    t0 = tm.time()
+    met = Metode()
+    met.setBAB(b[0].expand(complex=True), a[0], b[1].expand(complex=True), a[1], b[2].expand(complex=True), a[2],
+               b[2].conjugate().expand(complex=True), a[1], b[1].conjugate().expand(complex=True), a[0], b[0].conjugate().expand(complex=True),
+               debug = True)   
+    met.collectI()
     # met.exportpy(nom + ".py")
-    # t1 = tm.time()
-    # print("\tComposició BAB: 11 fluxes ->", nom, "\t(" + str(t1-t0) + " s)") 
+    t1 = tm.time()
+    print("\tComposició BAB: 11 fluxes ->", nom, "\t(" + str(t1-t0) + " s)") 
     
     # nom = "rknc36BAB13"
     # t0 = tm.time()

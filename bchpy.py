@@ -102,24 +102,47 @@ class Metode():
             self.w = self.__init_mat()
         self.cofs = list(args)
         cofsR = list(reversed(args))
-        self.w[1][2] = cofsR[0]
-        for i in range(1, len(cofsR)):
-            if debug == True:
-                txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
-                printd(txt_p)
-            self.__recur_AB(cofsR[i], (i - 1)%2)
+        tipus = palindromic(cofsR)
+        if tipus == 0:        
+            self.w[1][2] = cofsR[0]
+            for i in range(1, len(cofsR)):
+                if debug == True:
+                    txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
+                    printd(txt_p)
+                self.__recur_AB(cofsR[i], (i - 1)%2)
+            self.setw = True
+        elif tipus == 1:
+            cofsRS = cofsR[len(cofsR)//2:]
+            iniEl = 0 if len(cofsRS)%2 == 0 else 1
+            self.w[1][iniEl + 1] = cofsRS[0]
+            for i in range(1, len(cofsRS)):
+                if debug == True:
+                    txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
+                    printd(txt_p)
+                self.__recur_AB(cofsRS[i], 2 + (iniEl + i)%2)
         self.setw = True
-
+        
     def setABA(self, *args, debug = False):
         if self.setw == True:
             self.w = self.__init_mat()
         self.cofs = list(args)
         cofsR = list(reversed(args))
-        self.w[1][1] = cofsR[0]
-        for i in range(1, len(cofsR)):
-            if debug == True:
-                printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
-            self.__recur_AB(cofsR[i], i%2)
+        tipus = palindromic(cofsR)
+        if tipus == 0:
+            self.w[1][1] = cofsR[0]
+            for i in range(1, len(cofsR)):
+                if debug == True:
+                    printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
+                self.__recur_AB(cofsR[i], i%2)
+        elif tipus == 1:
+            cofsRS = cofsR[len(cofsR)//2:]
+            iniEl = 1 if len(cofsRS)%2 == 0 else 0
+            self.w[1][iniEl + 1] = cofsRS[0]
+            for i in range(1, len(cofsRS)):
+                if debug == True:
+                    txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
+                    printd(txt_p)
+                self.__recur_AB(cofsRS[i], 2 + (iniEl + i)%2)                
         self.setw = True
 
     def collectI(self):
@@ -235,15 +258,29 @@ class Metode():
     
     def __recur_AB(self, x, AB):
         bet = self.__init_mat()
-        if AB == 1:
+        if AB == 0:
+            bet = rc.recA(self.w, bet, x, self.depth) 
+        elif AB == 1:
             bet = rc.recB(self.w, bet, x, self.depth)
-        else:
-            bet = rc.recA(self.w, bet, x, self.depth)               
+        elif AB == 2:
+            bet = rc.recAsim(self.w, bet, x, self.depth)
+        elif AB == 3:
+            bet = rc.recBsim(self.w, bet, x, self.depth)
         for i in range(len(bet)):
             for j in range(len(bet[i])):
                 bet[i][j] = bet[i][j].expand()
         self.w = bet.copy()
 
+def palindromic(cofs):
+    if cofs == cofs[::-1] and (len(cofs) % 2) != 0:
+        return 1
+    cofsconj = cofs.copy()
+    for i in range(len(cofsconj)):
+        cofsconj[i] = cofsconj[i].conjugate()
+    if cofsconj == cofs[::-1] and (len(cofs) % 2) != 0:
+        return 2
+    return 0
+        
 def collectEsq(esq):
     esqn = sp.S(0)
     _x_diff_var = sp.Symbol("_x_diff_var")
