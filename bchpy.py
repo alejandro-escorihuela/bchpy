@@ -117,7 +117,7 @@ class Metode():
             self.w[1][iniEl + 1] = cofsRS[0]
             for i in range(1, len(cofsRS)):
                 if debug == True:
-                    txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
+                    txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
                     printd(txt_p)
                 self.__recur_AB(cofsRS[i], 2 + (iniEl + i)%2)
         self.setw = True
@@ -140,11 +140,25 @@ class Metode():
             self.w[1][iniEl + 1] = cofsRS[0]
             for i in range(1, len(cofsRS)):
                 if debug == True:
-                    txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
+                    txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
                     printd(txt_p)
                 self.__recur_AB(cofsRS[i], 2 + (iniEl + i)%2)                
         self.setw = True
 
+    def expand(self, debug = False):        
+        for i in range(1, len(self.w)):
+            for j in range(1, len(self.w[i])):
+                if debug == True:
+                    printd("Expandint " + str(i) + ", " + str(j))
+                self.w[i][j] = self.w[i][j].expand()
+                
+    def simplify(self, debug = False):        
+        for i in range(1, len(self.w)):
+            for j in range(1, len(self.w[i])):
+                if debug == True:
+                    printd("Simplificant " + str(i) + ", " + str(j))
+                self.w[i][j] = self.w[i][j].simplify()
+                
     def collectI(self):
         if self.setw == False:
             printe("Les equacions del mètode no estan calculades.")
@@ -202,7 +216,7 @@ class Metode():
         ara = datetime.datetime.now()
         f = open(nom_fitxer, "w")
         f.write("#!/usr/bin/env python\n# -*- coding: utf-8 -*-\n")
-        f.write("# " + str(ara.day) + "-" + str(ara.month) + "-" + str(ara.year) + "\n")
+        f.write("# " + ('%02d' % ara.day) + "-" + ('%02d' % ara.month) + "-" + str(ara.year) + "\n")
         f.write("# " + nom_fitxer + "\n")
         f.write("# Fitxer generat automàticament per bchpy. No tocar!\n")
         cof_txt = str(self.cofs).replace("[", "").replace("]", "")
@@ -266,12 +280,13 @@ class Metode():
             bet = rc.recAsim(self.w, bet, x, self.depth)
         elif AB == 3:
             bet = rc.recBsim(self.w, bet, x, self.depth)
-        for i in range(len(bet)):
-            for j in range(len(bet[i])):
-                bet[i][j] = bet[i][j].expand()
+        # for i in range(len(bet)):
+        #     for j in range(len(bet[i])):
+        #         bet[i][j] = bet[i][j].expand()
         self.w = bet.copy()
 
 def palindromic(cofs):
+    return 0
     if cofs == cofs[::-1] and (len(cofs) % 2) != 0:
         return 1
     cofsconj = cofs.copy()
