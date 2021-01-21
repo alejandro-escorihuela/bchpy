@@ -286,7 +286,7 @@ class Metode():
         self.w = bet.copy()
 
 def palindromic(cofs):
-    return 0
+    #return 0
     if cofs == cofs[::-1] and (len(cofs) % 2) != 0:
         return 1
     cofsconj = cofs.copy()

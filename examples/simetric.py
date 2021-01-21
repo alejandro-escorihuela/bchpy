@@ -25,10 +25,10 @@ if __name__ == "__main__":
     t1 = tm.time()
     print(t1 - t0, "s")
 
-    # printi("Expandint mètode")
-    # met.expand(debug = True)
-    # t2 = tm.time()
-    # print(t2 - t1, "s")
+    printi("Expandint mètode")
+    met.expand(debug = True)
+    t2 = tm.time()
+    print(t2 - t1, "s")
 
     # printi("Desant fitxer amb el mètode")
     # met.save("sim8_27.dat")
