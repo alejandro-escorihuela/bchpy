@@ -6,6 +6,7 @@
 
 import sympy as sp
 from sympy.physics.quantum import Operator, Commutator
+from sympy.parsing.sympy_parser import parse_expr
 
 def expOp(A, n):
     fac = sp.S(1)
@@ -74,7 +75,22 @@ def llegir_base(txt, opA, opB):
         i += 1
     return E
 
-    
+def llegir_baseCAdj(txt, Y):
+    f = open(txt, "r")
+    linies = f.readlines()
+    Z = []
+    Z.append([0])
+    i = 1
+    for lin in linies:
+        Z.append([0])
+        ls = lin.replace("\n", "").split(" ")[:-1]
+        for j in range(0, len(ls)):
+            item = ls[j].replace("[", "Commutator(").replace("]", ")").replace("_{", "[").replace("}", "]")
+            com = eval(item)
+            Z[i].append(com)
+        i += 1
+    return Z
+
 def resoldre(exprEsq, exprDre):
     eqs = []
     cpe = exprEsq
@@ -95,6 +111,7 @@ def resoldre(exprEsq, exprDre):
     if sol:
         cpe_arg = cpe.args
         pos_afg = []
+        #print(cpe_arg)
         for i in range(len(cpe_arg)):
             cnc_i = cpe_arg[i].args_cnc()
             equ = sp.S(0)
@@ -102,10 +119,14 @@ def resoldre(exprEsq, exprDre):
                 cnc_j = cpe_arg[j].args_cnc()
                 if cnc_i[1] == cnc_j[1] and j not in pos_afg:
                     pos_afg.append(j)
+                    #print(cnc_j[0], cnc_j[1], sp.prod(cnc_j[0]))
                     equ += sp.prod(cnc_j[0])
-            if (len(equ.args) > 0) and equ not in eqs and -equ not in eqs:
+            #print(equ, len(equ.args))
+            #if (len(equ.args) > 0) and equ not in eqs and -equ not in eqs:
+            if equ not in eqs and -equ not in eqs:
                 eqs.append(equ)
         sol = sp.solve(eqs)
+        #print(eqs)
     return sol
 
 def escl(can, En, A):
@@ -123,8 +144,21 @@ def escl(can, En, A):
     cane = can.doit().expand()
     return resoldre(cesq, cane)
 
-def pcorxets(E):
+def escl(can, En):
+    if len(En) == 1:
+        return []
+    sim = sp.symbols("s1:" + str(len(En)))
+    cesq = sp.S(0)
+    for i in range(1, len(En)):
+        cesq += sim[i - 1]*En[i]
+    if cesq == 0:
+        return []
+    cesq = cesq.doit().expand()
+    cane = can.doit().expand()
+    return resoldre(cesq, cane)
+
+def pcorxets(E, label = "E"):
     for i in range(1, len(E)):
-        for j in range(1, len(E[i])):
-            print("E_{" + str(i) + ", " + str(j) + "} =", E[i][j])
+        for j in range(1, len(E[i])):          
+            print(label + "_{" + str(i) + ", " + str(j) + "} =", E[i][j])
 
