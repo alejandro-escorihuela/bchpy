@@ -18,11 +18,12 @@ from sympy.parsing.sympy_parser import parse_expr
 from termcolor import colored
 from re import sub as strsub
 
-class Eel(sp.Expr):
+class Gel(sp.Expr):
     is_commutative = False
     is_number = False
     is_zero = False
-
+    t = ""
+    
     def __new__(cls, *args, **kwargs):
         args = cls._eval_args(args, **kwargs)
         return sp.Expr.__new__(cls, *args)
@@ -31,27 +32,45 @@ class Eel(sp.Expr):
     def _eval_args(cls, args):
         return tuple(Tuple(*args))
  
-    def __init__(self, i = 1, j = 1):
+    def __init__(self, i = 1, j = 1, tipus = ""):
         self.i = i
         self.j = j
+        self.t = tipus
         if i == 0 or j == 0:
             self.is_zero = True
     
     def _sympystr(self, printer, *args):
         if self.is_zero:
             return "0"
-        return "E%s%s" % (printer._print(self.args[0]), printer._print(self.args[1]))
+        return "%s%s%s" % (self.t, printer._print(self.args[0]), printer._print(self.args[1]))
     
     def _sympyrepr(self, printer, *args):
-        nom = self.__class__.__name__
+        #nom = self.__class__.__name__
+        nom = t + "el"
         return "%s(%d,%d)" % (nom, self.i, self.j)
     
     def _pretty(self, printer, *args):
         if self.is_zero:
             return prettyForm(pretty_symbol("0"))
-        return prettyForm(pretty_symbol("E_%s%s" % (printer._print(self.args[0]), printer._print(self.args[1]))))
+        return prettyForm(pretty_symbol("%s_%s%s" % (self.t, printer._print(self.args[0]), printer._print(self.args[1]))))
     def _latex(self, printer, *args):
-        return "E_{%d,%d}" % (self.i, self.j)
+        return "%s_{%d,%d}" % (self.t, self.i, self.j)
+
+class Eel(Gel):
+    def __init__(self, i = 1, j = 1, tipus = "E"):
+        self.i = i
+        self.j = j
+        self.t = tipus
+        if i == 0 or j == 0:
+            self.is_zero = True    
+    
+class Zel(Gel):
+    def __init__(self, i = 1, j = 1, tipus = "Z"):
+        self.i = i
+        self.j = j
+        self.t = tipus
+        if i == 0 or j == 0:
+            self.is_zero = True    
     
 class Corxet(sp.Expr):
     def __new__(cls, A, B):
@@ -80,10 +99,19 @@ class Corxet(sp.Expr):
         if A.compare(B) == 1:
             return sp.S.NegativeOne*cls.eval(cls, B, A)
         i, j, k, l = A.i, A.j, B.i, B.j
-        ll = rl.corxetErel(i, j, k, l)
+        if A.t != B.t:
+            printe("Els objectes %s i %s no pertanyen a la mateixa base." % (A, B))
+            exit(-1)
+        if A.t == "E":
+            ll = rl.corxetErel(i, j, k, l)
+        elif A.t == "Z":
+            ll = rl.corxetZrel(i, j, k, l)
+        else:
+            printe("No hi ha cap base definida amb %s." % (A.t))
+            exit(-1)            
         args = []
         for it in ll:
-            elem = sp.Mul(sp.Rational(it[0], it[1]), Eel(it[2], it[3]))
+            elem = sp.Mul(sp.Rational(it[0], it[1]), Gel(it[2], it[3], A.t))
             args.append(elem)
         return sp.Add(*args)
 
