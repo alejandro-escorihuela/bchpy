@@ -18,11 +18,10 @@ from sympy.parsing.sympy_parser import parse_expr
 from termcolor import colored
 from re import sub as strsub
 
-class Gel(sp.Expr):
+class Eel(sp.Expr):
     is_commutative = False
     is_number = False
     is_zero = False
-    t = ""
     
     def __new__(cls, *args, **kwargs):
         args = cls._eval_args(args, **kwargs)
@@ -32,10 +31,13 @@ class Gel(sp.Expr):
     def _eval_args(cls, args):
         return tuple(Tuple(*args))
  
-    def __init__(self, i = 1, j = 1, tipus = ""):
+    def __init__(self, i = 1, j = 1, basis_type = "E"):
         self.i = i
         self.j = j
-        self.t = tipus
+        if basis_type not in ["E", "Z"]:
+            printe("%s no és una base vàlida" % (basis_type))
+            exit(-1)
+        self.t = basis_type
         if i == 0 or j == 0:
             self.is_zero = True
     
@@ -45,39 +47,22 @@ class Gel(sp.Expr):
         return "%s%s%s" % (self.t, printer._print(self.args[0]), printer._print(self.args[1]))
     
     def _sympyrepr(self, printer, *args):
-        #nom = self.__class__.__name__
-        nom = t + "el"
-        return "%s(%d,%d)" % (nom, self.i, self.j)
+        nom = self.__class__.__name__
+        return "%s(%d,%d,'%s')" % (nom, self.i, self.j, self.t)
     
     def _pretty(self, printer, *args):
         if self.is_zero:
             return prettyForm(pretty_symbol("0"))
         return prettyForm(pretty_symbol("%s_%s%s" % (self.t, printer._print(self.args[0]), printer._print(self.args[1]))))
     def _latex(self, printer, *args):
-        return "%s_{%d,%d}" % (self.t, self.i, self.j)
-
-class Eel(Gel):
-    def __init__(self, i = 1, j = 1, tipus = "E"):
-        self.i = i
-        self.j = j
-        self.t = tipus
-        if i == 0 or j == 0:
-            self.is_zero = True    
-    
-class Zel(Gel):
-    def __init__(self, i = 1, j = 1, tipus = "Z"):
-        self.i = i
-        self.j = j
-        self.t = tipus
-        if i == 0 or j == 0:
-            self.is_zero = True    
+        return "%s_{%d,%d}" % (self.t, self.i, self.j)         
     
 class Corxet(sp.Expr):
     def __new__(cls, A, B):
         return cls.eval(cls, A, B)
 
     def eval(cls, A, B):
-        if A == B:
+        if not A != B:
             return sp.S.Zero
         if A.is_commutative or B.is_commutative:
             return sp.S.Zero
@@ -111,7 +96,7 @@ class Corxet(sp.Expr):
             exit(-1)            
         args = []
         for it in ll:
-            elem = sp.Mul(sp.Rational(it[0], it[1]), Gel(it[2], it[3], A.t))
+            elem = sp.Mul(sp.Rational(it[0], it[1]), Eel(it[2], it[3], A.t))
             args.append(elem)
         return sp.Add(*args)
 
@@ -120,12 +105,24 @@ class Metode():
     w = []
     setw = False
     cofs = []
+    t = ""
     
-    def __init__(self, depth = 6):
-        self.depth = len(rl.tamE) if depth >= len(rl.tamE) else depth
+    def __init__(self, depth = 6, basis_type = "E"):
+        if basis_type == "E":
+            self.depth = len(rl.tamE) if depth >= len(rl.tamE) else depth
+            self.t = "E"
+        elif basis_type == "Z":
+            self.depth = len(rl.tamZ) if depth >= len(rl.tamZ) else depth
+            self.t = "Z"
+        else:
+            printe("%s no és una base vàlida" % (basis_type))
+            exit(-1)
         self.w = self.__init_mat()
         
     def setBAB(self, *args, debug = False):
+        if self.t != "E":
+            printe("Per mètodes BAB la base ha de ser E i no %s" % (self.t))
+            exit(-1)            
         if self.setw == True:
             self.w = self.__init_mat()
         self.cofs = list(args)
@@ -151,6 +148,9 @@ class Metode():
         self.setw = True
         
     def setABA(self, *args, debug = False):
+        if self.t != "E":
+            printe("Per mètodes ABA la base ha de ser E i no %s" % (self.t))
+            exit(-1)         
         if self.setw == True:
             self.w = self.__init_mat()
         self.cofs = list(args)
@@ -199,17 +199,21 @@ class Metode():
         esq = sp.S(0)
         for i in range(1, len(self.w)):
             for j in range(1, len(self.w[i])):
-                esq += self.w[i][j]*Eel(i, j)
+                esq += self.w[i][j]*Eel(i, j, self.t)
         return esq
 
     def importFromExpr(self, esq, debug = False):
+        if self.t == "E":
+            tams = rl.tamE
+        elif self.t == "Z":
+            tams = rl.tamZ
         _x_diff_var = sp.Symbol("_x_diff_var")
         if debug == True:
             printd("Important esquema")
         esq_e = sp.expand(esq)
         for i in range(self.depth):
-            for j in range(rl.tamE[i]):
-                self.w[i + 1][j + 1] = sp.diff(esq_e.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)
+            for j in range(tams[i]):
+                self.w[i + 1][j + 1] = sp.diff(esq_e.subs(Eel(i + 1, j + 1, self.t), _x_diff_var), _x_diff_var)
         self.setw = True  
 
     def save(self, nom_fitxer):
@@ -283,9 +287,13 @@ class Metode():
         
     def __init_mat(self):
         wret = []
+        if self.t == "E":
+            tams = rl.tamE
+        elif self.t == "Z":
+            tams = rl.tamZ
         for i in range(self.depth):
             wret.append([])
-            for j in range(rl.tamE[i]):
+            for j in range(tams[i]):
                 wret[i].append(sp.S(0))
             wret[i].insert(0, sp.S(0))
         wret.insert(0, [sp.S(0), sp.S(0)])
@@ -324,13 +332,20 @@ def palindromic(cofs):
         return 2
     return 0
         
-def collectEsq(esq):
+def collectEsq(esq, basis_type = "E"):
+    if basis_type == "E":
+        tams = rl.tamE
+    elif basis_type == "Z":
+        tams = rl.tamZ
+    else:
+        printe("%s no és una base vàlida" % (basis_type))
+        exit(-1)
     esqn = sp.S(0)
     _x_diff_var = sp.Symbol("_x_diff_var")
     esq_e = sp.expand(esq)
     for i in range(len(rl.tamE)):
         for j in range(rl.tamE[i]):
-            esqn += sp.diff(esq_e.subs(Eel(i + 1, j + 1), _x_diff_var), _x_diff_var)*Eel(i + 1, j + 1)    
+            esqn += sp.diff(esq_e.subs(Eel(i + 1, j + 1, basis_type), _x_diff_var), _x_diff_var)*Eel(i + 1, j + 1, basis_type)
     return esqn
 
 def printi(text):
