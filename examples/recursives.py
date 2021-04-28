@@ -13,7 +13,7 @@ from bchpy import *
 import relations as rl
 
 if __name__ == "__main__":
-    ord_bch = 5
+    ord_bch = 9
     x, y = sp.symbols("x y")
     t0 = tm.time()
     esq = sp.S(0)
@@ -22,14 +22,11 @@ if __name__ == "__main__":
     alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamZ[ord_bch - 1] + 1)
     for i in range(ord_bch):
         xa += x**(i + 1)*Eel(i + 1, 1, "Z")
-        xb += (-1)**i*y**(i + 1)*Eel(i + 1, 1, "Z")
+        xb += (-1)**i*x**(i + 1)*Eel(i + 1, 1, "Z")
         for j in range(rl.tamZ[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "Z")
-    print(xa)
-    print(xb)
-    esq = bch9(xa, esq, depth = ord_bch, debug = True)
-    #esq = bch9(xa, xb, depth = ord_bch, debug = True)
-    print(esq)
+
+    esq = bch9(xb, esq, depth = ord_bch, debug = True)
     metBD = Metode(ord_bch, "Z")
     metBD.importFromExpr(esq, debug = True)
     print(metBD)

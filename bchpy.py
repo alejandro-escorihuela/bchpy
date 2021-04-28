@@ -126,25 +126,26 @@ class Metode():
         if self.setw == True:
             self.w = self.__init_mat()
         self.cofs = list(args)
-        cofsR = list(reversed(args))
-        tipus = palindromic(cofsR)
+        # cof_li = list(reversed(args))
+        cof_li = self.cofs
+        tipus = palindromic(cof_li)
         if tipus == 0:        
-            self.w[1][2] = cofsR[0]
-            for i in range(1, len(cofsR)):
+            self.w[1][2] = cof_li[0]
+            for i in range(1, len(cof_li)):
                 if debug == True:
                     txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
                     printd(txt_p)
-                self.__recur_AB(cofsR[i], (i - 1)%2)
+                self.__recur_AB(cof_li[i], (i - 1)%2)
             self.setw = True
         elif tipus == 1:
-            cofsRS = cofsR[len(cofsR)//2:]
-            iniEl = 0 if len(cofsRS)%2 == 0 else 1
-            self.w[1][iniEl + 1] = cofsRS[0]
-            for i in range(1, len(cofsRS)):
+            cof_li = cof_li[len(cof_li)//2:]
+            iniEl = 0 if len(cof_li)%2 == 0 else 1
+            self.w[1][iniEl + 1] = cof_li[0]
+            for i in range(1, len(cof_li)):
                 if debug == True:
                     txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
                     printd(txt_p)
-                self.__recur_AB(cofsRS[i], 2 + (iniEl + i)%2)
+                self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)
         self.setw = True
         
     def setABA(self, *args, debug = False):
@@ -154,25 +155,40 @@ class Metode():
         if self.setw == True:
             self.w = self.__init_mat()
         self.cofs = list(args)
-        cofsR = list(reversed(args))
-        tipus = palindromic(cofsR)
+        # cof_li = list(reversed(args))
+        cof_li = self.cofs
+        tipus = palindromic(cof_li)
         if tipus == 0:
-            self.w[1][1] = cofsR[0]
-            for i in range(1, len(cofsR)):
+            self.w[1][1] = cof_li[0]
+            for i in range(1, len(cof_li)):
                 if debug == True:
                     printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
-                self.__recur_AB(cofsR[i], i%2)
+                self.__recur_AB(cof_li[i], i%2)
         elif tipus == 1:
-            cofsRS = cofsR[len(cofsR)//2:]
-            iniEl = 1 if len(cofsRS)%2 == 0 else 0
-            self.w[1][iniEl + 1] = cofsRS[0]
-            for i in range(1, len(cofsRS)):
+            cof_li = cof_li[len(cof_li)//2:]
+            iniEl = 1 if len(cof_li)%2 == 0 else 0
+            self.w[1][iniEl + 1] = cof_li[0]
+            for i in range(1, len(cof_li)):
                 if debug == True:
                     txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
                     printd(txt_p)
-                self.__recur_AB(cofsRS[i], 2 + (iniEl + i)%2)                
+                self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)                
         self.setw = True
 
+    def setXX(self, *args, debug = False):
+        if self.t != "Z":
+            printe("Per mètodes XX* la base ha de ser Z i no %s" % (self.t))
+            exit(-1)         
+        if self.setw == True:
+            self.w = self.__init_mat()        
+        self.cofs = list(args)
+        #cofsR = list(reversed(args))
+        for i in range(1, self.depth + 1):
+            self.w[i][1] = self.cofs[0]**i
+        for i in range(1, len(self.cofs)):
+            self.__recur_XX(self.cofs[i], i%2)
+        self.setw = True
+            
     def expand(self, debug = False):        
         for i in range(1, len(self.w)):
             for j in range(1, len(self.w[i])):
@@ -320,7 +336,15 @@ class Metode():
         #     for j in range(len(bet[i])):
         #         bet[i][j] = bet[i][j].expand()
         self.w = bet.copy()
-
+        
+    def __recur_XX(self, x, adj):
+        bet = self.__init_mat()
+        if adj == 0:
+            bet = rc.recXa(self.w, bet, x, self.depth) 
+        elif adj == 1:
+            bet = rc.recXb(self.w, bet, x, self.depth)
+        self.w = bet.copy()
+        
 def palindromic(cofs):
     #return 0
     if cofs == cofs[::-1] and (len(cofs) % 2) != 0:
