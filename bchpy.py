@@ -349,11 +349,11 @@ def palindromic(cofs):
     #return 0
     if cofs == cofs[::-1] and (len(cofs) % 2) != 0:
         return 1
-    cofsconj = cofs.copy()
-    for i in range(len(cofsconj)):
-        cofsconj[i] = cofsconj[i].conjugate()
-    if cofsconj == cofs[::-1] and (len(cofs) % 2) != 0:
-        return 2
+    # cofsconj = cofs.copy()
+    # for i in range(len(cofsconj)):
+    #     cofsconj[i] = cofsconj[i].conjugate()
+    # if cofsconj == cofs[::-1] and (len(cofs) % 2) != 0:
+    #     return 2
     return 0
         
 def collectEsq(esq, basis_type = "E"):
