@@ -1,0 +1,176 @@
+#1
+A
+B
+
+[1, 1]
+
+#2
+Corxet(A, B)
+
+[2]
+
+#3
+Corxet(A, Corxet(A, B))
+Corxet(B, Corxet(A, B))
+
+[12, -12]
+
+#4
+Corxet(A, Corxet(B, Corxet(A, B)))
+
+[-24]
+
+#5
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))
+Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))
+ 
+[-720, -120, -360, 360, 120, 720]
+
+#6
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))) 
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))
+
+[-720, 240, 1440, 1440]
+
+#7
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))) 
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))) 
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))) 
+Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
+Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))) 
+Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))) 
+Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))) 
+Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))) 
+Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))
+
+[30240, 5040, -10080, 10080, 1008, 5040, -7560, 3360, 10080, -10080, -1260, -1680, 3360, -3360, -2520, 7560, 10080, -30240]
+
+#8
+Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))) 
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))
+Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))
+
+[-24192/5, 2520, 20160, 15120, -2016, -20160, 20160, -10080, -60480, -60480, 20160, -5040, 20160]
+
+#9
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))) 
+Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B))))))))
+Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B))))))))
+
+[-1209600, -302400, 113400, -40320, -120960, 604800/13, 24192, 30240, -60480, -20160, -604800/11, -151200, -20160, -10080, 40320, 18900, -20160, -17280, -120960, -302400, 302400, 50400, 120960, 20160, -40320, 10080, 30240, 151200, 302400, 20160, -30240, 60480, -604800/13, -90720, 120960, 453600, 302400, 1209600]
+
+#10
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(B, Corxet(B, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, Corxet(A, B)))))))))
+Corxet(A, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(B, Corxet(A, B)))))))))
+
+[-2419200, -604800, 604800, 151200, 604800, 134400, 362880, 134400, -403200, -100800, -201600, -50400, -604800, -302400, -80640 -100800, -201600, 403200, -75600, -362880, 403200, -134400, -604800, 604800, 40320, 67200, -151200, -50400, 25200, 25200, -100800, -100800, 302400, 75600, 50400, 151200, -100800, -50400, 403200, 25200, 151200, -43200, -67200, 100800, -75600, -302400, 1209600/13, 75600, -60480, -226800, 86400, 2419200]
