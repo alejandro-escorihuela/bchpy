@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 # 01-01-2021
 # alex
 # qolib.py
@@ -103,8 +103,8 @@ def resoldre(exprEsq, exprDre):
             cnc_j = eEsq_arg[j].args_cnc()
             if cnc_i[1] == cnc_j[1]:
                 equ += sp.prod(cnc_j[0])
-                cpe -= eEsq_arg[j] 
-        equ -= sp.prod(cnc_i[0])   
+                cpe -= eEsq_arg[j]
+        equ -= sp.prod(cnc_i[0])
         if equ not in eqs and -equ not in eqs:
             eqs.append(equ)
     sol = sp.solve(eqs)
@@ -159,6 +159,6 @@ def escl(can, En):
 
 def pcorxets(E, label = "E"):
     for i in range(1, len(E)):
-        for j in range(1, len(E[i])):          
+        for j in range(1, len(E[i])):
             print(label + "_{" + str(i) + ", " + str(j) + "} =", E[i][j])
 
