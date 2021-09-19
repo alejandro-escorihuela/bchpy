@@ -280,6 +280,37 @@ class Metode():
                 f.write("def w" + str(i) + str(j) + "(a, br, bi):\n")
                 f.write("    return " + cad + "\n\n")
         f.close()
+
+    def exportnb(self, nom_fitxer):
+        if self.setw == False:
+            printe("Les equacions del mètode no estan calculades.")
+            exit(-1)
+        ara = datetime.datetime.now()
+        f = open(nom_fitxer, "w")    
+        f.write("(* " + ('%02d' % ara.day) + "-" + ('%02d' % ara.month) + "-" + str(ara.year) + " *)\n")
+        f.write("(* " + nom_fitxer + " *)\n")
+        f.write("(* Fitxer generat automàticament per bchpy. No tocar! *)\n")
+        cof_txt = str(self.cofs).replace("[", "").replace("]", "")
+        f.write("(* Esquema: " + cof_txt + " *)\n\n")
+        f.write("eq = {")
+        for i in range(1, len(self.w)):
+            for j in range(1, len(self.w[i])):
+                if (self.w[i][j] != 0):
+                    cad = str(self.w[i][j])
+                    cad = strsub(r'a([0-9]*)', r'a\1', cad)
+                    cad = strsub(r'b([0-9]*)', r'br\1', cad)
+                    cad = strsub(r're\(br\[([0-9]*)\]\)', r'br\1', cad)
+                    cad = strsub(r'im\(br\[([0-9]*)\]\)', r'bi\1', cad)
+                    cad = cad.replace("I*", "")
+                    cad = cad.replace("**", "^")
+                    if i == 1 and j == 1:
+                        f.write(cad + " == 1")
+                    elif i == 1 and j != 1:
+                        f.write(",\n\t" + cad + " == 1")
+                    else:
+                        f.write(",\n\t" + cad + " == 0")
+        f.write("}")
+        f.close()
         
     def cprint(self):
         for i in range(1, len(self.w)):
