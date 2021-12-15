@@ -280,7 +280,47 @@ class Metode():
                 f.write("def w" + str(i) + str(j) + "(a, br, bi):\n")
                 f.write("    return " + cad + "\n\n")
         f.close()
-
+        
+    def exportC(self, nom_fitC):
+        if self.setw == False:
+            printe("Les equacions del mètode no estan calculades.")
+            exit(-1)        
+        ara = datetime.datetime.now()
+        nom_fitH = nom_fitC.replace(".c", ".h")
+        with open(nom_fitH, 'w') as fH:
+            fH.write("/* " + ('%02d' % ara.day) + "-" + ('%02d' % ara.month) + "-" + str(ara.year) + " */\n")
+            fH.write("/* " + nom_fitH + " */\n")
+            fH.write("/* Fitxer generat automàticament per bchpy. No tocar! */\n")
+            fH.write("#ifndef _" + nom_fitH.replace(".", "_").upper() + "\n")
+            fH.write("#define _" + nom_fitH.replace(".", "_").upper() + "\n")
+            fH.write("#define POTENCIA(A, B) (pow((A), (B)))\n")
+            fH.write("#include <stdio.h>\n")
+            fH.write("#include <stdlib.h>\n\n")
+            for i in range(1, len(self.w)):
+                for j in range(1, len(self.w[i])):
+                    fH.write("double w" + str(i) + str(j) + "(double *, double *, double *);\n")
+            fH.write("\n#endif")
+        with open(nom_fitC, 'w') as fC:
+            fC.write("/* " + ('%02d' % ara.day) + "-" + ('%02d' % ara.month) + "-" + str(ara.year) + " */\n")
+            fC.write("/* " + nom_fitC + " */\n")
+            fC.write("/* Fitxer generat automàticament per bchpy. No tocar! */\n")
+            fC.write("#include <stdio.h>\n")
+            fC.write("#include <stdlib.h>\n")
+            fC.write("#include \"" + nom_fitH + "\"\n\n")            
+            for i in range(1, len(self.w)):
+                for j in range(1, len(self.w[i])):
+                    cad = str(sp.ccode(self.w[i][j]))
+                    cad = strsub(r'a([0-9]*)', r'a[\1]', cad)
+                    cad = strsub(r'b([0-9]*)', r'br[\1]', cad)
+                    cad = strsub(r're\(br\[([0-9]*)\]\)', r'br[\1]', cad)
+                    cad = strsub(r'im\(br\[([0-9]*)\]\)', r'bi[\1]', cad)
+                    cad = cad.replace("I*", "")
+                    cad = cad.replace("pow", "POTENCIA")
+                    fC.write("double w" + str(i) + str(j) + "(double * a, double * br, double * bi) {\n")
+                    fC.write("  (void) bi;\n")
+                    fC.write("  return " + cad + ";\n")
+                    fC.write("}\n\n")
+                    
     def exportnb(self, nom_fitxer):
         if self.setw == False:
             printe("Les equacions del mètode no estan calculades.")
