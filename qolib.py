@@ -129,7 +129,7 @@ def resoldre(exprEsq, exprDre):
         #print(eqs)
     return sol
 
-def escl(can, En, A):
+def esclCA(can, En, A):
     if len(En) == 1:
         return []
     sim = sp.symbols("s1:" + str(len(En)))

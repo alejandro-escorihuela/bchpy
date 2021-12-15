@@ -14,7 +14,7 @@ from qolib import *
 
 if __name__ == "__main__":
     impfits = True
-    n_max = 9
+    n_max = 11
     
     A = Operator("A")
     B = Operator("B")
@@ -82,8 +82,8 @@ if __name__ == "__main__":
         for i, j in itertools.product(range(1, len(E[n - 1])), range(1, len(E[1]))):
             print("Construint la base n = " + str(n) + ". Analitzant candidat: [E_{1, " + str(j) + "}, E_{" + str(n - 1) + ", " + str(i) + "}]")
             can = Commutator(E[1][j], E[n - 1][i])
-            sol = escl(can, E[n], A)
-            if not escl(can, E[n], A):
+            sol = esclCA(can, E[n], A)
+            if not esclCA(can, E[n], A):
                 E[n].append(can)
                 Ep[n].append(("A" if j == 1 else "B") + Ep[n - 1][i])
     pcorxets(E)
