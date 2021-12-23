@@ -31,7 +31,7 @@ class Eel(sp.Expr):
     def _eval_args(cls, args):
         return tuple(Tuple(*args))
  
-    def __init__(self, i = 1, j = 1, basis_type = "E"):
+    def __init__(self, i = 1, j = 1, basis_type = "!"):
         self.i = i
         self.j = j
         if basis_type not in ["E", "Z"]:
@@ -235,7 +235,10 @@ class Metode():
     def save(self, nom_fitxer):
         f = open(nom_fitxer, "w")
         f.write(str(self.depth) + "\n")
-        f.write(str(self.cofs) + "\n")
+        if not self.cofs:
+            f.write(str([0]) + "\n")
+        else:
+            f.write(str(self.cofs) + "\n")
         for i in range(self.depth + 1):
             f.write(str(self.w[i]))
             f.write("\n")

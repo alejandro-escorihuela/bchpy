@@ -13,25 +13,25 @@ from bchpy import *
 import relations as rl
 
 if __name__ == "__main__":
-    ord_bch = 9
-    x, y = sp.symbols("x y")
-    t0 = tm.time()
-    esq = sp.S(0)
-    xa = sp.S(0)
-    xb = sp.S(0)
-    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamZ[ord_bch - 1] + 1)
-    for i in range(ord_bch):
-        xa += x**(i + 1)*Eel(i + 1, 1, "Z")
-        xb += (-1)**i*x**(i + 1)*Eel(i + 1, 1, "Z")
-        for j in range(rl.tamZ[i]):
-            esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "Z")
+    ord_bch = 4
+    # x, y = sp.symbols("x y")
+    # t0 = tm.time()
+    # esq = sp.S(0)
+    # xa = sp.S(0)
+    # xb = sp.S(0)
+    # alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamZ[ord_bch - 1] + 1)
+    # for i in range(ord_bch):
+    #     xa += x**(i + 1)*Eel(i + 1, 1, "Z")
+    #     xb += (-1)**i*x**(i + 1)*Eel(i + 1, 1, "Z")
+    #     for j in range(rl.tamZ[i]):
+    #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "Z")
 
-    esq = bch9(xb, esq, depth = ord_bch, debug = True)
-    metBD = Metode(ord_bch, "Z")
-    metBD.importFromExpr(esq, debug = True)
-    print(metBD)
-    t1 = tm.time()
-    print(t1 - t0, "s")
+    # esq = bch9(xb, esq, depth = ord_bch, debug = True)
+    # metBD = Metode(ord_bch, "Z")
+    # metBD.importFromExpr(esq, debug = True)
+    # print(metBD)
+    # t1 = tm.time()
+    # print(t1 - t0, "s")
     
     # print("exp(w(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
     # x, y = sp.symbols("x y")
@@ -70,30 +70,29 @@ if __name__ == "__main__":
     # alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
     # for i in range(0, ord_bch, 2):
     #     for j in range(rl.tamE[i]):
-    #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
-    # esq = bch9(esq, x*Eel(1, 2), depth = ord_bch, debug = True)
-    # esq = bch9(x*Eel(1, 2), esq.expand(), depth = ord_bch, debug = True)
-    # metBDB = Metode(ord_bch)
+    #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "E")
+    # esq = bch9(esq, x*Eel(1, 2, "E"), depth = ord_bch, debug = True)
+    # esq = bch9(x*Eel(1, 2, "E"), esq.expand(), depth = ord_bch, debug = True)
+    # metBDB = Metode(ord_bch, "E")
     # metBDB.importFromExpr(esq, debug = True)
-    # print(metBDB)
     # t1 = tm.time()
     # print(t1 - t0, "s")  
     
-    # print("exp(w(i,j)*Eij)=exp(x*E11)*exp(alp(i,j)*Eij)*exp(x*E11)")
-    # x, y = sp.symbols("x y")
-    # t0 = tm.time()
-    # esq = sp.S(0)
-    # alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
-    # for i in range(0, ord_bch, 2):
-    #     for j in range(rl.tamE[i]):
-    #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
-    # esq = bch9(esq, x*Eel(1, 1), depth = ord_bch, debug = True)
-    # esq = bch9(x*Eel(1, 1), esq.expand(), depth = ord_bch, debug = True)
-    # metBDB = Metode(ord_bch)
-    # metBDB.importFromExpr(esq, debug = True)
-    # print(metBDB)
-    # t1 = tm.time()
-    # print(t1 - t0, "s") 
+    print("exp(w(i,j)*Eij)=exp(x*E11)*exp(alp(i,j)*Eij)*exp(x*E11)")
+    x, y = sp.symbols("x y")
+    t0 = tm.time()
+    esq = sp.S(0)
+    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
+    for i in range(0, ord_bch, 2):
+        for j in range(rl.tamE[i]):
+            esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "E")
+    esq = bch9(esq, x*Eel(1, 1, "E"), depth = ord_bch, debug = True)
+    esq = bch9(x*Eel(1, 1, "E"), esq.expand(), depth = ord_bch, debug = True)
+    metADA = Metode(ord_bch)
+    metADA.importFromExpr(esq, debug = True)
+    print(metADA)
+    t1 = tm.time()
+    print(t1 - t0, "s") 
 
     # print("exp(w(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)*exp(x.conjugate()*E12)")
     # x, y = sp.symbols("x y")
