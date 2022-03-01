@@ -12,8 +12,33 @@ sys.path.insert(0, '../')
 from bchpy import *
 import relations as rl
 
+def printmetC(met, o):
+    cad = []
+    v = rl.tamE
+    tam = (v[o - 1] + 1)
+    for i in range(len(met.w)):
+        for j in range(len(met.w[i])):
+            cad.append(str(sp.ccode(met.w[i][j])))
+    for k in range(len(cad)):
+        for t in range(tam, tam**2 + tam):
+            p = t - tam
+            j = p%tam
+            i = p//tam + 1
+            l = sum(v[0:i - 1:2]) + j - 1
+            cad[k] = cad[k].replace("alp[" + str(t) + "]", "alp[" + str(l) + "]")
+    oset = 2
+    ind = 0
+    for k in range(oset + 1, oset + 1 + sum(v[:1])):
+        print("res[%d] = %s;" % (ind, cad[k]))
+        ind += 1    
+    for l in range(3, o + 1, 2):
+        for k in range(oset + 1 + (l - 1) + sum(v[:l - 1]), oset + l + sum(v[:l])):
+            print("res[%d] = %s;" % (ind, cad[k]))
+            ind += 1
+            
 if __name__ == "__main__":
-    ord_bch = 4
+    ord_bch = 9
+    # print("?¿?")
     # x, y = sp.symbols("x y")
     # t0 = tm.time()
     # esq = sp.S(0)
@@ -75,6 +100,7 @@ if __name__ == "__main__":
     # esq = bch9(x*Eel(1, 2, "E"), esq.expand(), depth = ord_bch, debug = True)
     # metBDB = Metode(ord_bch, "E")
     # metBDB.importFromExpr(esq, debug = True)
+    # printmetC(metBDB, ord_bch)
     # t1 = tm.time()
     # print(t1 - t0, "s")  
     
@@ -90,7 +116,8 @@ if __name__ == "__main__":
     esq = bch9(x*Eel(1, 1, "E"), esq.expand(), depth = ord_bch, debug = True)
     metADA = Metode(ord_bch)
     metADA.importFromExpr(esq, debug = True)
-    print(metADA)
+    #print(metADA)
+    printmetC(metADA, ord_bch)
     t1 = tm.time()
     print(t1 - t0, "s") 
 
