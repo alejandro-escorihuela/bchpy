@@ -13,7 +13,7 @@ from qolib import *
 from bchpy import printi
 
 if __name__ == "__main__":
-    n = 9
+    n = 8
     A = Operator("A")
     B = Operator("B")
 
