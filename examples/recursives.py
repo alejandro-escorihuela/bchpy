@@ -3,6 +3,7 @@
 # 09-12-2020
 # alex
 # recursives.py
+# per provar BCH
 
 import numpy as np
 import sympy as sp
@@ -37,7 +38,7 @@ def printmetC(met, o):
             ind += 1
             
 if __name__ == "__main__":
-    ord_bch = 9
+    ord_bch = 4
     # print("?¿?")
     # x, y = sp.symbols("x y")
     # t0 = tm.time()

@@ -104,10 +104,12 @@ class Metode():
     depth = 0
     w = []
     setw = False
+    num = False
     cofs = []
     t = ""
     
-    def __init__(self, depth = 6, basis_type = "E"):
+    def __init__(self, depth = 6, basis_type = "E", numeric = False):
+        self.num = numeric
         if basis_type == "E":
             self.depth = len(rl.tamE) if depth >= len(rl.tamE) else depth
             self.t = "E"
@@ -381,12 +383,15 @@ class Metode():
             tams = rl.tamE
         elif self.t == "Z":
             tams = rl.tamZ
+        zero = sp.S(0)
+        if self.num:
+            zero = np.float128(0.0)
         for i in range(self.depth):
             wret.append([])
             for j in range(tams[i]):
-                wret[i].append(sp.S(0))
-            wret[i].insert(0, sp.S(0))
-        wret.insert(0, [sp.S(0), sp.S(0)])
+                wret[i].append(zero)
+            wret[i].insert(0, zero)
+        wret.insert(0, [zero, zero])
         return wret
     
     def __str__(self):
