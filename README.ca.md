@@ -1,5 +1,5 @@
 # bchpy
-bchpy son un conjunt de classes i mètodes per calcular l'equació BCH simbolicament per construir mètodes simplectics en python utilitzant les llibreries sympy i numpy.
+bchpy son un conjunt de classes i mètodes per calcular l'equació BCH simbolicament per construir mètodes d'escissió i composició en python utilitzant les llibreries sympy i numpy.
 
 Pots utilitzar aquest programari en python com un guió d'execució o en un arxiu de jupyter (quaderns). Hi ha exemples d'aquest programari utilitzat en guions d'execució [ací](examples/) i com a quaderns de jupyter [ací](notebooks/).
 
