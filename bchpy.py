@@ -105,13 +105,13 @@ class Metode():
     w = []
     setw = False
     num = False
-    rkn = False # Only for symmetrical iteration
+    rknd = False # Only for symmetrical iteration
     cofs = []
     t = ""
     
-    def __init__(self, depth = 6, basis_type = "E", numeric = False, rkndepth = False):
+    def __init__(self, depth = 6, basis_type = "E", numeric = False, rkn = False):
         self.num = numeric
-        self.rkn = rnkdepth
+        self.rknd = rkn
         if basis_type == "E":
             self.depth = len(rl.tamE) if depth >= len(rl.tamE) else depth
             self.t = "E"
@@ -410,9 +410,9 @@ class Metode():
         elif AB == 1:
             bet = rc.recB(self.w, bet, x, self.depth)
         elif AB == 2:
-            bet = rc.recAsim(self.w, bet, x, self.depth, self.rkn)
+            bet = rc.recAsim(self.w, bet, x, self.depth, self.rknd)
         elif AB == 3:
-            bet = rc.recBsim(self.w, bet, x, self.depth, self.rkn)
+            bet = rc.recBsim(self.w, bet, x, self.depth, self.rknd)
         # for i in range(len(bet)):
         #     for j in range(len(bet[i])):
         #         bet[i][j] = bet[i][j].expand()
