@@ -91,6 +91,24 @@ def llegir_baseCAdj(txt, Y):
         i += 1
     return Z
 
+def llegir_baseS2(txt, S):
+    f = open(txt, "r")
+    linies = f.readlines()
+    Z = []
+    Z.append([0])
+    i = 1
+    for lin in linies:
+        Z.append([0])
+        ls = lin.replace("\n", "").split(" ")[:-1]
+        if len(ls) == 0:
+            Z[i].append(0)
+        for j in range(0, len(ls)):
+            item = ls[j].replace("[", "Commutator(").replace("]", ")").replace("_{", "[").replace("}", "]")
+            com = eval(item)
+            Z[i].append(com)
+        i += 1
+    return Z
+
 def resoldre(exprEsq, exprDre):
     eqs = []
     cpe = exprEsq
