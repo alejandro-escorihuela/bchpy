@@ -14,8 +14,8 @@ tamZ = [1, 1, 2, 3, 6, 9, 18, 30, 56]
 relZ = [[[[[[0, 1, 0, 0]] for l in range(tamZ[-1] + 1)] for k in range(len(tamZ) + 1)] for j in range(tamZ[-1] + 1)] for i in range(len(tamZ) + 1)]
 
 # relacions de conmutació per a composició d'ordre 2
-tamZ = [1, 0, 1, 1, 2, 2, 4, 5, 8, 11, 18, 25, 40]
-relZ = [[[[[[0, 1, 0, 0]] for l in range(tamZ[-1] + 1)] for k in range(len(tamZ) + 1)] for j in range(tamZ[-1] + 1)] for i in range(len(tamZ) + 1)]
+tamM = [1, 0, 1, 1, 2, 2, 4, 5, 8, 11, 18, 25, 40]
+relM = [[[[[[0, 1, 0, 0]] for l in range(tamM[-1] + 1)] for k in range(len(tamM) + 1)] for j in range(tamM[-1] + 1)] for i in range(len(tamM) + 1)]
 
 # relacions per a escissió d'A i B
 ## ordre 2 a 5
