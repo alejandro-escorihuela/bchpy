@@ -23,11 +23,12 @@ def baserkn(w):
 def ef(s, m, vec, sc):
     err = 0.0
     if sc:
-        for i in range(len(vec)):
-            if i % 2 == 0:
+        if m % 2 == 0:
+            for i in range(len(vec)):
                 err += np.imag(vec[i])**2
-            else:
-                err += np.real(vec[i])**2
+        else:
+            for i in range(len(vec)):
+                err += np.real(vec[i])**2            
     else:
         for i in range(len(vec)):
             err += vec[i]**2
