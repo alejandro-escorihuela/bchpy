@@ -33,8 +33,11 @@ def ef(s, m, vec, sc):
         for i in range(len(vec)):
             err += vec[i]**2
     err = np.sqrt(float(err))
-    err = s*err**(1/(m - 1))
-    return err
+    err = err**(1/(m - 1))
+    if err < 0.01:
+        return 0.0
+    else:
+        return s*err
 
 def eferr(cofs, ABA = True, sc = False, rkn = False):
     a, b = cofs
