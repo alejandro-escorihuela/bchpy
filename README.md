@@ -8,7 +8,7 @@ You can read this in [catalan](README.ca.md).
 ## References
 * [SymPy](https://github.com/sympy/sympy)
 * [NumPy](https://github.com/numpy/numpy)
-
+* [BCH formula up to terms of degree 20] (https://www.ehu.eus/ccwmuura/bch.html)
 ## Autors
 * **Cosmo Cat**  [cosmogat](https://github.com/cosmogat)
 ## License
