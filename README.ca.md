@@ -8,7 +8,7 @@ Pots llegir aquest arxiu en [anglès](README.md).
 ## Referències
 * [SymPy](https://github.com/sympy/sympy)
 * [NumPy](https://github.com/numpy/numpy)
-* [Fórmula BCH fins ordre 20] (https://www.ehu.eus/ccwmuura/bch.html)
+* [Fórmula BCH fins ordre 20](https://www.ehu.eus/ccwmuura/bch.html)
 ## Autors
 * **Cosmo Cat**  [cosmogat](https://github.com/cosmogat)
 ## Llicència

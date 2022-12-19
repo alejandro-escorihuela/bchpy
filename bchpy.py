@@ -461,7 +461,12 @@ def printd(text):
     
 def printe(text):
     print(colored("ERROR:", "red", attrs=['bold']), text)
-   
+
+def bch20(A, B, depth = 6, debug = False):
+    with open("../bchHall20.dat") as fbch:
+        linies = fbch.readlines()
+        print("hola")
+    
 def bch9(A, B, depth = 6, debug = False):  
     if debug == True:
         printd("BCH d'ordre 1 a 4")
