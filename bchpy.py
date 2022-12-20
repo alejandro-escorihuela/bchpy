@@ -8,6 +8,7 @@ import numpy as np
 import sympy as sp
 import relations as rl
 import recursive as rc
+import bch20Lyndon as b20
 import time as tm
 import datetime
 from sympy import re, im
@@ -57,7 +58,7 @@ class Eel(sp.Expr):
     def _latex(self, printer, *args):
         return "%s_{%d,%d}" % (self.t, self.i, self.j)         
     
-class Corxet(sp.Expr):
+class Claudator(sp.Expr):
     def __new__(cls, A, B):
         return cls.eval(cls, A, B)
 
@@ -69,12 +70,12 @@ class Corxet(sp.Expr):
         if isinstance(A, sp.Add):
             sargs = []
             for term in A.args:
-                sargs.append(Corxet(term, B))
+                sargs.append(Claudator(term, B))
             return sp.Add(*sargs)
         if isinstance(B, sp.Add):
             sargs = []
             for term in B.args:
-                sargs.append(Corxet(A, term))
+                sargs.append(Claudator(A, term))
             return sp.Add(*sargs)
         cA, ncA = A.args_cnc()
         cB, ncB = B.args_cnc()
@@ -463,19 +464,30 @@ def printe(text):
     print(colored("ERROR:", "red", attrs=['bold']), text)
 
 def bch20(A, B, depth = 6, debug = False):
-    with open("../bchHall20.dat") as fbch:
-        linies = fbch.readlines()
-        print("hola")
-    
+    elem = []
+    for i in range(len(b20.elemBCH)):
+        elem.append(sp.S(0))
+    elem[1], elem[2] = A, B
+    for i in range(3, len(b20.elemBCH)):
+        if b20.elemBCH[i][5] < depth or (b20.elemBCH[i][5] == depth and b20.elemBCH[i][3] != 0):
+            j, k = b20.elemBCH[i][1], b20.elemBCH[i][2]
+            elem[i] = Claudator(elem[j], elem[k])
+    D = A + B
+    for i in range(3, len(b20.elemBCH)):
+        if elem[i] != 0:
+            #D += elem[i]*sp.Rational(b20.elemBCH[i][3], b20.elemBCH[i][4])
+            D += elem[i]*(b20.elemBCH[i][3]/b20.elemBCH[i][4])
+    return D
+
 def bch9(A, B, depth = 6, debug = False):  
     if debug == True:
         printd("BCH d'ordre 1 a 4")
-    e21 = Corxet(A, B).expand()
-    e31 = Corxet(A, e21).expand()
-    e32 = Corxet(B, e21).expand()
-    e41 = Corxet(A, e31).expand()
-    e42 = Corxet(A, e32).expand()
-    e43 = Corxet(B, -e32).expand()
+    e21 = Claudator(A, B).expand()
+    e31 = Claudator(A, e21).expand()
+    e32 = Claudator(B, e21).expand()
+    e41 = Claudator(A, e31).expand()
+    e42 = Claudator(A, e32).expand()
+    e43 = Claudator(B, -e32).expand()
     D = A + B
     D += sp.Rational(1, 2)*e21
     D += sp.Rational(1, 12)*(e31 - e32)
@@ -486,12 +498,12 @@ def bch9(A, B, depth = 6, debug = False):
             printd("BCH d'ordre 5")
         den = sp.S([-720, -120, -360, 360, 120, 720])
         f5 = [sp.S(0)]*len(den)
-        f5[0] = Corxet(A, e41)
-        f5[1] = Corxet(A, e42)
-        f5[2] = Corxet(A, -e43)
-        f5[3] = Corxet(B, e41)
-        f5[4] = Corxet(B, e42)
-        f5[5] = Corxet(B, -e43)
+        f5[0] = Claudator(A, e41)
+        f5[1] = Claudator(A, e42)
+        f5[2] = Claudator(A, -e43)
+        f5[3] = Claudator(B, e41)
+        f5[4] = Claudator(B, e42)
+        f5[5] = Claudator(B, -e43)
         c5 = sp.S(0)
         for i in range(0, len(den)):
             f5[i] = f5[i].expand()
@@ -502,10 +514,10 @@ def bch9(A, B, depth = 6, debug = False):
             printd("BCH d'ordre 6")
         den = sp.S([-720, 240, 1440, 1440])
         f6 = [sp.S(0)]*len(den)
-        f6[0] = Corxet(A, f5[2]) 
-        f6[1] = Corxet(A, f5[4])
-        f6[2] = Corxet(A, f5[5])
-        f6[3] = Corxet(B, f5[0]) 
+        f6[0] = Claudator(A, f5[2]) 
+        f6[1] = Claudator(A, f5[4])
+        f6[2] = Claudator(A, f5[5])
+        f6[3] = Claudator(B, f5[0]) 
         c6 = sp.S(0)
         for i in range(0, len(den)):
             f6[i] = f6[i].expand()
@@ -516,24 +528,24 @@ def bch9(A, B, depth = 6, debug = False):
             printd("BCH d'ordre 7")
         den = sp.S([30240, 5040, -10080, 10080, 1008, 5040, -7560, 3360, 10080, -10080, -1260, -1680, 3360, -3360, -2520, 7560, 10080, -30240])          
         f7 = [sp.S(0)]*len(den)
-        f7[0]  = Corxet(A, Corxet(A, f5[0]))
-        f7[1]  = Corxet(A, Corxet(A, f5[3]))
-        f7[2]  = Corxet(A, f6[1])
-        f7[3]  = Corxet(A, f6[3]) 
-        f7[4]  = Corxet(A, Corxet(B, f5[1]))
-        f7[5]  = Corxet(A, Corxet(B, f5[2])) 
-        f7[6]  = Corxet(A, Corxet(B, f5[3]))
-        f7[7]  = Corxet(A, Corxet(B, f5[4]))
-        f7[8]  = Corxet(A, Corxet(B, f5[5]))
-        f7[9]  = Corxet(B, Corxet(A, f5[0])) 
-        f7[10] = Corxet(B, Corxet(A, f5[3]))
-        f7[11] = Corxet(B, f6[1]) 
-        f7[12] = Corxet(B, f6[3]) 
-        f7[13] = Corxet(B, Corxet(B, f5[1])) 
-        f7[14] = Corxet(B, Corxet(B, f5[2])) 
-        f7[15] = Corxet(B, Corxet(B, f5[3]))
-        f7[16] = Corxet(B, Corxet(B, f5[4]))
-        f7[17] = Corxet(B, Corxet(B, f5[5]))
+        f7[0]  = Claudator(A, Claudator(A, f5[0]))
+        f7[1]  = Claudator(A, Claudator(A, f5[3]))
+        f7[2]  = Claudator(A, f6[1])
+        f7[3]  = Claudator(A, f6[3]) 
+        f7[4]  = Claudator(A, Claudator(B, f5[1]))
+        f7[5]  = Claudator(A, Claudator(B, f5[2])) 
+        f7[6]  = Claudator(A, Claudator(B, f5[3]))
+        f7[7]  = Claudator(A, Claudator(B, f5[4]))
+        f7[8]  = Claudator(A, Claudator(B, f5[5]))
+        f7[9]  = Claudator(B, Claudator(A, f5[0])) 
+        f7[10] = Claudator(B, Claudator(A, f5[3]))
+        f7[11] = Claudator(B, f6[1]) 
+        f7[12] = Claudator(B, f6[3]) 
+        f7[13] = Claudator(B, Claudator(B, f5[1])) 
+        f7[14] = Claudator(B, Claudator(B, f5[2])) 
+        f7[15] = Claudator(B, Claudator(B, f5[3]))
+        f7[16] = Claudator(B, Claudator(B, f5[4]))
+        f7[17] = Claudator(B, Claudator(B, f5[5]))
         c7 = sp.S(0)
         for i in range(0, len(den)):
             f7[i] = f7[i].expand()
@@ -544,19 +556,19 @@ def bch9(A, B, depth = 6, debug = False):
             printd("BCH d'ordre 8")
         den = sp.S([sp.Rational(-24192, 5), 2520, 20160, 15120, -2016, -20160, 20160, -10080, -60480, -60480, 20160, -5040, 20160])   
         f8 = [sp.S(0)]*len(den)
-        f8[0]  = Corxet(A, Corxet(A, f6[2]))
-        f8[1]  = Corxet(A, f7[5])
-        f8[2]  = Corxet(A, f7[8])
-        f8[3]  = Corxet(A, Corxet(B, f6[0]))
-        f8[4]  = Corxet(A, f7[11]) 
-        f8[5]  = Corxet(A, Corxet(B, f6[2]))
-        f8[6]  = Corxet(A, f7[13])
-        f8[7]  = Corxet(A, f7[14])
-        f8[8]  = Corxet(A, f7[17])
-        f8[9]  = Corxet(B, f7[0])
-        f8[10] = Corxet(B, Corxet(A, Corxet(A, f5[1])))
-        f8[11] = Corxet(B, f7[1])
-        f8[12] = Corxet(B, f7[9])
+        f8[0]  = Claudator(A, Claudator(A, f6[2]))
+        f8[1]  = Claudator(A, f7[5])
+        f8[2]  = Claudator(A, f7[8])
+        f8[3]  = Claudator(A, Claudator(B, f6[0]))
+        f8[4]  = Claudator(A, f7[11]) 
+        f8[5]  = Claudator(A, Claudator(B, f6[2]))
+        f8[6]  = Claudator(A, f7[13])
+        f8[7]  = Claudator(A, f7[14])
+        f8[8]  = Claudator(A, f7[17])
+        f8[9]  = Claudator(B, f7[0])
+        f8[10] = Claudator(B, Claudator(A, Claudator(A, f5[1])))
+        f8[11] = Claudator(B, f7[1])
+        f8[12] = Claudator(B, f7[9])
         c8 = sp.S(0)
         for i in range(0, len(den)):
             f8[i] = f8[i].expand()
@@ -567,44 +579,44 @@ def bch9(A, B, depth = 6, debug = False):
             printd("BCH d'ordre 9")
         den = sp.S([-1209600, -302400, 113400, -40320, -120960, sp.Rational(604800, 13), 24192, 30240, -60480, -20160, sp.Rational(-604800, 11), -151200, -20160, -10080, 40320, 18900, -20160, -17280, -120960, -302400, 302400, 50400, 120960, 20160, -40320, 10080, 30240, 151200, 302400, 20160, -30240, 60480, sp.Rational(-604800, 13), -90720, 120960, 453600, 302400, 1209600])
         f9 = [sp.S(0)]*len(den)
-        f9[0]  = Corxet(A, Corxet(A, f7[0]))
-        f9[1]  = Corxet(A, Corxet(A, Corxet(A, Corxet(A, f5[1]))))
-        f9[2]  = Corxet(A, Corxet(A, Corxet(A, f6[0])))
-        f9[3]  = Corxet(A, Corxet(A, f7[2]))
-        f9[4]  = Corxet(A, f8[0]) 
-        f9[5]  = Corxet(A, f8[2])
-        f9[6]  = Corxet(A, Corxet(A, Corxet(B, Corxet(A, f5[1]))))
-        f9[7]  = Corxet(A, f8[3])
-        f9[8]  = Corxet(A, Corxet(A, f7[10]))
-        f9[9]  = Corxet(A, f8[5])
-        f9[10] = Corxet(A, f8[8])
-        f9[11] = Corxet(A, f8[9])
-        f9[12] = Corxet(A, f8[10])
-        f9[13] = Corxet(A, Corxet(B, f7[2]))
-        f9[14] = Corxet(A, Corxet(B, Corxet(A, f6[2])))
-        f9[15] = Corxet(A, Corxet(B, f7[8]))
-        f9[16] = Corxet(A, Corxet(B, f7[11]))
-        f9[17] = Corxet(A, Corxet(B, Corxet(B, f6[2])))
-        f9[18] = Corxet(A, Corxet(B, f7[15]))
-        f9[19] = Corxet(A, Corxet(B, f7[17]))
-        f9[20] = Corxet(B, Corxet(A, f7[0]))
-        f9[21] = Corxet(B, Corxet(A, Corxet(A, Corxet(A, f5[1]))))
-        f9[22] = Corxet(B, Corxet(A, Corxet(A, f6[0])))
-        f9[23] = Corxet(B, Corxet(A, f7[4]))
-        f9[24] = Corxet(B, Corxet(A, f7[12]))
-        f9[25] = Corxet(B, f8[6])
-        f9[26] = Corxet(B, f8[7])
-        f9[27] = Corxet(B, f8[8])
-        f9[28] = Corxet(B, f8[9])
-        f9[29] = Corxet(B, Corxet(B, f7[3]))
-        f9[30] = Corxet(B, Corxet(B, f7[6]))
-        f9[31] = Corxet(B, Corxet(B, f7[7]))
-        f9[32] = Corxet(B, f8[12])
-        f9[33] = Corxet(B, Corxet(B, Corxet(B, f6[0])))
-        f9[34] = Corxet(B, Corxet(B, f7[12]))
-        f9[35] = Corxet(B, Corxet(B, f7[15]))
-        f9[36] = Corxet(B, Corxet(B, f7[16]))
-        f9[37] = Corxet(B, Corxet(B, f7[17]))
+        f9[0]  = Claudator(A, Claudator(A, f7[0]))
+        f9[1]  = Claudator(A, Claudator(A, Claudator(A, Claudator(A, f5[1]))))
+        f9[2]  = Claudator(A, Claudator(A, Claudator(A, f6[0])))
+        f9[3]  = Claudator(A, Claudator(A, f7[2]))
+        f9[4]  = Claudator(A, f8[0]) 
+        f9[5]  = Claudator(A, f8[2])
+        f9[6]  = Claudator(A, Claudator(A, Claudator(B, Claudator(A, f5[1]))))
+        f9[7]  = Claudator(A, f8[3])
+        f9[8]  = Claudator(A, Claudator(A, f7[10]))
+        f9[9]  = Claudator(A, f8[5])
+        f9[10] = Claudator(A, f8[8])
+        f9[11] = Claudator(A, f8[9])
+        f9[12] = Claudator(A, f8[10])
+        f9[13] = Claudator(A, Claudator(B, f7[2]))
+        f9[14] = Claudator(A, Claudator(B, Claudator(A, f6[2])))
+        f9[15] = Claudator(A, Claudator(B, f7[8]))
+        f9[16] = Claudator(A, Claudator(B, f7[11]))
+        f9[17] = Claudator(A, Claudator(B, Claudator(B, f6[2])))
+        f9[18] = Claudator(A, Claudator(B, f7[15]))
+        f9[19] = Claudator(A, Claudator(B, f7[17]))
+        f9[20] = Claudator(B, Claudator(A, f7[0]))
+        f9[21] = Claudator(B, Claudator(A, Claudator(A, Claudator(A, f5[1]))))
+        f9[22] = Claudator(B, Claudator(A, Claudator(A, f6[0])))
+        f9[23] = Claudator(B, Claudator(A, f7[4]))
+        f9[24] = Claudator(B, Claudator(A, f7[12]))
+        f9[25] = Claudator(B, f8[6])
+        f9[26] = Claudator(B, f8[7])
+        f9[27] = Claudator(B, f8[8])
+        f9[28] = Claudator(B, f8[9])
+        f9[29] = Claudator(B, Claudator(B, f7[3]))
+        f9[30] = Claudator(B, Claudator(B, f7[6]))
+        f9[31] = Claudator(B, Claudator(B, f7[7]))
+        f9[32] = Claudator(B, f8[12])
+        f9[33] = Claudator(B, Claudator(B, Claudator(B, f6[0])))
+        f9[34] = Claudator(B, Claudator(B, f7[12]))
+        f9[35] = Claudator(B, Claudator(B, f7[15]))
+        f9[36] = Claudator(B, Claudator(B, f7[16]))
+        f9[37] = Claudator(B, Claudator(B, f7[17]))
         c9 = sp.S(0)
         for i in range(0, len(den)):
             c9 += sp.Rational(1, den[i])*f9[i]

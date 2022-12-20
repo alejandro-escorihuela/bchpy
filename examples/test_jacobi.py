@@ -20,8 +20,8 @@ if __name__ == "__main__":
                 for l in range(1, rl.tamE[k - 1] + 1):
                     X = Eel(i, j)
                     Y = Eel(k, l)
-                    Z1 = (Corxet(Y, Corxet(X, Corxet(X, Y)))).expand()
-                    Z2 = (Corxet(X, Corxet(Y, Corxet(X, Y)))).expand()
+                    Z1 = (Claudator(Y, Claudator(X, Claudator(X, Y)))).expand()
+                    Z2 = (Claudator(X, Claudator(Y, Claudator(X, Y)))).expand()
                     Z = (Z1-Z2).expand()
                     if Z != 0:
                         print(X, Y, "->",  (Z1-Z2).expand())
