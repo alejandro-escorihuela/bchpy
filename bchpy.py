@@ -470,6 +470,8 @@ def bch20(A, B, depth = 6, debug = False):
     elem[1], elem[2] = A, B
     for i in range(3, len(b20.elemBCH)):
         if b20.elemBCH[i][5] < depth or (b20.elemBCH[i][5] == depth and b20.elemBCH[i][3] != 0):
+            if debug == True:
+                printd("BCH: Càlcul de l'element %d" % (i))
             j, k = b20.elemBCH[i][1], b20.elemBCH[i][2]
             elem[i] = Claudator(elem[j], elem[k])
     D = A + B
