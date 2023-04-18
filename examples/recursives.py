@@ -119,22 +119,22 @@ if __name__ == "__main__":
     # t1 = tm.time()
     # print(t1 - t0, "s")  
     
-    print("exp(w(i,j)*Eij)=exp(x*E11)*exp(alp(i,j)*Eij)*exp(x*E11)")
-    x, y = sp.symbols("x y")
-    t0 = tm.time()
-    esq = sp.S(0)
-    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
-    for i in range(0, ord_bch, 2):
-        for j in range(rl.tamE[i]):
-            esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "E")
-    esq = bch20(esq, x*Eel(1, 1, "E"), depth = ord_bch, debug = True)
-    esq = bch20(x*Eel(1, 1, "E"), esq.expand(), depth = ord_bch, debug = True)
-    metADA = Metode(ord_bch)
-    metADA.importFromExpr(esq, debug = True)
-    #print(metADA)
-    printmetC(metADA, ord_bch)
-    t1 = tm.time()
-    print(t1 - t0, "s") 
+    # print("exp(w(i,j)*Eij)=exp(x*E11)*exp(alp(i,j)*Eij)*exp(x*E11)")
+    # x, y = sp.symbols("x y")
+    # t0 = tm.time()
+    # esq = sp.S(0)
+    # alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
+    # for i in range(0, ord_bch, 2):
+    #     for j in range(rl.tamE[i]):
+    #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "E")
+    # esq = bch20(esq, x*Eel(1, 1, "E"), depth = ord_bch, debug = True)
+    # esq = bch20(x*Eel(1, 1, "E"), esq.expand(), depth = ord_bch, debug = True)
+    # metADA = Metode(ord_bch)
+    # metADA.importFromExpr(esq, debug = True)
+    # #print(metADA)
+    # printmetC(metADA, ord_bch)
+    # t1 = tm.time()
+    # print(t1 - t0, "s") 
 
     # print("exp(w(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)*exp(x.conjugate()*E12)")
     # x, y, xre, xim = sp.symbols("x y xre xim")
@@ -157,8 +157,6 @@ if __name__ == "__main__":
     # printmetC(metBCB, ord_bch, simconj = True)
     # t1 = tm.time()
     # print(t1 - t0, "s") 
-    
-    
 
     # print("exp(w(i,j)*Eij)=exp(x*E11)*exp(alp(i,j)*Eij)*exp(x.conjugate()*E11)")
     # x, y, xre, xim = sp.symbols("x y xre xim")
