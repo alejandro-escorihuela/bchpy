@@ -11,6 +11,7 @@ import recursive as rc
 import bch20Lyndon as b20
 import time as tm
 import datetime
+import sys
 from sympy import re, im
 from sympy.printing.pretty.stringpict import prettyForm
 from sympy.printing.pretty.pretty_symbology import pretty_symbol
@@ -491,10 +492,10 @@ def printi(text):
     print(colored("INFO :", "blue", attrs=['bold']), text)
         
 def printd(text):
-    print(colored("DEBUG:", "yellow", attrs=['bold']), text)
+    print(colored("DEBUG:", "yellow", attrs=['bold']), text, file=sys.stderr)
     
 def printe(text):
-    print(colored("ERROR:", "red", attrs=['bold']), text)
+    print(colored("ERROR:", "red", attrs=['bold']), text, file=sys.stderr)
 
 def bch20(A, B, depth = 6, debug = False):
     elem = []
