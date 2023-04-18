@@ -14,14 +14,14 @@ from qolib import *
 
 if __name__ == "__main__":
     impfits = True
-    n_max = 5
+    n_max = 13
 
     S = []
     S.append([0])
     for i in range(n_max + 1):
         S.append(Operator("S_{%d}" % (i + 1)))
         
-    Z = llegir_baseCAdj("compS2_base.txt", Y)
+    Z = llegir_baseS2("compS2_base.txt", S)
     
     if (len(Z) - 1 < n_max):
         print("La dimensió de la base llegida és menor que l'ordre a calcular. (" + str(len(Z) - 1) + "<" + str(n_max) + ")")
@@ -50,15 +50,15 @@ if __name__ == "__main__":
                     cdre = cdre.doit().expand()
                     sol = resoldre(cesq, cdre)
                     if sol:
-                        cad = "[Z" + str(i) + str(j) + ", Z" + str(k) + str(l) + "] = "
-                        cadrel = "relZ[" + str(i) + "][" + str(j) + "][" + str(k) + "][" + str(l) + "] = ["
-                        # cadtex = "\left[Z_{" + str(i) + "," + str(j) + "},Z_{" + str(k) + "," + str(l) + "} \\right] = "
+                        cad = "[M" + str(i) + str(j) + ", M" + str(k) + str(l) + "] = "
+                        cadrel = "relM[" + str(i) + "][" + str(j) + "][" + str(k) + "][" + str(l) + "] = ["
+                        # cadtex = "\left[M_{" + str(i) + "," + str(j) + "},M_{" + str(k) + "," + str(l) + "} \\right] = "
                         for m in sol:
                             if sol[m] != 0:
                                 if sol[m] < 0:
-                                    cad += str(sol[m]) + "*Z" + str(n) + str(c[n].index(m) + 1)
+                                    cad += str(sol[m]) + "*M" + str(n) + str(c[n].index(m) + 1)
                                 else:
-                                    cad += "+" + str(sol[m]) + "*Z" + str(n) + str(c[n].index(m) + 1)
+                                    cad += "+" + str(sol[m]) + "*M" + str(n) + str(c[n].index(m) + 1)
                                 nume, deno = sp.fraction(sol[m])
                                 cadrel += "[" + str(nume) + ", " + str(deno) + ", " + str(n) + ", " + str(c[n].index(m) + 1) + "], "
                                 # factex = ""
@@ -66,7 +66,7 @@ if __name__ == "__main__":
                                 #     factex = str(nume)
                                 #     if deno != 1:
                                 #         factex = "\\frac{" + factex + "}{" + str(deno) + "}"
-                                # cadtex += "+" + factex + "Z_{" + str(n) + "," + str(c[n].index(m) + 1) + "}"
+                                # cadtex += "+" + factex + "M_{" + str(n) + "," + str(c[n].index(m) + 1) + "}"
                         cadrel = cadrel[:-2] + "]"
                         print(cad)
                         if impfits:
