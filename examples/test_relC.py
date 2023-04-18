@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 # 24-04-2021
 # alex
-# test_relZ.py
+# test_relC.py
 
 import sympy as sp
 from sympy.physics.quantum import Operator, Commutator
@@ -20,13 +20,13 @@ if __name__ == "__main__":
         
     Z = llegir_baseCAdj("compAdj_base.txt", Y)
     
-    ord_bch = len(rl.tamZ) + 1
+    ord_bch = len(rl.tamC) + 1
     for i in range(1, ord_bch):
-        for j in range(1, rl.tamZ[i - 1] + 1):
+        for j in range(1, rl.tamC[i - 1] + 1):
             for k in range(1, ord_bch):
-                for l in range(1, rl.tamZ[k - 1] + 1):
-                    if rl.relZ[i][j][k][l][0][0] != 0:
-                        res = rl.relZ[i][j][k][l]
+                for l in range(1, rl.tamC[k - 1] + 1):
+                    if rl.relC[i][j][k][l][0][0] != 0:
+                        res = rl.relC[i][j][k][l]
                         cad = "[Z" + str(i) + str(j) + ", Z" + str(k) + str(l) + "] - ("
                         primer = True
                         resq = sp.S(0)

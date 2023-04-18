@@ -35,7 +35,7 @@ class Eel(sp.Expr):
     def __init__(self, i = 1, j = 1, basis_type = "!"):
         self.i = i
         self.j = j
-        if basis_type not in ["E", "Z"]:
+        if basis_type not in ["E", "C", "M", "M4", "M6"]:
             printe("%s no és una base vàlida" % (basis_type))
             exit(-1)
         self.t = basis_type
@@ -90,8 +90,14 @@ class Claudator(sp.Expr):
             exit(-1)
         if A.t == "E":
             ll = rl.corxetErel(i, j, k, l)
-        elif A.t == "Z":
-            ll = rl.corxetZrel(i, j, k, l)
+        elif A.t == "C":
+            ll = rl.corxetCrel(i, j, k, l)
+        elif A.t == "M":
+            ll = rl.corxetMrel(i, j, k, l)
+        elif A.t == "M4":
+            ll = rl.corxetM4rel(i, j, k, l)
+        elif A.t == "M6":
+            ll = rl.corxetM6rel(i, j, k, l)            
         else:
             printe("No hi ha cap base definida amb %s." % (A.t))
             exit(-1)            
@@ -116,9 +122,18 @@ class Metode():
         if basis_type == "E":
             self.depth = len(rl.tamE) if depth >= len(rl.tamE) else depth
             self.t = "E"
-        elif basis_type == "Z":
-            self.depth = len(rl.tamZ) if depth >= len(rl.tamZ) else depth
-            self.t = "Z"
+        elif basis_type == "C":
+            self.depth = len(rl.tamC) if depth >= len(rl.tamC) else depth
+            self.t = "C"
+        elif basis_type == "M":
+            self.depth = len(rl.tamM) if depth >= len(rl.tamM) else depth
+            self.t = "M"
+        elif basis_type == "M4":
+            self.depth = len(rl.tamM4) if depth >= len(rl.tamM4) else depth
+            self.t = "M4"
+        elif basis_type == "M6":
+            self.depth = len(rl.tamM6) if depth >= len(rl.tamM6) else depth
+            self.t = "M6"            
         else:
             printe("%s no és una base vàlida" % (basis_type))
             exit(-1)
@@ -181,7 +196,7 @@ class Metode():
         self.setw = True
 
     def setXX(self, *args, debug = False):
-        if self.t != "Z":
+        if self.t != "C":
             printe("Per mètodes XX* la base ha de ser Z i no %s" % (self.t))
             exit(-1)         
         if self.setw == True:
@@ -226,8 +241,14 @@ class Metode():
     def importFromExpr(self, esq, debug = False):
         if self.t == "E":
             tams = rl.tamE
-        elif self.t == "Z":
-            tams = rl.tamZ
+        elif self.t == "C":
+            tams = rl.tamC
+        elif self.t == "M":
+            tams = rl.tamM
+        elif self.t == "M4":
+            tams = rl.tamM4
+        elif self.t == "M6":
+            tams = rl.tamM6             
         _x_diff_var = sp.Symbol("_x_diff_var")
         if debug == True:
             printd("Important esquema")
@@ -384,8 +405,14 @@ class Metode():
         wret = []
         if self.t == "E":
             tams = rl.tamE
-        elif self.t == "Z":
-            tams = rl.tamZ
+        elif self.t == "C":
+            tams = rl.tamC
+        elif self.t == "M":
+            tams = rl.tamM
+        elif self.t == "M4":
+            tams = rl.tamM4
+        elif self.t == "M6":
+            tams = rl.tamM6            
         zero = sp.S(0)
         if self.num:
             zero = np.float128(0.0)
@@ -441,8 +468,14 @@ def palindromic(cofs):
 def collectEsq(esq, basis_type = "E"):
     if basis_type == "E":
         tams = rl.tamE
-    elif basis_type == "Z":
-        tams = rl.tamZ
+    elif basis_type == "C":
+        tams = rl.tamC
+    elif basis_type == "M":
+        tams = rl.tamM
+    elif basis_type == "M4":
+        tams = rl.tamM4
+    elif basis_type == "M6":
+        tams = rl.tamM6         
     else:
         printe("%s no és una base vàlida" % (basis_type))
         exit(-1)
@@ -481,6 +514,7 @@ def bch20(A, B, depth = 6, debug = False):
             D += elem[i]*(b20.elemBCH[i][3]/b20.elemBCH[i][4])
     return D
 
+# deprecated
 def bch9(A, B, depth = 6, debug = False):  
     if debug == True:
         printd("BCH d'ordre 1 a 4")
