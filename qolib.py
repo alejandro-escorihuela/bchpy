@@ -175,7 +175,7 @@ def escl(can, En):
     cane = can.doit().expand()
     return resoldre(cesq, cane)
 
-def pcorxets(E, label = "N"):
+def pcorxets(E, label = "E"):
     for i in range(1, len(E)):
         for j in range(1, len(E[i])):
             print(label + "_{" + str(i) + ", " + str(j) + "} =", E[i][j])

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*- 
 # 07-12-2020
 # alex
-# test_relN.py
+# test_relE.py
 
 import sympy as sp
 from sympy.physics.quantum import Operator, Commutator
@@ -16,13 +16,13 @@ if __name__ == "__main__":
     B = Operator("B")
 
     E = llegir_base("niats_base.txt", A, B)
-    ord_bch = len(rl.tamN) + 1
+    ord_bch = len(rl.tamE) + 1
     for i in range(1, ord_bch):
-        for j in range(1, rl.tamN[i - 1] + 1):
+        for j in range(1, rl.tamE[i - 1] + 1):
             for k in range(1, ord_bch):
-                for l in range(1, rl.tamN[k - 1] + 1):
-                    if rl.relN[i][j][k][l][0][0] != 0:
-                        res = rl.relN[i][j][k][l]
+                for l in range(1, rl.tamE[k - 1] + 1):
+                    if rl.relE[i][j][k][l][0][0] != 0:
+                        res = rl.relE[i][j][k][l]
                         cad = "[E" + str(i) + str(j) + ", E" + str(k) + str(l) + "] - ("
                         primer = True
                         resq = sp.S(0)

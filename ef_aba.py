@@ -41,7 +41,7 @@ def ef(s, m, vec, sc):
 
 def eferr(cofs, ABA = True, sc = False, rkn = False):
     a, b = cofs
-    met = Metode(depth = 9, basis_type = "N", numeric = True)
+    met = Metode(depth = 9, basis_type = "E", numeric = True)
     cc = []
     if ABA:
         s = len(b)
