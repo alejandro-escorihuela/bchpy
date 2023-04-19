@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
-# 24-04-2021
+# 19-04-2023
 # alex
-# test_relC.py
+# test_relM.py
 
 import sympy as sp
 from sympy.physics.quantum import Operator, Commutator
@@ -12,21 +12,21 @@ import relations as rl
 from qolib import *
 
 if __name__ == "__main__":
-    n_max = 9
-    Y = []
-    Y.append([0])
+    n_max = 13
+    S = []
+    S.append([0])
     for i in range(n_max + 1):
-        Y.append(Operator("Y_{%d}" % (i + 1)))
+        S.append(Operator("S_{%d}" % (i + 1)))
         
-    Z = llegir_baseCAdj("compAdj_base.txt", Y)
+    Z = llegir_baseS2("../aux/compS2_base.txt", S)
     
-    ord_bch = len(rl.tamC) + 1
+    ord_bch = len(rl.tamM) + 1
     for i in range(1, ord_bch):
-        for j in range(1, rl.tamC[i - 1] + 1):
+        for j in range(1, rl.tamM[i - 1] + 1):
             for k in range(1, ord_bch):
-                for l in range(1, rl.tamC[k - 1] + 1):
-                    if rl.relC[i][j][k][l][0][0] != 0:
-                        res = rl.relC[i][j][k][l]
+                for l in range(1, rl.tamM[k - 1] + 1):
+                    if rl.relM[i][j][k][l][0][0] != 0:
+                        res = rl.relM[i][j][k][l]
                         cad = "[Z" + str(i) + str(j) + ", Z" + str(k) + str(l) + "] - ("
                         primer = True
                         resq = sp.S(0)
