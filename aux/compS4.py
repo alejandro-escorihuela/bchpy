@@ -14,7 +14,7 @@ from qolib import *
 
 if __name__ == "__main__":
     impfits = True
-    n_max = 15
+    n_max = 17
 
     S = []
     S.append([0])
