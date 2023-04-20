@@ -32,7 +32,6 @@ if __name__ == "__main__":
     c = [0]
     for i in range(1, len(Z)):
         c.append(sp.symbols("s1:" + str(len(Z[i]))))
-
     for n in range(1, n_max + 1):
         print("Ordre " + str(n) + ":")
         llistes = []
@@ -42,13 +41,17 @@ if __name__ == "__main__":
             i, k = ind
             for j, l in itertools.product(range(1, len(Z[i])), range(1, len(Z[k]))):
                 if not (i == k and j > l):
+                    #print(Z[i][j], Z[k][l])
                     cdre = Commutator(Z[i][j], Z[k][l])
+                    #print("\t", cdre)
                     cesq = sp.S(0)
                     for m in range(1, len(Z[n])):
                         cesq += c[n][m - 1]*Z[n][m]
                     cesq = cesq.doit().expand()
                     cdre = cdre.doit().expand()
                     sol = resoldre(cesq, cdre)
+                    #print("\t", cesq, " = ", cdre)
+                    #print("\t", sol)
                     if sol:
                         cad = "[M" + str(i) + str(j) + ", M" + str(k) + str(l) + "] = "
                         cadrel = "relM[" + str(i) + "][" + str(j) + "][" + str(k) + "][" + str(l) + "] = ["

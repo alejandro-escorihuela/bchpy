@@ -110,6 +110,8 @@ def llegir_baseS2(txt, S):
     return Z
 
 def resoldre(exprEsq, exprDre):
+    #print("\t resoldre:")
+    #print("\t\t", exprEsq, "=", exprDre)
     eqs = []
     cpe = exprEsq
     eDre_arg = exprDre.args
@@ -126,10 +128,10 @@ def resoldre(exprEsq, exprDre):
         if equ not in eqs and -equ not in eqs:
             eqs.append(equ)
     sol = sp.solve(eqs)
+    #print("\t\t", sol, eqs)
     if sol:
         cpe_arg = cpe.args
         pos_afg = []
-        #print(cpe_arg)
         for i in range(len(cpe_arg)):
             cnc_i = cpe_arg[i].args_cnc()
             equ = sp.S(0)
@@ -137,14 +139,13 @@ def resoldre(exprEsq, exprDre):
                 cnc_j = cpe_arg[j].args_cnc()
                 if cnc_i[1] == cnc_j[1] and j not in pos_afg:
                     pos_afg.append(j)
-                    #print(cnc_j[0], cnc_j[1], sp.prod(cnc_j[0]))
+                    #print("\t\t\t", cnc_j[0], cnc_j[1], sp.prod(cnc_j[0]))
                     equ += sp.prod(cnc_j[0])
-            #print(equ, len(equ.args))
             #if (len(equ.args) > 0) and equ not in eqs and -equ not in eqs:
-            if equ not in eqs and -equ not in eqs:
+            if equ not in eqs and -equ not in eqs and not str(equ).isnumeric() :
                 eqs.append(equ)
         sol = sp.solve(eqs)
-        #print(eqs)
+        #print("\t\t", sol, eqs)
     return sol
 
 def esclCA(can, En, A):
