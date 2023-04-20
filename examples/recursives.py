@@ -52,7 +52,7 @@ def printmetC(met, o, simconj = False):
                 ind += 1
             
 if __name__ == "__main__":
-    ord_bch = 8
+    ord_bch = 13
     # print("?¿?")
     # x, y = sp.symbols("x y")
     # t0 = tm.time()

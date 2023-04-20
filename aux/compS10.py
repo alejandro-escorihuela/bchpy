@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- 
-# 18-04-2023
+# 20-04-2023
 # alex
-# compS6.py
-# Generar la base per a composicions de mètodes S6.
+# compS10.py
+# Generar la base per a composicions de mètodes S10.
 
 import sympy as sp
 from sympy.physics.quantum import Operator, Commutator
@@ -14,7 +14,7 @@ from qolib import *
 
 if __name__ == "__main__":
     impfits = True
-    n_max = 19
+    n_max = 27
 
     S = []
     S.append([0])
@@ -27,14 +27,18 @@ if __name__ == "__main__":
     # Z1
     Z.append([0])
     Z[1].append(S[1])
-    # Z2, Z3, Z4, Z5, Z6
+    # Z2, Z3, Z4, Z5, Z6, Z7, Z8, Z9, Z10
     Z.append([0])
     Z.append([0])
     Z.append([0])
     Z.append([0])
     Z.append([0])
-
-    for n in range(6, n_max + 1):
+    Z.append([0])
+    Z.append([0])
+    Z.append([0])
+    Z.append([0])
+    
+    for n in range(10, n_max + 1):
         Z.append([0])
         if n % 2 != 0:
             Z[n].append(S[n])
@@ -51,7 +55,7 @@ if __name__ == "__main__":
     pcorxets(Z, label = "Z")
 
     if impfits:
-        fitC = open("compS6_base.txt", "w")
+        fitC = open("compS10_base.txt", "w")
         for i in range(1, len(Z)):
             for j in range(1, len(Z[i])):
                 fitC.write(str(Z[i][j]) + " ")
