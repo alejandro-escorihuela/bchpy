@@ -209,7 +209,30 @@ class Metode():
         for i in range(1, len(self.cofs)):
             self.__recur_XX(self.cofs[i], i%2)
         self.setw = True
-            
+
+    def setSS2(self, *args, debug = False):
+        if self.t != "M":
+            printe("Per mètodes SS(S2) la base ha de ser M i no %s" % (self.t))
+            exit(-1)         
+        if self.setw == True:
+            self.w = self.__init_mat()
+        self.cofs = list(args)
+        cof_li = self.cofs
+        tipus = palindromic(cof_li)
+        if tipus == 0:
+            printe("Per mètodes SS(S2) no estan implementades les iteracions sense cap tipus de simetria")
+            exit(-1)             
+        elif tipus == 1:
+            cof_li = cof_li[len(cof_li)//2:]
+            for i in range(1, self.depth + 1, 2):
+                self.w[i][1] = cof_li[0]**i
+            for i in range(1, len(cof_li)):
+                if debug == True:
+                    txt_p = "Iteració simètrica " + str(i) + " amb mètode S2"
+                    printd(txt_p)
+                self.__recur_S2(cof_li[i], tipus)                
+        self.setw = True
+        
     def expand(self, debug = False):        
         for i in range(1, len(self.w)):
             for j in range(1, len(self.w[i])):
@@ -453,6 +476,11 @@ class Metode():
             bet = rc.recXa(self.w, bet, x, self.depth) 
         elif adj == 1:
             bet = rc.recXb(self.w, bet, x, self.depth)
+        self.w = bet.copy()
+
+    def __recur_S2(self, x, tip):
+        bet = self.__init_mat()
+        bet = rc.recS2sim(self.w, bet, x, self.depth)
         self.w = bet.copy()
         
 def palindromic(cofs):
