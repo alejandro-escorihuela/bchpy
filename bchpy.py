@@ -120,24 +120,25 @@ class Metode():
     def __init__(self, depth = 6, basis_type = "E", numeric = False, rkn = False):
         self.num = numeric
         self.rknd = rkn
-        if basis_type == "E":
-            self.depth = len(rl.tamE) if depth >= len(rl.tamE) else depth
-            self.t = "E"
-        elif basis_type == "C":
-            self.depth = len(rl.tamC) if depth >= len(rl.tamC) else depth
-            self.t = "C"
-        elif basis_type == "M":
-            self.depth = len(rl.tamM) if depth >= len(rl.tamM) else depth
-            self.t = "M"
-        elif basis_type == "M4":
-            self.depth = len(rl.tamM4) if depth >= len(rl.tamM4) else depth
-            self.t = "M4"
-        elif basis_type == "M6":
-            self.depth = len(rl.tamM6) if depth >= len(rl.tamM6) else depth
-            self.t = "M6"            
-        else:
+        dict_depth = {
+            "E"  : [4, len(rl.tamE)],
+            "C"  : [4, len(rl.tamC)],
+            "M"  : [5, len(rl.tamM)],
+            "M4" : [7, len(rl.tamM4)],
+            "M6" : [9, len(rl.tamM6)]          
+        }
+        for it in dict_depth:
+            if basis_type == it:
+                self.t = it
+        if self.t == "":
             printe("%s no és una base vàlida" % (basis_type))
-            exit(-1)
+            exit(-1)            
+        if depth < dict_depth[self.t][0]:
+            self.depth = dict_depth[self.t][0]
+        elif depth >= dict_depth[self.t][1]:
+            self.depth = dict_depth[self.t][1]
+        else:
+            self.depth = depth
         self.w = self.__init_mat()
         
     def setBAB(self, *args, debug = False):

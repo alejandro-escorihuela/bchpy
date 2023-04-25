@@ -38,7 +38,7 @@ if __name__ == "__main__":
             0.29906418130365592384446354, 0.33462491824529818378495798, 0.31529309239676659663205666, -0.79688793935291635291635401978884]
     cofs = cofs + cofs[-2::-1]
     t0 = tm.time()
-    met2 = Metode(depth = 9, basis_type = "M", numeric = True)
+    met2 = Metode(depth = 8, basis_type = "M", numeric = True)
     met2.setSS2(*cofs, debug=True)  
     t1 = tm.time()
     print(t1 - t0, "s")
@@ -50,7 +50,7 @@ if __name__ == "__main__":
     beta = 1 -2*alpha
     cofs = [alpha, beta, alpha]
     t0 = tm.time()
-    met3 = Metode(depth = 9, basis_type = "M4", numeric = True)
+    met3 = Metode(depth = 7, basis_type = "M4", numeric = True)
     met3.setSS4(*cofs, debug = True)  
     t1 = tm.time()
     print(t1 - t0, "s")
