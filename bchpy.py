@@ -232,6 +232,30 @@ class Metode():
                     printd(txt_p)
                 self.__recur_S2(cof_li[i], tipus)                
         self.setw = True
+
+    def setSS4(self, *args, debug = False):
+        if self.t != "M4":
+            printe("Per mètodes SS(S4) la base ha de ser M4 i no %s" % (self.t))
+            exit(-1)         
+        if self.setw == True:
+            self.w = self.__init_mat()
+        self.cofs = list(args)
+        cof_li = self.cofs
+        tipus = palindromic(cof_li)
+        if tipus == 0:
+            printe("Per mètodes SS(S4) no estan implementades les iteracions sense cap tipus de simetria")
+            exit(-1)             
+        elif tipus == 1:
+            cof_li = cof_li[len(cof_li)//2:]
+            self.w[1][1] = cof_li[0]
+            for i in range(5, self.depth + 1, 2):
+                self.w[i][1] = cof_li[0]**i
+            for i in range(1, len(cof_li)):
+                if debug == True:
+                    txt_p = "Iteració simètrica " + str(i) + " amb mètode S4"
+                    printd(txt_p)
+                self.__recur_S4(cof_li[i])
+        self.setw = True
         
     def expand(self, debug = False):        
         for i in range(1, len(self.w)):
@@ -479,8 +503,14 @@ class Metode():
         self.w = bet.copy()
 
     def __recur_S2(self, x, tip):
+        # tip <- per als simètric-conjugats
         bet = self.__init_mat()
         bet = rc.recS2sim(self.w, bet, x, self.depth)
+        self.w = bet.copy()
+
+    def __recur_S4(self, x):
+        bet = self.__init_mat()
+        bet = rc.recS4sim(self.w, bet, x, self.depth)
         self.w = bet.copy()
         
 def palindromic(cofs):

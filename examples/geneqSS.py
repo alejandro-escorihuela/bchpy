@@ -43,3 +43,15 @@ if __name__ == "__main__":
     t1 = tm.time()
     print(t1 - t0, "s")
     met2.cprint()  
+
+    printi("Calculant mètodes SS(S4)")
+    printi("3s etapes numèric")
+    alpha = 1/(2 - 2**(1/5))
+    beta = 1 -2*alpha
+    cofs = [alpha, beta, alpha]
+    t0 = tm.time()
+    met3 = Metode(depth = 9, basis_type = "M4", numeric = True)
+    met3.setSS4(*cofs, debug = True)  
+    t1 = tm.time()
+    print(t1 - t0, "s")
+    met3.cprint()      
