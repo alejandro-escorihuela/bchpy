@@ -212,31 +212,20 @@ class Metode():
         self.setw = True
 
     def setSS2(self, *args, debug = False):
-        if self.t != "M":
-            printe("Per mètodes SS(S2) la base ha de ser M i no %s" % (self.t))
-            exit(-1)         
-        if self.setw == True:
-            self.w = self.__init_mat()
-        self.cofs = list(args)
-        cof_li = self.cofs
-        tipus = palindromic(cof_li)
-        if tipus == 0:
-            printe("Per mètodes SS(S2) no estan implementades les iteracions sense cap tipus de simetria")
-            exit(-1)             
-        elif tipus == 1:
-            cof_li = cof_li[len(cof_li)//2:]
-            for i in range(1, self.depth + 1, 2):
-                self.w[i][1] = cof_li[0]**i
-            for i in range(1, len(cof_li)):
-                if debug == True:
-                    txt_p = "Iteració simètrica " + str(i) + " amb mètode S2"
-                    printd(txt_p)
-                self.__recur_S2(cof_li[i], tipus)                
-        self.setw = True
+        return self.setSS(*args, base = 2, debug = debug)
 
     def setSS4(self, *args, debug = False):
-        if self.t != "M4":
-            printe("Per mètodes SS(S4) la base ha de ser M4 i no %s" % (self.t))
+        return self.setSS(*args, base = 4, debug = debug)
+
+    def setSS6(self, *args, debug = False):
+        return self.setSS(*args, base = 6, debug = debug)
+        
+    def setSS(self, *args, base = 2, debug = False):
+        if base == 2 and self.t != "M":
+            printe("Per mètodes SS(S2) la base ha de ser M i no %s" % (self.t))
+            exit(-1)             
+        elif base != 2 and self.t != "M" + str(base):
+            printe("Per mètodes SS(S" + str(base) + ") la base ha de ser M" + str(base) + " i no %s" % (self.t))
             exit(-1)         
         if self.setw == True:
             self.w = self.__init_mat()
@@ -244,18 +233,27 @@ class Metode():
         cof_li = self.cofs
         tipus = palindromic(cof_li)
         if tipus == 0:
-            printe("Per mètodes SS(S4) no estan implementades les iteracions sense cap tipus de simetria")
+            printe("Per mètodes SS(S" + str(base) + ") no estan implementades les iteracions sense cap tipus de simetria")
             exit(-1)             
         elif tipus == 1:
             cof_li = cof_li[len(cof_li)//2:]
             self.w[1][1] = cof_li[0]
-            for i in range(5, self.depth + 1, 2):
+            for i in range(base + 1, self.depth + 1, 2):
                 self.w[i][1] = cof_li[0]**i
             for i in range(1, len(cof_li)):
                 if debug == True:
-                    txt_p = "Iteració simètrica " + str(i) + " amb mètode S4"
+                    txt_p = "Iteració simètrica " + str(i) + " amb mètode S" + str(base)
                     printd(txt_p)
-                self.__recur_S4(cof_li[i])
+                if base == 2:
+                    self.__recur_S2(cof_li[i], tipus)
+                elif base == 4:
+                    self.__recur_S4(cof_li[i])
+                elif base == 6:
+                    self.__recur_S6(cof_li[i])
+                elif base == 8:
+                    self.__recur_S8(cof_li[i])
+                elif base == 10:
+                    self.__recur_S10(cof_li[i])                    
         self.setw = True
         
     def expand(self, debug = False):        
@@ -512,6 +510,21 @@ class Metode():
     def __recur_S4(self, x):
         bet = self.__init_mat()
         bet = rc.recS4sim(self.w, bet, x, self.depth)
+        self.w = bet.copy()
+
+    def __recur_S6(self, x):
+        bet = self.__init_mat()
+        bet = rc.recS6sim(self.w, bet, x, self.depth)
+        self.w = bet.copy()
+
+    def __recur_S8(self, x):
+        bet = self.__init_mat()
+        bet = rc.recS8sim(self.w, bet, x, self.depth)
+        self.w = bet.copy()
+        
+    def __recur_S10(self, x):
+        bet = self.__init_mat()
+        bet = rc.recS10sim(self.w, bet, x, self.depth)
         self.w = bet.copy()
         
 def palindromic(cofs):
