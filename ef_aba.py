@@ -65,3 +65,15 @@ def eferr(cofs, ABA = True, sc = False, rkn = False):
     for i in range(2, 10):
         ret.append(ef(s, i, base[i], sc))
     return ret
+
+def eferrSS(cofs, base = 2):
+    if base == 2:
+        met = Metode(depth = 9, basis_type = "M", numeric = True)
+    else:
+        met = Metode(depth = 9, basis_type = "M" + str(base), numeric = True)
+    cc = []
+    met.setSS(*cofs, base = base, debug = False)      
+    ret = []
+    for i in range(base, 10):
+        ret.append(ef(len(cofs), i, met.w[i], sc = False))
+    return ret
