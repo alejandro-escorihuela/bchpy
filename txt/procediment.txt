@@ -1,0 +1,28 @@
+elements de la base
+   (niats.py)
+	|
+	|
+	|
+	V
+relacions de commutació
+  (1r llegir_base a qolib.py)
+  (2n niatsId.py)
+  (3r relations.py)
+	|
+	|
+	|
+	V
+actualitzar bchpy.py
+(classes Eel i Claudator)
+	|
+	|
+	|
+	V
+fórmules recursives
+recursives.py -> recursive.py
+	|
+	|
+	|
+	V
+actualitzar bchpy.py
+(classes Metode)
