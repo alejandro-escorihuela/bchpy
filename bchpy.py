@@ -151,15 +151,8 @@ class Metode():
         # cof_li = list(reversed(args))
         cof_li = self.cofs
         tipus = palindromic(cof_li)
-        if tipus == 0:        
-            self.w[1][2] = cof_li[0]
-            for i in range(1, len(cof_li)):
-                if debug == True:
-                    txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
-                    printd(txt_p)
-                self.__recur_AB(cof_li[i], (i - 1)%2)
-            self.setw = True
-        elif tipus == 1:
+        senar = (len(cof_li) % 2) != 0
+        if tipus == 1 and senar == True:
             cof_li = cof_li[len(cof_li)//2:]
             iniEl = 0 if len(cof_li)%2 == 0 else 1
             self.w[1][iniEl + 1] = cof_li[0]
@@ -167,7 +160,14 @@ class Metode():
                 if debug == True:
                     txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
                     printd(txt_p)
-                self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)
+                self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)            
+        else:        
+            self.w[1][2] = cof_li[0]
+            for i in range(1, len(cof_li)):
+                if debug == True:
+                    txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
+                    printd(txt_p)
+                self.__recur_AB(cof_li[i], (i - 1)%2)
         self.setw = True
         
     def setABA(self, *args, debug = False):
@@ -180,13 +180,8 @@ class Metode():
         # cof_li = list(reversed(args))
         cof_li = self.cofs
         tipus = palindromic(cof_li)
-        if tipus == 0:
-            self.w[1][1] = cof_li[0]
-            for i in range(1, len(cof_li)):
-                if debug == True:
-                    printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
-                self.__recur_AB(cof_li[i], i%2)
-        elif tipus == 1:
+        senar = (len(cof_li) % 2) != 0
+        if tipus == 1 and senar == True:
             cof_li = cof_li[len(cof_li)//2:]
             iniEl = 1 if len(cof_li)%2 == 0 else 0
             self.w[1][iniEl + 1] = cof_li[0]
@@ -194,7 +189,13 @@ class Metode():
                 if debug == True:
                     txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
                     printd(txt_p)
-                self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)                
+                self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)              
+        else:
+            self.w[1][1] = cof_li[0]
+            for i in range(1, len(cof_li)):
+                if debug == True:
+                    printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
+                self.__recur_AB(cof_li[i], i%2)             
         self.setw = True
 
     def setXX(self, *args, debug = False):
@@ -232,28 +233,26 @@ class Metode():
         self.cofs = list(args)
         cof_li = self.cofs
         tipus = palindromic(cof_li)
-        if tipus == 0:
-            printe("Per mètodes SS(S" + str(base) + ") no estan implementades les iteracions sense cap tipus de simetria")
-            exit(-1)             
-        elif tipus == 1:
-            cof_li = cof_li[len(cof_li)//2:]
+        senar = (len(cof_li) % 2) != 0
+        cof_li = cof_li[len(cof_li)//2:]
+        if senar == True:
             self.w[1][1] = cof_li[0]
             for i in range(base + 1, self.depth + 1, 2):
                 self.w[i][1] = cof_li[0]**i
-            for i in range(1, len(cof_li)):
-                if debug == True:
-                    txt_p = "Iteració simètrica " + str(i) + " amb mètode S" + str(base)
-                    printd(txt_p)
-                if base == 2:
-                    self.__recur_S2(cof_li[i], tipus)
-                elif base == 4:
-                    self.__recur_S4(cof_li[i])
-                elif base == 6:
-                    self.__recur_S6(cof_li[i])
-                elif base == 8:
-                    self.__recur_S8(cof_li[i])
-                elif base == 10:
-                    self.__recur_S10(cof_li[i])                    
+        for i in range(1, len(cof_li)):
+            if debug == True:
+                txt_p = "Iteració " + str(i) + " amb mètode S" + str(base) + " del tipus " + str(tipus)
+                printd(txt_p)
+            if base == 2:
+                self.__recur_S2(cof_li[i], tipus)
+            elif base == 4:
+                self.__recur_S4(cof_li[i], tipus)
+            elif base == 6:
+                self.__recur_S6(cof_li[i], tipus)
+            elif base == 8:
+                self.__recur_S8(cof_li[i], tipus)
+            elif base == 10:
+                self.__recur_S10(cof_li[i], tipus)                    
         self.setw = True
         
     def expand(self, debug = False):        
@@ -502,40 +501,57 @@ class Metode():
         self.w = bet.copy()
 
     def __recur_S2(self, x, tip):
-        # tip <- per als simètric-conjugats
+        if tip == 0:
+            printe("Per mètodes SS(S2) no estan implementades les iteracions sense cap tipus de simetria")
+            exit(-1)         
         bet = self.__init_mat()
         bet = rc.recS2sim(self.w, bet, x, self.depth)
         self.w = bet.copy()
 
-    def __recur_S4(self, x):
+    def __recur_S4(self, x, tip):
         bet = self.__init_mat()
-        bet = rc.recS4sim(self.w, bet, x, self.depth)
+        if tip == 0:
+            printe("Per mètodes SS(S4) no estan implementades les iteracions sense cap tipus de simetria")
+            exit(-1)                    
+        elif tip == 1:
+            bet = rc.recS4sim(self.w, bet, x, self.depth)
+        elif tip == 2:
+            bet = rc.recS4simconj(self.w, bet, x, self.depth)
         self.w = bet.copy()
 
-    def __recur_S6(self, x):
+    def __recur_S6(self, x, tip):
         bet = self.__init_mat()
+        if tip == 0:
+            printe("Per mètodes SS(S6) no estan implementades les iteracions sense cap tipus de simetria")
+            exit(-1)         
         bet = rc.recS6sim(self.w, bet, x, self.depth)
         self.w = bet.copy()
 
-    def __recur_S8(self, x):
+    def __recur_S8(self, x, tip):
         bet = self.__init_mat()
+        if tip == 0:
+            printe("Per mètodes SS(S8) no estan implementades les iteracions sense cap tipus de simetria")
+            exit(-1)         
         bet = rc.recS8sim(self.w, bet, x, self.depth)
         self.w = bet.copy()
         
-    def __recur_S10(self, x):
+    def __recur_S10(self, x, tip):
         bet = self.__init_mat()
+        if tip == 0:
+            printe("Per mètodes SS(S10) no estan implementades les iteracions sense cap tipus de simetria")
+            exit(-1)         
         bet = rc.recS10sim(self.w, bet, x, self.depth)
         self.w = bet.copy()
         
 def palindromic(cofs):
     #return 0
-    if cofs == cofs[::-1] and (len(cofs) % 2) != 0:
+    if cofs == cofs[::-1]:
         return 1
-    # cofsconj = cofs.copy()
-    # for i in range(len(cofsconj)):
-    #     cofsconj[i] = cofsconj[i].conjugate()
-    # if cofsconj == cofs[::-1] and (len(cofs) % 2) != 0:
-    #     return 2
+    cofsconj = cofs.copy()
+    for i in range(len(cofsconj)):
+        cofsconj[i] = cofsconj[i].conjugate()
+    if cofsconj == cofs[::-1]:
+        return 2
     return 0
         
 def collectEsq(esq, basis_type = "E"):
