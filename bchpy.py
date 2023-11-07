@@ -234,7 +234,8 @@ class Metode():
         cof_li = self.cofs
         tipus = palindromic(cof_li)
         senar = (len(cof_li) % 2) != 0
-        cof_li = cof_li[len(cof_li)//2:]
+        if tipus == 1:
+            cof_li = cof_li[len(cof_li)//2:]
         if senar == True:
             self.w[1][1] = cof_li[0]
             for i in range(base + 1, self.depth + 1, 2):
@@ -501,22 +502,19 @@ class Metode():
         self.w = bet.copy()
 
     def __recur_S2(self, x, tip):
-        if tip == 0:
-            printe("Per mètodes SS(S2) no estan implementades les iteracions sense cap tipus de simetria")
-            exit(-1)         
         bet = self.__init_mat()
-        bet = rc.recS2sim(self.w, bet, x, self.depth)
+        if tip == 1:
+            bet = rc.recS2sim(self.w, bet, x, self.depth)
+        else:
+            bet = rc.recS2(self.w, bet, x, self.depth)
         self.w = bet.copy()
 
     def __recur_S4(self, x, tip):
-        bet = self.__init_mat()
-        if tip == 0:
-            printe("Per mètodes SS(S4) no estan implementades les iteracions sense cap tipus de simetria")
-            exit(-1)                    
-        elif tip == 1:
+        bet = self.__init_mat()              
+        if tip == 1:
             bet = rc.recS4sim(self.w, bet, x, self.depth)
-        elif tip == 2:
-            bet = rc.recS4simconj(self.w, bet, x, self.depth)
+        else:
+            bet = rc.recS4(self.w, bet, x, self.depth)     
         self.w = bet.copy()
 
     def __recur_S6(self, x, tip):
@@ -544,14 +542,14 @@ class Metode():
         self.w = bet.copy()
         
 def palindromic(cofs):
-    #return 0
+    # return 0
     if cofs == cofs[::-1]:
         return 1
-    cofsconj = cofs.copy()
-    for i in range(len(cofsconj)):
-        cofsconj[i] = cofsconj[i].conjugate()
-    if cofsconj == cofs[::-1]:
-        return 2
+    # cofsconj = cofs.copy()
+    # for i in range(len(cofsconj)):
+    #     cofsconj[i] = cofsconj[i].conjugate()
+    # if cofsconj == cofs[::-1]:
+    #     return 2
     return 0
         
 def collectEsq(esq, basis_type = "E"):

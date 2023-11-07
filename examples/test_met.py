@@ -20,7 +20,7 @@ if __name__ == "__main__":
     met = Metode(depth = 7, basis_type = "E", numeric = True)
     met.setABA(*cofs)
     correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
-    for i in range(2, 6):
+    for i in range(2, 7):
         for j in range(1, len(met.w[i])):
             correcte = correcte and abs(met.w[i][j]) < tol
     if not correcte:
@@ -32,7 +32,7 @@ if __name__ == "__main__":
     met = Metode(depth = 7, basis_type = "E", numeric = True)
     met.setBAB(*cofs)
     correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
-    for i in range(2, 6):
+    for i in range(2, 7):
         for j in range(1, len(met.w[i])):
             correcte = correcte and abs(met.w[i][j]) < tol
     if not correcte:
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     met = Metode(depth = 7, basis_type = "C", numeric = True)
     met.setXX(*cofs)
     correcte = abs(met.w[1][1] - 1.0) < tol
-    for i in range(2, 6):
+    for i in range(2, 7):
         for j in range(1, len(met.w[i])):
             correcte = correcte and abs(met.w[i][j]) < tol
     if not correcte:
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     met = Metode(depth = 7, basis_type = "M", numeric = True)
     met.setSS2(cofs[0], cofs[1], cofs[2], cofs[3], cofs[2], cofs[1], cofs[0])  
     correcte = abs(met.w[1][1] - 1.0) < tol 
-    for i in range(2, 6):
+    for i in range(2, 7):
         for j in range(1, len(met.w[i])):
             correcte = correcte and abs(met.w[i][j]) < tol
     if not correcte:
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     met = Metode(depth = 8, basis_type = "M", numeric = True)
     met.setSS2(*cofs)
     correcte = abs(met.w[1][1] - 1.0) < tol
-    for i in range(2, 8):
+    for i in range(2, 9):
         for j in range(1, len(met.w[i])):
             correcte = correcte and abs(met.w[i][j]) < tol
     if not correcte:
@@ -84,9 +84,33 @@ if __name__ == "__main__":
     met = Metode(depth = 7, basis_type = "M4", numeric = True)
     met.setSS4(*cofs)     
     correcte = abs(met.w[1][1] - 1.0) < tol
-    for i in range(2, 6):
+    for i in range(2, 7):
         for j in range(1, len(met.w[i])):
             correcte = correcte and abs(met.w[i][j]) < tol
     if not correcte:
         printe("Resultat erroni en Mètode SS(S4) simètric d'ordre 6")
         met.cprint()
+
+    ## Mètode SC(S2) simètric-conjugat d'ordre 5
+    cofs = [(0.1752684090720741140583563+0.05761474413053870201304364j), (0.1848736801929841604288898-0.1941219227572495885067758j), 0.2797158214698834510255077, (0.1848736801929841604288898+0.1941219227572495885067758j), (0.1752684090720741140583563-0.05761474413053870201304364j)] 
+    met = Metode(depth = 6, basis_type = "M", numeric = True)
+    met.setSS2(*cofs)
+    correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
+    for i in range(2, 6):
+        for j in range(1, len(met.w[i])):
+            correcte = correcte and abs(met.w[i][j].real) < tol and abs(met.w[i][j].imag) < tol
+    if not correcte:
+        printe("Resultat erroni en Mètode SC(S2) simètric-conjugat d'ordre 5")
+        met.cprint()        
+
+    ## Mètode SS(S2) simètric d'ordre 6 amb coeficients complexos
+    cofs =[(0.11690003755466129+0.04342825461606034j), (0.12955910128208825-0.1239896121880926j), (0.18653249281213383+0.003107430710072675j), (0.13401673670223335+0.15490785372391916j), (0.18653249281213383+0.003107430710072675j), (0.12955910128208825-0.1239896121880926j), (0.11690003755466129+0.04342825461606034j)]
+    met = Metode(depth = 7, basis_type = "M", numeric = True)
+    met.setSS2(*cofs)
+    correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
+    for i in range(2, 7):
+        for j in range(1, len(met.w[i])):
+            correcte = correcte and abs(met.w[i][j].real) < tol and abs(met.w[i][j].imag) < tol
+    if not correcte:
+        printe("Resultat erroni en Mètode SS(S2) simètric d'ordre 6 amb coeficients complexos")
+        met.cprint()      
