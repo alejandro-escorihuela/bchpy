@@ -15,7 +15,7 @@ import recurS2py as rS2py
 import recurS4py as rS4py
 import recurS6py as rS6py
 
-rABc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurcAB.so")
+rABc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurABc.so")
 rABc.recAsim_c.argtypes = (ct.POINTER(ct.c_double), ct.c_double, ct.c_int, ct.c_int)    
 rABc.recAsim_c.restype = ct.c_void_p
 rABc.recBsim_c.argtypes = (ct.POINTER(ct.c_double), ct.c_double, ct.c_int, ct.c_int)    
@@ -74,13 +74,13 @@ def recXb(alp, bet, x, order):
 def recS2(alp, bet, x, order):
     return rS2py.recS2_py(alp, bet, x, order)
 
-def recS2sim_(alp, bet, x, order):
+def recS2sim(alp, bet, x, order):
     return rS2py.recS2sim_py(alp, bet, x, order)
 
 def recS4(alp, bet, x, order):
     return rS4py.recS4_py(alp, bet, x, order)
 
-def recS4sim_(alp, bet, x, order):
+def recS4sim(alp, bet, x, order):
     return rS4py.recS4sim_py(alp, bet, x, order)
 
 def recS6sim(alp, bet, x, order):

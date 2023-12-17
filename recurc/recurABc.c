@@ -3,7 +3,7 @@
 /* recur.c */
 #include <stdio.h>
 #include <stdlib.h>
-#include "recurcAB.h"
+#include "recurABc.h"
 
 void copyesq(double * dest, double * orig) {
   int i = 0;
@@ -17,7 +17,7 @@ void recAsim_c(double * res, double x, int order, int rkn) {
   double potx[9] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   double pal0[9] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   double pal1[9] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  
+
   copyesq(alp, res);
   for (i = 1; i < order; i++) {
     potx[i] = x*potx[i - 1];

@@ -1,7 +1,7 @@
 # 17-12-2023
 # alex
 
-OBJ = recurcAB.so # Objectes
+OBJ = recurABc.so # Objectes
 COM = gcc # Compilador
 LIB = -lm # Llibreries (-l*, -L*, -I*)
 AVS = -W -Wall -Wextra -ansi -pedantic # Avisos
@@ -10,7 +10,7 @@ OPC = $(OPT) $(AVS) $(LIB) # Opcions
 
 all: $(OBJ)
 
-recurcAB.so: recurcAB.c recurcAB.h
+recurABc.so: recurABc.c recurABc.h
 	@echo Compilant $<
 	$(COM) $(OPC) $< -o $@
 
