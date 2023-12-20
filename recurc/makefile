@@ -2,7 +2,11 @@
 # alex
 
 OBJ = recurABc.so # Objectes
-COM = gcc # Compilador
+ICC = /opt/intel/oneapi/compiler/2024.0/bin/icx  # Compilador C intel
+# Per al compilador d'intel primer:
+# $ export LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/lib:/usr/local/lib"
+GCC = gcc # Compilador C gnu
+COM = $(GCC)
 LIB = -lm # Llibreries (-l*, -L*, -I*)
 AVS = -W -Wall -Wextra -ansi -pedantic # Avisos
 OPT = -march=native -O2 -pipe -std=c17 -shared -fPIC # Optimitzacio
