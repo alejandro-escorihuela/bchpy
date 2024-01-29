@@ -181,6 +181,8 @@ class Metode():
         cof_li = self.cofs
         tipus = palindromic(cof_li)
         senar = (len(cof_li) % 2) != 0
+        if not isinstance(cof_li[0], complex) and not isinstance(cof_li[0], sp.Basic):
+            print("numero")
         if tipus == 1 and senar == True:
             cof_li = cof_li[len(cof_li)//2:]
             iniEl = 1 if len(cof_li)%2 == 0 else 0

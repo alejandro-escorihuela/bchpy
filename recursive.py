@@ -6,6 +6,7 @@
 
 import ctypes as ct
 import numpy as np
+import sympy as sp
 import os
 import sys
 sys.path.insert(0, os.path.dirname(__file__) + "/recurpy")
@@ -28,7 +29,7 @@ def recB(alp, bet, x, order):
     return rABpy.recB_py(alp, bet, x, order)
 
 def recAsim(alp, bet, x, order, rkn):
-    if not isinstance(x, complex):
+    if not isinstance(x, complex) and not isinstance(x, sp.Basic):
         global rABc
         alpc = (ct.c_double*128)()
         k = 0
@@ -47,7 +48,7 @@ def recAsim(alp, bet, x, order, rkn):
         return rABpy.recAsim_py(alp, bet, x, order, rkn)
 
 def recBsim(alp, bet, x, order, rkn):
-    if not isinstance(x, complex):
+    if not isinstance(x, complex) and not isinstance(x, sp.Basic):
         global rABc       
         alpc = (ct.c_double*128)()
         k = 0
