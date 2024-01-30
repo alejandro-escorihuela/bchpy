@@ -1,7 +1,7 @@
 # 17-12-2023
 # alex
 
-OBJ = recurABc.so # Objectes
+OBJ = metodeABA.so recurABc.so # Objectes
 ICC = /opt/intel/oneapi/compiler/2024.0/bin/icx  # Compilador C intel
 # Per al compilador d'intel primer:
 # $ export LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/lib:/usr/local/lib"
@@ -13,6 +13,10 @@ OPT = -march=native -O2 -pipe -std=c17 -shared -fPIC # Optimitzacio
 OPC = $(OPT) $(AVS) $(LIB) # Opcions
 
 all: $(OBJ)
+
+metodeABA.so: metodeABA.c metodeABA.h recurABc.h
+	@echo Compilant $<
+	$(COM) $(OPC) $< -o $@
 
 recurABc.so: recurABc.c recurABc.h
 	@echo Compilant $<

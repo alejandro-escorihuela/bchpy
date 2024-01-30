@@ -16,7 +16,7 @@ import recurS2py as rS2py
 import recurS4py as rS4py
 import recurS6py as rS6py
 
-rABc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurABc.so")
+rABc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurABc.so", mode = ct.RTLD_GLOBAL)
 rABc.recAsim_c.argtypes = (ct.POINTER(ct.c_double), ct.c_double, ct.c_int, ct.c_int)    
 rABc.recAsim_c.restype = ct.c_void_p
 rABc.recBsim_c.argtypes = (ct.POINTER(ct.c_double), ct.c_double, ct.c_int, ct.c_int)    

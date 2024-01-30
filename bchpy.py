@@ -4,6 +4,7 @@
 # alex
 # bchpy.py
 
+import ctypes as ct
 import numpy as np
 import sympy as sp
 import relations as rl
@@ -12,6 +13,7 @@ import bch20Lyndon as b20
 import time as tm
 import datetime
 import sys
+import os
 from sympy import re, im
 from sympy.printing.pretty.stringpict import prettyForm
 from sympy.printing.pretty.pretty_symbology import pretty_symbol
@@ -19,6 +21,12 @@ from sympy.core.containers import Tuple
 from sympy.parsing.sympy_parser import parse_expr
 from termcolor import colored
 from re import sub as strsub
+
+mABA = ct.CDLL(os.path.dirname(__file__) + "/recurc/metodeABA.so")
+mABA.metode_setABAsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
+mABA.metode_setABAsim.restype = ct.c_void_p
+mABA.metode_setBABsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
+mABA.metode_setBABsim.restype = ct.c_void_p
 
 class Eel(sp.Expr):
     is_commutative = False
@@ -182,22 +190,23 @@ class Metode():
         tipus = palindromic(cof_li)
         senar = (len(cof_li) % 2) != 0
         if not isinstance(cof_li[0], complex) and not isinstance(cof_li[0], sp.Basic):
-            print("numero")
-        if tipus == 1 and senar == True:
-            cof_li = cof_li[len(cof_li)//2:]
-            iniEl = 1 if len(cof_li)%2 == 0 else 0
-            self.w[1][iniEl + 1] = cof_li[0]
-            for i in range(1, len(cof_li)):
-                if debug == True:
-                    txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
-                    printd(txt_p)
-                self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)              
+            self.__setABAc(0)
         else:
-            self.w[1][1] = cof_li[0]
-            for i in range(1, len(cof_li)):
-                if debug == True:
-                    printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
-                self.__recur_AB(cof_li[i], i%2)             
+            if tipus == 1 and senar == True:
+                cof_li = cof_li[len(cof_li)//2:]
+                iniEl = 1 if len(cof_li)%2 == 0 else 0
+                self.w[1][iniEl + 1] = cof_li[0]
+                for i in range(1, len(cof_li)):
+                    if debug == True:
+                        txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
+                        printd(txt_p)
+                    self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)              
+            else:
+                self.w[1][1] = cof_li[0]
+                for i in range(1, len(cof_li)):
+                    if debug == True:
+                        printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
+                    self.__recur_AB(cof_li[i], i%2)             
         self.setw = True
 
     def setXX(self, *args, debug = False):
@@ -479,7 +488,33 @@ class Metode():
             for j in range(1, len(self.w[i])):
                 cad = cad + "w(" + str(i) + "," + str(j) + ") = " + str(self.w[i][j]) + "\n"
         return cad
-    
+
+    def __setABAc(self, AB):
+        global mABA
+        tam = len(self.cofs)
+        tipus = palindromic(self.cofs)
+        cofc = (ct.c_double*tam)()
+        alpc = (ct.c_double*128)()        
+        for i in range(tam):
+            cofc[i] = self.cofs[i]
+        if not isinstance(cofc[0], complex):
+            # if tipus == 0:
+            #     if AB == 0:  #metode_setABA
+            #     elif AB == 1:#metode_setBAB
+            if tipus == 1:
+                if AB == 0:
+                    mABA.metode_setABAsim(tam, cofc, alpc, self.depth, self.rknd)
+                elif AB == 1:
+                    mABA.metode_setBABsim(tam, cofc, alpc, self.depth, self.rknd)
+                k = 0
+                for i in range(1, len(self.w), 2):
+                    for j in range(1, len(self.w[i])):
+                        self.w[i][j] = alpc[k]
+                        k += 1     
+        # else:
+        #     if AB == 0:    #metode_setABAcomp
+        #     elif AB == 1:  #metode_setBABcomp
+                
     def __recur_AB(self, x, AB):
         bet = self.__init_mat()
         if AB == 0:
