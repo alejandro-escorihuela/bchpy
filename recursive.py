@@ -17,10 +17,10 @@ import recurS4py as rS4py
 import recurS6py as rS6py
 
 rABc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurABc.so", mode = ct.RTLD_GLOBAL)
-rABc.recAsim_c.argtypes = (ct.POINTER(ct.c_double), ct.c_double, ct.c_int, ct.c_int)    
-rABc.recAsim_c.restype = ct.c_void_p
-rABc.recBsim_c.argtypes = (ct.POINTER(ct.c_double), ct.c_double, ct.c_int, ct.c_int)    
-rABc.recBsim_c.restype = ct.c_void_p
+rABc.recAsim.argtypes = (ct.POINTER(ct.c_double), ct.c_double, ct.c_int, ct.c_int)    
+rABc.recAsim.restype = ct.c_void_p
+rABc.recBsim.argtypes = (ct.POINTER(ct.c_double), ct.c_double, ct.c_int, ct.c_int)    
+rABc.recBsim.restype = ct.c_void_p
 
 def recA(alp, bet, x, order):
     return rABpy.recA_py(alp, bet, x, order)
@@ -37,7 +37,7 @@ def recAsim(alp, bet, x, order, rkn):
             for j in range(1, len(alp[i])):
                 alpc[k] = alp[i][j]
                 k += 1
-        rABc.recAsim_c(alpc, x, order, int(rkn))
+        rABc.recAsim(alpc, x, order, int(rkn))
         k = 0
         for i in range(1, len(alp), 2):
             for j in range(1, len(alp[i])):
@@ -56,7 +56,7 @@ def recBsim(alp, bet, x, order, rkn):
             for j in range(1, len(alp[i])):
                 alpc[k] = alp[i][j]
                 k += 1
-        rABc.recBsim_c(alpc, x, order, int(rkn))
+        rABc.recBsim(alpc, x, order, int(rkn))
         k = 0
         for i in range(1, len(alp), 2):
             for j in range(1, len(alp[i])):

@@ -27,6 +27,10 @@ mABA.metode_setABAsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(
 mABA.metode_setABAsim.restype = ct.c_void_p
 mABA.metode_setBABsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
 mABA.metode_setBABsim.restype = ct.c_void_p
+mABA.metode_setABA.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
+mABA.metode_setABA.restype = ct.c_void_p
+mABA.metode_setBAB.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
+mABA.metode_setBAB.restype = ct.c_void_p
 
 class Eel(sp.Expr):
     is_commutative = False
@@ -498,10 +502,17 @@ class Metode():
         for i in range(tam):
             cofc[i] = self.cofs[i]
         if not isinstance(cofc[0], complex):
-            # if tipus == 0:
-            #     if AB == 0:  #metode_setABA
-            #     elif AB == 1:#metode_setBAB
-            if tipus == 1:
+            if tipus == 0:
+                if AB == 0:
+                    mABA.metode_setABA(tam, cofc, alpc, self.depth, self.rknd)
+                elif AB == 1:
+                    mABA.metode_setBAB(tam, cofc, alpc, self.depth, self.rknd)
+                k = 0
+                for i in range(1, len(self.w)):
+                    for j in range(1, len(self.w[i])):
+                        self.w[i][j] = alpc[k]
+                        k += 1 
+            elif tipus == 1:
                 if AB == 0:
                     mABA.metode_setABAsim(tam, cofc, alpc, self.depth, self.rknd)
                 elif AB == 1:

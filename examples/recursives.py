@@ -13,7 +13,7 @@ sys.path.insert(0, '../')
 from bchpy import *
 import relations as rl
 
-def printmetC(met, o, simconj = False):
+def printmetC(met, o, simconj = False, cq = 2):
     cad = []
     v = rl.tamE
     tam = (v[o - 1] + 1)
@@ -22,11 +22,9 @@ def printmetC(met, o, simconj = False):
             if simconj:
                 met.w[i][j] = met.w[i][j].subs(re(x), xre).subs(im(x), xim).subs(sp.I, sp.S(1))
             cad.append(str(sp.ccode(met.w[i][j])))
-    # si cq = 1 es tenen en compte els elements d'ordre senar (excepte ordre 1)
-    # si cq = 2 no es tenen en compte            
-    cq = 2
-    if simconj:
-        cq = 1
+    # si cq = 1 es tenen en compte els elements d'ordre senar
+    # si cq = 2 no es tenen en compte (excepte ordre 1)
+
     for k in range(len(cad)):
         for t in range(tam, tam**2 + tam):
             # t, p, j, i, l = valor vell, valor vell sense tenir en compte la fila de zeros, columna, fila, valor nou
@@ -40,8 +38,8 @@ def printmetC(met, o, simconj = False):
         oset = 2
         for k in range(oset + 1, oset + 1 + sum(v[:1])):
             print("res[%d] = %s;" % (ind, cad[k]))
-            ind += 1    
-        for l in range(3, o + 1, 2):
+            ind += 1
+        for l in range(1 + cq, o + 1, cq):
             for k in range(oset + 1 + (l - 1) + sum(v[:l - 1]), oset + l + sum(v[:l])):
                 print("res[%d] = %s;" % (ind, cad[k]))
                 ind += 1
@@ -50,9 +48,9 @@ def printmetC(met, o, simconj = False):
             if cad[k] != "0":
                 print("res[%d] = %s;" % (ind, cad[k]))
                 ind += 1
-            
+
 if __name__ == "__main__":
-    ord_bch = 6
+    ord_bch = 9
     # print("?¿?")
     # x, y = sp.symbols("x y")
     # t0 = tm.time()
@@ -182,35 +180,37 @@ if __name__ == "__main__":
     # t1 = tm.time()
     # print(t1 - t0, "s")
     
-    # print("exp(w(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
-    # x, y = sp.symbols("x y")
+    print("exp(w(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
+    x, y = sp.symbols("x y")
+    t0 = tm.time()
+    esq = sp.S(0)
+    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
+    for i in range(ord_bch):
+        for j in range(rl.tamE[i]):
+            esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "E")
+    esq = bch20(x*Eel(1, 2, "E"), esq, depth = ord_bch, debug = True)
+    metBD = Metode(ord_bch)
+    metBD.importFromExpr(esq, debug = True)
+    printmetC(metBD, ord_bch, simconj = False, cq = 1)
+    # print(metBD)
+    t1 = tm.time()
+    print(t1 - t0, "s")
+    
+    # print("exp(w(i, j)*Eij)=exp(x*E11)*exp(alp(i, j)*Eij)")
+    # x = sp.Symbol("x")
     # t0 = tm.time()
     # esq = sp.S(0)
     # alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
     # for i in range(ord_bch):
     #     for j in range(rl.tamE[i]):
     #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "E")
-    # esq = bch20(x*Eel(1, 2, "E"), esq, depth = ord_bch, debug = True)
-    # metBD = Metode(ord_bch)
-    # metBD.importFromExpr(esq, debug = True)
-    # print(metBD)
+    # esq = bch20(x*Eel(1, 1, "E"), esq, depth = ord_bch, debug = True)
+    # metAD = Metode(ord_bch)
+    # metAD.importFromExpr(esq, debug = True)
+    # printmetC(metAD, ord_bch, simconj = False, cq = 1)
+    # # print(metAD)
     # t1 = tm.time()
     # print(t1 - t0, "s")
-    
-    print("exp(w(i, j)*Eij)=exp(y*E11)*exp(alp(i, j)*Eij)")
-    x = sp.Symbol("x")
-    t0 = tm.time()
-    esq = sp.S(0)
-    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamE[ord_bch - 1] + 1)
-    for i in range(ord_bch):
-        for j in range(rl.tamE[i]):
-            esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1)
-    esq = bch20(x*Eel(1, 1), esq, depth = ord_bch, debug = True)
-    metAD = Metode(ord_bch)
-    metAD.importFromExpr(esq, debug = True)
-    print(metAD)
-    t1 = tm.time()
-    print(t1 - t0, "s")
 
     # print("exp(w(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)*exp(x*E12)")
     # x, y = sp.symbols("x y")
