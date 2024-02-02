@@ -1,23 +1,22 @@
 /* 28-02-2022 */
 /* alex */
-/* recurABc.h */
-#ifndef _RECURABC_H
-#define _RECURABC_H
+/* recurAB.h */
+#ifndef _RECURAB_H
+#define _RECURAB_H
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
-#include <complex.h>
 #ifndef TAMBCH
 #define TAMBCH 128
 #endif
 
-void copyesq_c(double complex * dest, double complex * orig);
+void copyesq(double * dest, double * orig);
 
-void recAsim_c(double complex * res, double complex x, int order, int rkn);
-void recBsim_c(double complex * res, double complex x, int order, int rkn);
-void recA_c(double complex * res, double complex x, int order, int rkn);
-void recB_c(double complex * res, double complex x, int order, int rkn);
+void recAsim(double * res, double x, int order, int rkn);
+void recBsim(double * res, double x, int order, int rkn);
+void recA(double * res, double x, int order, int rkn);
+void recB(double * res, double x, int order, int rkn);
 
 /*
 Escissió simètrica no RKN

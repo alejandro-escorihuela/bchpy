@@ -14,6 +14,7 @@ import time as tm
 import datetime
 import sys
 import os
+from numpy.ctypeslib import ndpointer
 from sympy import re, im
 from sympy.printing.pretty.stringpict import prettyForm
 from sympy.printing.pretty.pretty_symbology import pretty_symbol
@@ -22,7 +23,16 @@ from sympy.parsing.sympy_parser import parse_expr
 from termcolor import colored
 from re import sub as strsub
 
-mABA = ct.CDLL(os.path.dirname(__file__) + "/recurc/metodeABA.so")
+class c_double_complex(ct.Structure): 
+    _fields_ = [("real", ct.c_double),("imag", ct.c_double)]
+    @property
+    def value(self):
+        return self.real+1j*self.imag
+
+
+rABr = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurAB.so", mode = ct.RTLD_GLOBAL)
+rABc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurABc.so", mode = ct.RTLD_GLOBAL)
+mABA = ct.CDLL(os.path.dirname(__file__) + "/recurc/metodeABA.so", mode = ct.RTLD_GLOBAL)
 mABA.metode_setABAsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
 mABA.metode_setABAsim.restype = ct.c_void_p
 mABA.metode_setBABsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
@@ -31,6 +41,14 @@ mABA.metode_setABA.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.
 mABA.metode_setABA.restype = ct.c_void_p
 mABA.metode_setBAB.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
 mABA.metode_setBAB.restype = ct.c_void_p
+mABA.metode_setABAsim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
+mABA.metode_setABAsim_c.restype = ct.c_void_p
+mABA.metode_setBABsim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
+mABA.metode_setBABsim_c.restype = ct.c_void_p
+mABA.metode_setABA_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
+mABA.metode_setABA_c.restype = ct.c_void_p
+mABA.metode_setBAB_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
+mABA.metode_setBAB_c.restype = ct.c_void_p
 
 class Eel(sp.Expr):
     is_commutative = False
@@ -125,12 +143,11 @@ class Metode():
     w = []
     setw = False
     num = False
-    rknd = False # Only for symmetrical iteration
+    rknd = False
     cofs = []
     t = ""
     
-    def __init__(self, depth = 6, basis_type = "E", numeric = False, rkn = False):
-        self.num = numeric
+    def __init__(self, depth = 6, basis_type = "E", rkn = False):
         self.rknd = rkn
         dict_depth = {
             "E"  : [4, len(rl.tamE)],
@@ -154,65 +171,44 @@ class Metode():
         self.w = self.__init_mat()
         
     def setBAB(self, *args, debug = False):
-        if self.t != "E":
-            printe("Per mètodes BAB la base ha de ser E i no %s" % (self.t))
-            exit(-1)            
-        if self.setw == True:
-            self.w = self.__init_mat()
-        self.cofs = list(args)
-        # cof_li = list(reversed(args))
-        cof_li = self.cofs
-        tipus = palindromic(cof_li)
-        senar = (len(cof_li) % 2) != 0
-        if tipus == 1 and senar == True:
-            cof_li = cof_li[len(cof_li)//2:]
-            iniEl = 0 if len(cof_li)%2 == 0 else 1
-            self.w[1][iniEl + 1] = cof_li[0]
-            for i in range(1, len(cof_li)):
-                if debug == True:
-                    txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
-                    printd(txt_p)
-                self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)            
-        else:        
-            self.w[1][2] = cof_li[0]
-            for i in range(1, len(cof_li)):
-                if debug == True:
-                    txt_p = "Iteració " + str(i) + " amb Eel(1, " + str(2 - (i%2)) + ")"
-                    printd(txt_p)
-                self.__recur_AB(cof_li[i], (i - 1)%2)
-        self.setw = True
+        return self.setAB(*args, AB = 1, debug = debug)
         
     def setABA(self, *args, debug = False):
+        return self.setAB(*args, AB = 0, debug = debug)
+
+    def setAB(self, *args, AB, debug = False):
         if self.t != "E":
-            printe("Per mètodes ABA la base ha de ser E i no %s" % (self.t))
+            printe("Per mètodes ABA o BAB la base ha de ser E i no %s" % (self.t))
             exit(-1)         
         if self.setw == True:
             self.w = self.__init_mat()
         self.cofs = list(args)
+        self.num = not istypearray(self.cofs, sp.Basic)
         # cof_li = list(reversed(args))
         cof_li = self.cofs
         tipus = palindromic(cof_li)
         senar = (len(cof_li) % 2) != 0
-        if not isinstance(cof_li[0], complex) and not isinstance(cof_li[0], sp.Basic):
-            self.__setABAc(0)
+        if self.num:
+            if debug == True:
+                printd("Cridant a C")
+            self.__setABAc(AB, istypearray(cof_li, complex))
         else:
             if tipus == 1 and senar == True:
                 cof_li = cof_li[len(cof_li)//2:]
-                iniEl = 1 if len(cof_li)%2 == 0 else 0
+                iniEl = (1 - AB) if len(cof_li)%2 == 0 else AB
                 self.w[1][iniEl + 1] = cof_li[0]
                 for i in range(1, len(cof_li)):
                     if debug == True:
-                        txt_p = "Iteració simètrica " + str(i) + " amb Eel(1, " + str(iniEl + 1 - (i%2)) + ")"
-                        printd(txt_p)
+                        printd("Iteració simètrica " + str(i))
                     self.__recur_AB(cof_li[i], 2 + (iniEl + i)%2)              
             else:
-                self.w[1][1] = cof_li[0]
+                self.w[1][1 + AB] = cof_li[0]
                 for i in range(1, len(cof_li)):
                     if debug == True:
-                        printd("Iteració " + str(i) + " amb Eel(1, " + str((i%2) + 1) + ")")
-                    self.__recur_AB(cof_li[i], i%2)             
-        self.setw = True
-
+                        printd("Iteració " + str(i))
+                    self.__recur_AB(cof_li[i], (i - AB)%2)             
+        self.setw = True        
+        
     def setXX(self, *args, debug = False):
         if self.t != "C":
             printe("Per mètodes XX* la base ha de ser Z i no %s" % (self.t))
@@ -220,6 +216,7 @@ class Metode():
         if self.setw == True:
             self.w = self.__init_mat()        
         self.cofs = list(args)
+        self.num = not istypearray(self.cofs, sp.Basic)
         #cofsR = list(reversed(args))
         for i in range(1, self.depth + 1):
             self.w[i][1] = self.cofs[0]**i
@@ -246,6 +243,7 @@ class Metode():
         if self.setw == True:
             self.w = self.__init_mat()
         self.cofs = list(args)
+        self.num = not istypearray(self.cofs, sp.Basic)
         cof_li = self.cofs
         tipus = palindromic(cof_li)
         senar = (len(cof_li) % 2) != 0
@@ -475,9 +473,9 @@ class Metode():
             tams = rl.tamM4
         elif self.t == "M6":
             tams = rl.tamM6            
-        zero = sp.S(0)
-        if self.num:
-            zero = np.float128(0.0)
+        # zero = sp.S(0)
+        # if self.num:
+        zero = np.float128(0.0)
         for i in range(self.depth):
             wret.append([])
             for j in range(tams[i]):
@@ -493,15 +491,15 @@ class Metode():
                 cad = cad + "w(" + str(i) + "," + str(j) + ") = " + str(self.w[i][j]) + "\n"
         return cad
 
-    def __setABAc(self, AB):
+    def __setABAc(self, AB, iscomp):
         global mABA
         tam = len(self.cofs)
         tipus = palindromic(self.cofs)
-        cofc = (ct.c_double*tam)()
-        alpc = (ct.c_double*128)()        
-        for i in range(tam):
-            cofc[i] = self.cofs[i]
-        if not isinstance(cofc[0], complex):
+        if not iscomp:
+            cofc = (ct.c_double*tam)()
+            alpc = (ct.c_double*128)()
+            for i in range(tam):
+                cofc[i] = self.cofs[i]
             if tipus == 0:
                 if AB == 0:
                     mABA.metode_setABA(tam, cofc, alpc, self.depth, self.rknd)
@@ -522,9 +520,31 @@ class Metode():
                     for j in range(1, len(self.w[i])):
                         self.w[i][j] = alpc[k]
                         k += 1     
-        # else:
-        #     if AB == 0:    #metode_setABAcomp
-        #     elif AB == 1:  #metode_setBABcomp
+        else:
+            cofc = (c_double_complex*tam)()
+            alpc = (c_double_complex*128)()
+            for i in range(tam):
+                cofc[i] = c_double_complex(self.cofs[i].real, self.cofs[i].imag)
+            if tipus == 0:
+                if AB == 0:
+                    mABA.metode_setABA_c(tam, cofc, alpc, self.depth, self.rknd)
+                elif AB == 1:
+                    mABA.metode_setBAB_c(tam, cofc, alpc, self.depth, self.rknd)
+                k = 0
+                for i in range(1, len(self.w)):
+                    for j in range(1, len(self.w[i])):
+                        self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
+                        k += 1 
+            elif tipus == 1:
+                if AB == 0:
+                    mABA.metode_setABAsim_c(tam, cofc, alpc, self.depth, self.rknd)
+                elif AB == 1:
+                    mABA.metode_setBABsim_c(tam, cofc, alpc, self.depth, self.rknd)
+                k = 0
+                for i in range(1, len(self.w), 2):
+                    for j in range(1, len(self.w[i])):
+                        self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
+                        k += 1     
                 
     def __recur_AB(self, x, AB):
         bet = self.__init_mat()
@@ -590,7 +610,6 @@ class Metode():
         self.w = bet.copy()
         
 def palindromic(cofs):
-    # return 0
     if cofs == cofs[::-1]:
         return 1
     # cofsconj = cofs.copy()
@@ -599,7 +618,13 @@ def palindromic(cofs):
     # if cofsconj == cofs[::-1]:
     #     return 2
     return 0
-        
+
+def istypearray(cofs, tipus):
+    for i in range(len(cofs)):
+        if isinstance(cofs[i], tipus):
+            return True
+    return False
+
 def collectEsq(esq, basis_type = "E"):
     if basis_type == "E":
         tams = rl.tamE
