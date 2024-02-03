@@ -5,12 +5,6 @@
 #include <stdlib.h>
 #include "recurABc.h"
 
-void copyesq_c(double complex * dest, double complex * orig) {
-  int i = 0;
-  for (i = 0; i < TAMBCH; i++)
-    dest[i] = orig[i];
-}
-
 void recAsim_c(double complex * res, double complex x, int order, int rkn) {
   int i;
   double complex alp[TAMBCH];

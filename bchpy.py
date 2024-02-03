@@ -29,10 +29,13 @@ class c_double_complex(ct.Structure):
     def value(self):
         return self.real+1j*self.imag
 
-
+esqc = ct.CDLL(os.path.dirname(__file__) + "/recurc/esq.so", mode = ct.RTLD_GLOBAL)
 rABr = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurAB.so", mode = ct.RTLD_GLOBAL)
 rABc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurABc.so", mode = ct.RTLD_GLOBAL)
 mABA = ct.CDLL(os.path.dirname(__file__) + "/recurc/metodeABA.so", mode = ct.RTLD_GLOBAL)
+rXXr = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurXX.so", mode = ct.RTLD_GLOBAL)
+rXXc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurXXc.so", mode = ct.RTLD_GLOBAL)
+mXX = ct.CDLL(os.path.dirname(__file__) + "/recurc/metodeXX.so", mode = ct.RTLD_GLOBAL)
 mABA.metode_setABAsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
 mABA.metode_setABAsim.restype = ct.c_void_p
 mABA.metode_setBABsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
@@ -49,6 +52,10 @@ mABA.metode_setABA_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POIN
 mABA.metode_setABA_c.restype = ct.c_void_p
 mABA.metode_setBAB_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
 mABA.metode_setBAB_c.restype = ct.c_void_p
+mXX.metode_setXX.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int)    
+mXX.metode_setXX.restype = ct.c_void_p
+mXX.metode_setXX_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int)    
+mXX.metode_setXX_c.restype = ct.c_void_p
 
 class Eel(sp.Expr):
     is_commutative = False
@@ -218,10 +225,13 @@ class Metode():
         self.cofs = list(args)
         self.num = not istypearray(self.cofs, sp.Basic)
         #cofsR = list(reversed(args))
-        for i in range(1, self.depth + 1):
-            self.w[i][1] = self.cofs[0]**i
-        for i in range(1, len(self.cofs)):
-            self.__recur_XX(self.cofs[i], i%2)
+        if self.num:
+            self.__setXXc()
+        else:
+            for i in range(1, self.depth + 1):
+                self.w[i][1] = self.cofs[0]**i
+            for i in range(1, len(self.cofs)):
+                self.__recur_XX(self.cofs[i], i%2)
         self.setw = True
 
     def setSS2(self, *args, debug = False):
@@ -473,9 +483,7 @@ class Metode():
             tams = rl.tamM4
         elif self.t == "M6":
             tams = rl.tamM6            
-        # zero = sp.S(0)
-        # if self.num:
-        zero = np.float128(0.0)
+        zero = 0.0 # np.float128(0.0)
         for i in range(self.depth):
             wret.append([])
             for j in range(tams[i]):
@@ -498,53 +506,53 @@ class Metode():
         if not iscomp:
             cofc = (ct.c_double*tam)()
             alpc = (ct.c_double*128)()
+            funmet = [[mABA.metode_setABA, mABA.metode_setBAB], [mABA.metode_setABAsim, mABA.metode_setBABsim]]
             for i in range(tam):
-                cofc[i] = self.cofs[i]
-            if tipus == 0:
-                if AB == 0:
-                    mABA.metode_setABA(tam, cofc, alpc, self.depth, self.rknd)
-                elif AB == 1:
-                    mABA.metode_setBAB(tam, cofc, alpc, self.depth, self.rknd)
-                k = 0
-                for i in range(1, len(self.w)):
-                    for j in range(1, len(self.w[i])):
-                        self.w[i][j] = alpc[k]
-                        k += 1 
-            elif tipus == 1:
-                if AB == 0:
-                    mABA.metode_setABAsim(tam, cofc, alpc, self.depth, self.rknd)
-                elif AB == 1:
-                    mABA.metode_setBABsim(tam, cofc, alpc, self.depth, self.rknd)
-                k = 0
-                for i in range(1, len(self.w), 2):
-                    for j in range(1, len(self.w[i])):
-                        self.w[i][j] = alpc[k]
-                        k += 1     
+                cofc[i] = self.cofs[i]               
+            funmet[tipus][AB](tam, cofc, alpc, self.depth, self.rknd)
+            k = 0
+            for i in range(1, len(self.w), 1 + tipus):
+                for j in range(1, len(self.w[i])):
+                    self.w[i][j] = alpc[k]
+                    k += 1     
         else:
             cofc = (c_double_complex*tam)()
             alpc = (c_double_complex*128)()
+            funmet = [[mABA.metode_setABA_c, mABA.metode_setBAB_c], [mABA.metode_setABAsim_c, mABA.metode_setBABsim_c]]
             for i in range(tam):
                 cofc[i] = c_double_complex(self.cofs[i].real, self.cofs[i].imag)
-            if tipus == 0:
-                if AB == 0:
-                    mABA.metode_setABA_c(tam, cofc, alpc, self.depth, self.rknd)
-                elif AB == 1:
-                    mABA.metode_setBAB_c(tam, cofc, alpc, self.depth, self.rknd)
-                k = 0
-                for i in range(1, len(self.w)):
-                    for j in range(1, len(self.w[i])):
-                        self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
-                        k += 1 
-            elif tipus == 1:
-                if AB == 0:
-                    mABA.metode_setABAsim_c(tam, cofc, alpc, self.depth, self.rknd)
-                elif AB == 1:
-                    mABA.metode_setBABsim_c(tam, cofc, alpc, self.depth, self.rknd)
-                k = 0
-                for i in range(1, len(self.w), 2):
-                    for j in range(1, len(self.w[i])):
-                        self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
-                        k += 1     
+            funmet[tipus][AB](tam, cofc, alpc, self.depth, self.rknd)
+            k = 0
+            for i in range(1, len(self.w), 1 + tipus):
+                for j in range(1, len(self.w[i])):
+                    self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
+                    k += 1     
+
+    def __setXXc(self):
+        global mXX
+        tam = len(self.cofs)
+        if not istypearray(self.cofs, complex):
+            cofc = (ct.c_double*tam)()
+            alpc = (ct.c_double*128)()           
+            for i in range(tam):
+                cofc[i] = self.cofs[i]
+            mXX.metode_setXX(tam, cofc, alpc, self.depth)
+            k = 0
+            for i in range(1, len(self.w)):
+                for j in range(1, len(self.w[i])):
+                    self.w[i][j] = alpc[k]
+                    k += 1   
+        else:
+            cofc = (c_double_complex*tam)()
+            alpc = (c_double_complex*128)()            
+            for i in range(tam):
+                cofc[i] = c_double_complex(self.cofs[i].real, self.cofs[i].imag)
+            mXX.metode_setXX_c(tam, cofc, alpc, self.depth)
+            k = 0
+            for i in range(1, len(self.w)):
+                for j in range(1, len(self.w[i])):
+                    self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
+                    k += 1                  
                 
     def __recur_AB(self, x, AB):
         bet = self.__init_mat()

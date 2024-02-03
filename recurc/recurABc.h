@@ -8,11 +8,7 @@
 #include <stdbool.h>
 #include <math.h>
 #include <complex.h>
-#ifndef TAMBCH
-#define TAMBCH 128
-#endif
-
-void copyesq_c(double complex * dest, double complex * orig);
+#include "esq.h"
 
 void recAsim_c(double complex * res, double complex x, int order, int rkn);
 void recBsim_c(double complex * res, double complex x, int order, int rkn);

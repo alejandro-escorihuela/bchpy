@@ -12,10 +12,12 @@ sys.path.insert(0, '../')
 from bchpy import *
 import relations as rl
 
+rkntam = [0, 2, 1, 2, 2, 4, 5, 10, 14]
+
 if __name__ == "__main__":
     tol = 1e-13
 
-    ## Mètode d'escissió ABA complex d'ordre 4
+    ## Mètode d'escissió ABA complex sim-conj d'ordre 4
     cofs = [0.03, (0.089217853062385+0.025590308052868504j), 0.15, (0.18525002244352806-0.08754687281173089j), 0.20488095623525243, (0.22553212449408694+0.13887845131492216j),
             0.2302380875294951, (0.22553212449408694-0.13887845131492216j), 0.20488095623525243, (0.18525002244352806+0.08754687281173089j), 0.15,
             (0.089217853062385-0.025590308052868504j), 0.03]
@@ -29,7 +31,7 @@ if __name__ == "__main__":
         for j in range(1, len(met.w[i])):
             correcte = correcte and abs(met.w[i][j]) < tol
     if not correcte:
-        printe("Resultat erroni en Mètode ABA complex d'ordre 4")
+        printe("Resultat erroni en Mètode ABA complex sim-conj d'ordre 4")
         met.cprint()
 
     ## Mètode d'escissió RKN ABA d'ordre 8
@@ -47,8 +49,8 @@ if __name__ == "__main__":
     met.setABA(*cofs)
     print("Temps = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
-    for i in range(2, 7): # està mal
-        for j in range(1, len(met.w[i])):
+    for i in range(2, 9): # està mal
+        for j in range(1, rkntam[i]):
             correcte = correcte and abs(met.w[i][j]) < tol
     if not correcte:
         printe("Resultat erroni en Mètode RKN ABA simètric d'ordre 8")
@@ -85,7 +87,9 @@ if __name__ == "__main__":
     ## Mètode de composició XX d'ordre 6
     cofs = [0.0502627644003922, 0.0985536835006498, 0.31496061692769417, -0.44734648269547816, 0.49242637248987586, -0.42511876779769087, 0.23706391397812188, 0.19560248860005314, 0.34635818985072686, -0.36276277925434486, -0.36276277925434486, 0.34635818985072686, 0.19560248860005314, 0.23706391397812188, -0.42511876779769087, 0.49242637248987586, -0.44734648269547816, 0.31496061692769417, 0.0985536835006498, 0.0502627644003922]
     met = Metode(depth = 7, basis_type = "C")
+    t0 = tm.time()
     met.setXX(*cofs)
+    print("Temps = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] - 1.0) < tol
     for i in range(2, 7):
         for j in range(1, len(met.w[i])):

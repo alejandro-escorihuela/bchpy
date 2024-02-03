@@ -7,11 +7,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
-#ifndef TAMBCH
-#define TAMBCH 128
-#endif
-
-void copyesq(double * dest, double * orig);
+#include "esq.h"
 
 void recAsim(double * res, double x, int order, int rkn);
 void recBsim(double * res, double x, int order, int rkn);
