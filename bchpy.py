@@ -508,7 +508,7 @@ class Metode():
             alpc = (ct.c_double*128)()
             funmet = [[mABA.metode_setABA, mABA.metode_setBAB], [mABA.metode_setABAsim, mABA.metode_setBABsim]]
             for i in range(tam):
-                cofc[i] = self.cofs[i]               
+                cofc[i] = self.cofs[i]
             funmet[tipus][AB](tam, cofc, alpc, self.depth, self.rknd)
             k = 0
             for i in range(1, len(self.w), 1 + tipus):

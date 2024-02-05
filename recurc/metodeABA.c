@@ -39,11 +39,8 @@ void metode_setABA(int tam, double * cofs, double * res, int order, int rkn) {
   int i;
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0;
-  if ((tam - 1) % 2 == 0)
-    res[0] = cofs[tam - 1];
-  else
-    res[1] = cofs[tam - 1];
-  for (i = tam - 2; i >= 0; i--)
+  res[0] = cofs[0];
+  for (i = 1; i < tam; i++)
     if (i % 2 == 0)
       recA(res, cofs[i], order, rkn);
     else
@@ -54,11 +51,8 @@ void metode_setBAB(int tam, double * cofs, double * res, int order, int rkn) {
   int i;
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0;
-  if ((tam - 1) % 2 == 0)
-    res[1] = cofs[tam - 1];
-  else
-    res[0] = cofs[tam - 1];
-  for (i = tam - 2; i >= 0; i--)
+  res[1] = cofs[0];
+  for (i = 1; i < tam; i++)
     if (i % 2 == 0)
       recB(res, cofs[i], order, rkn);
     else
@@ -99,11 +93,8 @@ void metode_setABA_c(int tam, double complex * cofs, double complex * res, int o
   int i;
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0 + 0.0*I;
-  if ((tam - 1) % 2 == 0)
-    res[0] = cofs[tam - 1];
-  else
-    res[1] = cofs[tam - 1];
-  for (i = tam - 2; i >= 0; i--)
+  res[0] = cofs[0];
+  for (i = 1; i <= tam; i++)
     if (i % 2 == 0)
       recA_c(res, cofs[i], order, rkn);
     else
@@ -114,11 +105,8 @@ void metode_setBAB_c(int tam, double complex * cofs, double complex * res, int o
   int i;
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0 + 0.0*I;
-  if ((tam - 1) % 2 == 0)
-    res[1] = cofs[tam - 1];
-  else
-    res[0] = cofs[tam - 1];
-  for (i = tam - 2; i >= 0; i--)
+  res[1] = cofs[0];
+  for (i = 1; i < tam; i++)
     if (i % 2 == 0)
       recB_c(res, cofs[i], order, rkn);
     else

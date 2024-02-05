@@ -2,7 +2,7 @@
 # 17-12-2023
 # alex
 
-OBJ = metodeABA.so metodeXX.so recurAB.so recurABc.so recurXX.so recurXXc.so esq.so # Objectes
+OBJ = metodeABA.so metodeXX.so metodeS2.so recurAB.so recurABc.so recurXX.so recurXXc.so recurS2.so recurS2c.so esq.so # Objectes
 ICC = /opt/intel/oneapi/compiler/2024.0/bin/icx  # Compilador C intel
 # Per al compilador d'intel primer:
 # $ export LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/latest/lib:/usr/local/lib"
@@ -36,6 +36,18 @@ recurXX.so: recurXX.c recurXX.h esq.h
 	$(COM) $(OPC) $< -o $@
 
 recurXXc.so: recurXXc.c recurXXc.h
+	@echo Compilant $<
+	$(COM) $(OPC) $< -o $@
+
+metodeS2.so: metodeS2.c metodeS2.h recurS2.h recurS2c.h esq.h
+	@echo Compilant $<
+	$(COM) $(OPC) $< -o $@
+
+recurS2.so: recurS2.c recurS2.h esq.h
+	@echo Compilant $<
+	$(COM) $(OPC) $< -o $@
+
+recurS2c.so: recurS2c.c recurS2c.h
 	@echo Compilant $<
 	$(COM) $(OPC) $< -o $@
 
