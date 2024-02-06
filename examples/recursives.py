@@ -66,7 +66,7 @@ def printmetC(met, o, simconj = False, cq = 2, base = "E"):
                 ind += 1
 
 if __name__ == "__main__":
-    ord_bch = 19
+    ord_bch = 9
     
     # print("Mètode i adjunt")
     # x, y = sp.symbols("x y")
@@ -91,18 +91,18 @@ if __name__ == "__main__":
     # t1 = tm.time()
     # print(t1 - t0, "s")
 
-    # print("Mètode i adjunt simètric")
-    # x, y = sp.symbols("x y")
-    # t0 = tm.time()
-    # esq = sp.S(0)
-    # xa = sp.S(0)
-    # xb = sp.S(0)
-    # alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamC[ord_bch - 1] + 1)
-    # for i in range(ord_bch):
-    #     xa += x**(i + 1)*Eel(i + 1, 1, "C")
-    #     xb += (-1)**i*x**(i + 1)*Eel(i + 1, 1, "C")
-    #     for j in range(rl.tamC[i]):
-    #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "C")
+    print("Mètode i adjunt simètric")
+    x, y = sp.symbols("x y")
+    t0 = tm.time()
+    esq = sp.S(0)
+    xa = sp.S(0)
+    xb = sp.S(0)
+    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamC[ord_bch - 1] + 1)
+    for i in range(ord_bch):
+        xa += x**(i + 1)*Eel(i + 1, 1, "C")
+        xb += (-1)**i*x**(i + 1)*Eel(i + 1, 1, "C")
+        for j in range(rl.tamC[i]):
+            esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "C")
 
     # esq = bch20(esq, xa, depth = ord_bch, debug = True)
     # esq = bch20(xb, esq.expand(), depth = ord_bch, debug = True)
@@ -229,28 +229,28 @@ if __name__ == "__main__":
     # t1 = tm.time()
     # print(t1 - t0, "s")
 
-    print("exp(w(i,j)*Mij)=exp(alp(i,j)*Mij)*exp(x*M11+x**7*M71+x**9*M91+...)")
-    x, y = sp.symbols("x y")
-    t0 = tm.time()
-    esq = sp.S(0)
-    xa = sp.S(0)
-    xb = sp.S(0)
-    ss = x*Eel(1, 1, "M6") + x**7*Eel(7, 1, "M6")
-    for i in range(8, ord_bch, 2):
-        ss +=x**(i + 1)*Eel(i + 1, 1, "M6")
-    alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamM6[ord_bch - 1] + 1)
-    for i in range(0, ord_bch, 2):
-        for j in range(rl.tamM6[i]):
-            esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "M6")
-    print("Z   =", esq)
-    print("S*x =", ss)
-    esq = bch20(ss, esq, depth = ord_bch, debug = True)
-    metBD = Metode(ord_bch, "M6")
-    metBD.importFromExpr(esq, debug = True)
-    print(metBD)
-    printmetC(metBD, ord_bch, simconj = False, cq = 1, base = "M6")
-    t1 = tm.time()
-    print(t1 - t0, "s")
+    # print("exp(w(i,j)*Mij)=exp(alp(i,j)*Mij)*exp(x*M11+x**7*M71+x**9*M91+...)")
+    # x, y = sp.symbols("x y")
+    # t0 = tm.time()
+    # esq = sp.S(0)
+    # xa = sp.S(0)
+    # xb = sp.S(0)
+    # ss = x*Eel(1, 1, "M6") + x**7*Eel(7, 1, "M6")
+    # for i in range(8, ord_bch, 2):
+    #     ss +=x**(i + 1)*Eel(i + 1, 1, "M6")
+    # alp = sp.MatrixSymbol("alp", ord_bch + 1, rl.tamM6[ord_bch - 1] + 1)
+    # for i in range(0, ord_bch, 2):
+    #     for j in range(rl.tamM6[i]):
+    #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "M6")
+    # print("Z   =", esq)
+    # print("S*x =", ss)
+    # esq = bch20(ss, esq, depth = ord_bch, debug = True)
+    # metBD = Metode(ord_bch, "M6")
+    # metBD.importFromExpr(esq, debug = True)
+    # print(metBD)
+    # printmetC(metBD, ord_bch, simconj = False, cq = 1, base = "M6")
+    # t1 = tm.time()
+    # print(t1 - t0, "s")
     
     # print("exp(w(i,j)*Eij)=exp(x*E12)*exp(alp(i,j)*Eij)")
     # x, y = sp.symbols("x y")

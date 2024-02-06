@@ -24,7 +24,7 @@ if __name__ == "__main__":
     met = Metode(depth = 9, basis_type = "E", rkn = True)
     t0 = tm.time()
     met.setABA(*cofs)
-    print("Temps ABA sim-conj d'ordre 4    = %f" % (tm.time() - t0))
+    print("Temps ABA sim-conj d'ordre 4     = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
     correcte = correcte and abs(met.w[1][2].real - 1.0) < tol and abs(met.w[1][2].imag) < tol
     for i in range(2, 5):
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     met = Metode(depth = 9, basis_type = "E", rkn = True)
     t0 = tm.time()
     met.setBAB(*cofs)
-    print("Temps BAB sim-conj d'ordre 4    = %f" % (tm.time() - t0))
+    print("Temps BAB sim-conj d'ordre 4     = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
     correcte = correcte and abs(met.w[1][2].real - 1.0) < tol and abs(met.w[1][2].imag) < tol
     for i in range(2, 5):
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     met = Metode(depth = 9, basis_type = "E", rkn = False)
     t0 = tm.time()
     met.setABA(*cofs)
-    print("Temps RKN ABA sim d'ordre 8     = %f" % (tm.time() - t0))
+    print("Temps RKN ABA sim d'ordre 8      = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
     for i in range(2, 9): # està mal
         for j in range(1, rkntam[i]):
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     met = Metode(depth = 9, basis_type = "E")
     t0 = tm.time()
     met.setABA(*cofs)
-    print("Temps ABA simètric d'ordre 6    = %f" % (tm.time() - t0))
+    print("Temps ABA simètric d'ordre 6     = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
     for i in range(2, 7):
         for j in range(1, len(met.w[i])):
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     met = Metode(depth = 9, basis_type = "E")
     t0 = tm.time()
     met.setBAB(*cofs)
-    print("Temps BAB simètric d'ordre 6    = %f" % (tm.time() - t0))
+    print("Temps BAB simètric d'ordre 6     = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
     for i in range(2, 7):
         for j in range(1, len(met.w[i])):
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     met = Metode(depth = 9, basis_type = "C")
     t0 = tm.time()
     met.setXX(*cofs)
-    print("Temps XX simètric d'ordre 6     = %f" % (tm.time() - t0))
+    print("Temps XX simètric d'ordre 6      = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] - 1.0) < tol
     for i in range(2, 7):
         for j in range(1, len(met.w[i])):
@@ -120,7 +120,7 @@ if __name__ == "__main__":
     met = Metode(depth = 13, basis_type = "M")
     t0 = tm.time()
     met.setSS2(cofs[0], cofs[1], cofs[2], cofs[3], cofs[2], cofs[1], cofs[0])
-    print("Temps SS(S2) simètric d'ordre 6 = %f" % (tm.time() - t0))
+    print("Temps SS(S2) simètric d'ordre 6  = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] - 1.0) < tol 
     for i in range(2, 7):
         for j in range(1, len(met.w[i])):
@@ -136,7 +136,7 @@ if __name__ == "__main__":
     met = Metode(depth = 13, basis_type = "M")
     t0 = tm.time()
     met.setSS2(*cofs)
-    print("Temps SS(S2) simètric d'ordre 8 = %f" % (tm.time() - t0))
+    print("Temps SS(S2) simètric d'ordre 8  = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] - 1.0) < tol
     for i in range(2, 9):
         for j in range(1, len(met.w[i])):
@@ -145,28 +145,12 @@ if __name__ == "__main__":
         printe("Resultat erroni en Mètode SS(S2) simètric d'ordre 8")
         met.cprint()
 
-    ## Mètode SS(S4) simètric d'ordre 6
-    alpha = 1/(2 - 2**(1/5))
-    beta = 1 -2*alpha
-    cofs = [alpha, beta, alpha]
-    met = Metode(depth = 15, basis_type = "M4")
-    t0 = tm.time()
-    met.setSS4(*cofs)
-    print("Temps SS(S4) simètric d'ordre 6 = %f" % (tm.time() - t0))
-    correcte = abs(met.w[1][1] - 1.0) < tol
-    for i in range(2, 7):
-        for j in range(1, len(met.w[i])):
-            correcte = correcte and abs(met.w[i][j]) < tol
-    if not correcte:
-        printe("Resultat erroni en Mètode SS(S4) simètric d'ordre 6")
-        met.cprint()
-
     ## Mètode SC(S2) simètric-conjugat d'ordre 5
     cofs = [(0.1752684090720741140583563+0.05761474413053870201304364j), (0.1848736801929841604288898-0.1941219227572495885067758j), 0.2797158214698834510255077, (0.1848736801929841604288898+0.1941219227572495885067758j), (0.1752684090720741140583563-0.05761474413053870201304364j)] 
     met = Metode(depth = 13, basis_type = "M")
     t0 = tm.time()
     met.setSS2(*cofs)
-    print("Temps SC(S2) d'ordre 5          = %f" % (tm.time() - t0))
+    print("Temps SC(S2) d'ordre 5           = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
     for i in range(2, 6):
         for j in range(1, len(met.w[i])):
@@ -180,11 +164,69 @@ if __name__ == "__main__":
     met = Metode(depth = 13, basis_type = "M")
     t0 = tm.time()
     met.setSS2(*cofs)
-    print("Temps SS(S2) complex d'ordre 6  = %f" % (tm.time() - t0))
+    print("Temps SS(S2) complex d'ordre 6   = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
     for i in range(2, 7):
         for j in range(1, len(met.w[i])):
             correcte = correcte and abs(met.w[i][j].real) < tol and abs(met.w[i][j].imag) < tol
     if not correcte:
         printe("Resultat erroni en Mètode SS(S2) simètric d'ordre 6 amb coeficients complexos")
-        met.cprint()      
+        met.cprint()
+
+    ## Mètode SS(S4) simètric d'ordre 6
+    alpha = 1/(2 - 2**(1/5))
+    beta = 1 -2*alpha
+    cofs = [alpha, beta, alpha]
+    met = Metode(depth = 15, basis_type = "M4")
+    t0 = tm.time()
+    met.setSS4(*cofs)
+    print("Temps SS(S4) simètric d'ordre 6  = %f" % (tm.time() - t0))
+    correcte = abs(met.w[1][1] - 1.0) < tol
+    for i in range(2, 7):
+        for j in range(1, len(met.w[i])):
+            correcte = correcte and abs(met.w[i][j]) < tol
+    if not correcte:
+        printe("Resultat erroni en Mètode SS(S4) simètric d'ordre 6")
+        met.cprint()
+        
+    ## Mètode SS(S4) simètric d'ordre 12
+    cofs = [0.13699751300751958, 0.09957852698465418, 0.1800905109150247, 0.3431063349680623, -0.3875343134532472, -0.3067591226259879, 0.01556601702834869, 0.3217845977320384, 0.12953695882744667, -0.2951269901730427, 0.06209067112774111, 0.4013385913228842, 0.06209067112774111, -0.2951269901730427, 0.12953695882744667, 0.3217845977320384, 0.01556601702834869, -0.3067591226259879, -0.3875343134532472, 0.3431063349680623, 0.1800905109150247, 0.09957852698465418, 0.13699751300751958]
+    met = Metode(depth = 15, basis_type = "M4")
+    t0 = tm.time()
+    met.setSS4(*cofs)
+    print("Temps SS(S4) d'ordre 4           = %f" % (tm.time() - t0))
+    correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
+    for i in range(2, 13):
+        for j in range(1, len(met.w[i])):
+            correcte = correcte and abs(met.w[i][j].real) < tol and abs(met.w[i][j].imag) < tol
+    if not correcte:
+        printe("Resultat erroni en Mètode SS(S4) simètric d'ordre 12")
+        met.cprint()
+        
+    ## Mètode SC(S4) d'ordre 12
+    cofs = [(0.08037809771800615+0.0337165843080119j), (0.1093940318845407-0.01482087341961085j), (0.09262372956348475-0.06605710656363314j), (0.040995578476915186-0.11107926414727864j), (0.09969141287949691+0.0448722393657375j), (0.07626020627149126+0.09478617925994205j), 0.0013138864121300880355, (0.07626020627149126-0.09478617925994205j), (0.09969141287949691-0.0448722393657375j), (0.040995578476915186+0.11107926414727864j), (0.09262372956348475+0.06605710656363314j), (0.1093940318845407+0.01482087341961085j), (0.08037809771800615-0.0337165843080119j)]
+    met = Metode(depth = 15, basis_type = "M4")
+    t0 = tm.time()
+    met.setSS4(*cofs)
+    print("Temps SC(S4) d'ordre 7(12)       = %f" % (tm.time() - t0))
+    correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
+    for i in range(2, 8):
+        for j in range(1, len(met.w[i])):
+            correcte = correcte and abs(met.w[i][j].real) < tol and abs(met.w[i][j].imag) < tol
+    if not correcte:
+        printe("Resultat erroni en Mètode SC(S4) d'ordre 7(12)")
+        met.cprint()
+        
+    ## Mètode SS(S4)->SS(S2) simètric d'ordre 12
+    cofs = [0.18511202485634723, -0.23322653670517488, 0.18511202485634723, 0.13455122182641358, -0.16952391666817299, 0.13455122182641358, 0.24333959355207063, -0.30658867618911656, 0.24333959355207063, 0.4636077474157652, -0.5841091598634681, 0.4636077474157652, -0.523639151469176, 0.6597439894851047, -0.523639151469176, -0.4144951326914695, 0.522231142756951, -0.4144951326914695, 0.02103291415887125, -0.02649981128939381, 0.02103291415887125, 0.43479766271737563, -0.5478107277027129, 0.43479766271737563, 0.17503127039222802, -0.2205255819570094, 0.17503127039222802, -0.39877771166322257, 0.5024284331534025, -0.39877771166322257, 0.08389736138140566, -0.10570405163507021, 0.08389736138140566, 0.542291591006439, -0.6832445906899939, 0.542291591006439, 0.08389736138140566, -0.10570405163507021, 0.08389736138140566, -0.39877771166322257, 0.5024284331534025, -0.39877771166322257, 0.17503127039222802, -0.2205255819570094, 0.17503127039222802, 0.43479766271737563, -0.5478107277027129, 0.43479766271737563, 0.02103291415887125, -0.02649981128939381, 0.02103291415887125, -0.4144951326914695, 0.522231142756951, -0.4144951326914695, -0.523639151469176, 0.6597439894851047, -0.523639151469176, 0.4636077474157652, -0.5841091598634681, 0.4636077474157652, 0.24333959355207063, -0.30658867618911656, 0.24333959355207063, 0.13455122182641358, -0.16952391666817299, 0.13455122182641358, 0.18511202485634723, -0.23322653670517488, 0.18511202485634723]
+    met = Metode(depth = 13, basis_type = "M")
+    t0 = tm.time()
+    met.setSS2(*cofs)
+    print("Temps SS(S4)->SS(S2) d'ordre 12  = %f" % (tm.time() - t0))
+    correcte = abs(met.w[1][1].real - 1.0) < tol and abs(met.w[1][1].imag) < tol
+    for i in range(2, 13):
+        for j in range(1, len(met.w[i])):
+            correcte = correcte and abs(met.w[i][j].real) < tol and abs(met.w[i][j].imag) < tol
+    if not correcte:
+        printe("Resultat erroni en Mètode SS(S4)->SS(S2) simètric d'ordre 12")
+        met.cprint()

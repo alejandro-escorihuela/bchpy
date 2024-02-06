@@ -32,30 +32,53 @@ class c_double_complex(ct.Structure):
 esqc = ct.CDLL(os.path.dirname(__file__) + "/recurc/esq.so", mode = ct.RTLD_GLOBAL)
 rABr = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurAB.so", mode = ct.RTLD_GLOBAL)
 rABc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurABc.so", mode = ct.RTLD_GLOBAL)
-mABA = ct.CDLL(os.path.dirname(__file__) + "/recurc/metodeABA.so", mode = ct.RTLD_GLOBAL)
 rXXr = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurXX.so", mode = ct.RTLD_GLOBAL)
 rXXc = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurXXc.so", mode = ct.RTLD_GLOBAL)
-mXX = ct.CDLL(os.path.dirname(__file__) + "/recurc/metodeXX.so", mode = ct.RTLD_GLOBAL)
-mABA.metode_setABAsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
-mABA.metode_setABAsim.restype = ct.c_void_p
-mABA.metode_setBABsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
-mABA.metode_setBABsim.restype = ct.c_void_p
-mABA.metode_setABA.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
-mABA.metode_setABA.restype = ct.c_void_p
-mABA.metode_setBAB.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
-mABA.metode_setBAB.restype = ct.c_void_p
-mABA.metode_setABAsim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
-mABA.metode_setABAsim_c.restype = ct.c_void_p
-mABA.metode_setBABsim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
-mABA.metode_setBABsim_c.restype = ct.c_void_p
-mABA.metode_setABA_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
-mABA.metode_setABA_c.restype = ct.c_void_p
-mABA.metode_setBAB_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
-mABA.metode_setBAB_c.restype = ct.c_void_p
-mXX.metode_setXX.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int)    
-mXX.metode_setXX.restype = ct.c_void_p
-mXX.metode_setXX_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int)    
-mXX.metode_setXX_c.restype = ct.c_void_p
+rS2r = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurS2.so", mode = ct.RTLD_GLOBAL)
+rS2c = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurS2c.so", mode = ct.RTLD_GLOBAL)
+rS4r = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurS4.so", mode = ct.RTLD_GLOBAL)
+rS4c = ct.CDLL(os.path.dirname(__file__) + "/recurc/recurS4c.so", mode = ct.RTLD_GLOBAL)
+metc = ct.CDLL(os.path.dirname(__file__) + "/recurc/metodes.so", mode = ct.RTLD_GLOBAL)
+metc.metode_setABAsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
+metc.metode_setABAsim.restype = ct.c_void_p
+metc.metode_setBABsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
+metc.metode_setBABsim.restype = ct.c_void_p
+metc.metode_setABA.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
+metc.metode_setABA.restype = ct.c_void_p
+metc.metode_setBAB.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int, ct.c_int)    
+metc.metode_setBAB.restype = ct.c_void_p
+metc.metode_setXXsim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int)    
+metc.metode_setXXsim.restype = ct.c_void_p
+metc.metode_setXX.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int)    
+metc.metode_setXX.restype = ct.c_void_p
+metc.metode_setS2sim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int)    
+metc.metode_setS2sim.restype = ct.c_void_p
+metc.metode_setS2.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int)    
+metc.metode_setS2.restype = ct.c_void_p
+metc.metode_setS4sim.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int)    
+metc.metode_setS4sim.restype = ct.c_void_p
+metc.metode_setS4.argtypes = (ct.c_int, ct.POINTER(ct.c_double), ct.POINTER(ct.c_double), ct.c_int)    
+metc.metode_setS4.restype = ct.c_void_p
+metc.metode_setABAsim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
+metc.metode_setABAsim_c.restype = ct.c_void_p
+metc.metode_setBABsim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
+metc.metode_setBABsim_c.restype = ct.c_void_p
+metc.metode_setABA_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
+metc.metode_setABA_c.restype = ct.c_void_p
+metc.metode_setBAB_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int, ct.c_int)    
+metc.metode_setBAB_c.restype = ct.c_void_p
+metc.metode_setXXsim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int)    
+metc.metode_setXXsim_c.restype = ct.c_void_p
+metc.metode_setXX_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int)    
+metc.metode_setXX_c.restype = ct.c_void_p
+metc.metode_setS2sim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int)    
+metc.metode_setS2sim_c.restype = ct.c_void_p
+metc.metode_setS2_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int)    
+metc.metode_setS2_c.restype = ct.c_void_p
+metc.metode_setS4sim_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int)    
+metc.metode_setS4sim_c.restype = ct.c_void_p
+metc.metode_setS4_c.argtypes = (ct.c_int, ct.POINTER(c_double_complex), ct.POINTER(c_double_complex), ct.c_int)    
+metc.metode_setS4_c.restype = ct.c_void_p
 
 class Eel(sp.Expr):
     is_commutative = False
@@ -254,29 +277,32 @@ class Metode():
             self.w = self.__init_mat()
         self.cofs = list(args)
         self.num = not istypearray(self.cofs, sp.Basic)
-        cof_li = self.cofs
-        tipus = palindromic(cof_li)
-        senar = (len(cof_li) % 2) != 0
-        if tipus == 1:
-            cof_li = cof_li[len(cof_li)//2:]
-        if senar == True:
-            self.w[1][1] = cof_li[0]
-            for i in range(base + 1, self.depth + 1, 2):
-                self.w[i][1] = cof_li[0]**i
-        for i in range(1, len(cof_li)):
-            if debug == True:
-                txt_p = "Iteració " + str(i) + " amb mètode S" + str(base) + " del tipus " + str(tipus)
-                printd(txt_p)
-            if base == 2:
-                self.__recur_S2(cof_li[i], tipus)
-            elif base == 4:
-                self.__recur_S4(cof_li[i], tipus)
-            elif base == 6:
-                self.__recur_S6(cof_li[i], tipus)
-            elif base == 8:
-                self.__recur_S8(cof_li[i], tipus)
-            elif base == 10:
-                self.__recur_S10(cof_li[i], tipus)                    
+        if self.num and base <= 4:
+            self.__setSSc(base)
+        else:
+            cof_li = self.cofs
+            tipus = palindromic(cof_li)
+            senar = (len(cof_li) % 2) != 0
+            if tipus == 1:
+                cof_li = cof_li[len(cof_li)//2:]
+            if senar == True:
+                self.w[1][1] = cof_li[0]
+                for i in range(base + 1, self.depth + 1, 2):
+                    self.w[i][1] = cof_li[0]**i
+            for i in range(1, len(cof_li)):
+                if debug == True:
+                    txt_p = "Iteració " + str(i) + " amb mètode S" + str(base) + " del tipus " + str(tipus)
+                    printd(txt_p)
+                if base == 2:
+                    self.__recur_S2(cof_li[i], tipus)
+                elif base == 4:
+                    self.__recur_S4(cof_li[i], tipus)
+                elif base == 6:
+                    self.__recur_S6(cof_li[i], tipus)
+                elif base == 8:
+                    self.__recur_S8(cof_li[i], tipus)
+                elif base == 10:
+                    self.__recur_S10(cof_li[i], tipus)                    
         self.setw = True
         
     def expand(self, debug = False):        
@@ -500,13 +526,13 @@ class Metode():
         return cad
 
     def __setABAc(self, AB, iscomp):
-        global mABA
+        global metc
         tam = len(self.cofs)
         tipus = palindromic(self.cofs)
         if not iscomp:
             cofc = (ct.c_double*tam)()
             alpc = (ct.c_double*128)()
-            funmet = [[mABA.metode_setABA, mABA.metode_setBAB], [mABA.metode_setABAsim, mABA.metode_setBABsim]]
+            funmet = [[metc.metode_setABA, metc.metode_setBAB], [metc.metode_setABAsim, metc.metode_setBABsim]]
             for i in range(tam):
                 cofc[i] = self.cofs[i]
             funmet[tipus][AB](tam, cofc, alpc, self.depth, self.rknd)
@@ -518,7 +544,7 @@ class Metode():
         else:
             cofc = (c_double_complex*tam)()
             alpc = (c_double_complex*128)()
-            funmet = [[mABA.metode_setABA_c, mABA.metode_setBAB_c], [mABA.metode_setABAsim_c, mABA.metode_setBABsim_c]]
+            funmet = [[metc.metode_setABA_c, metc.metode_setBAB_c], [metc.metode_setABAsim_c, metc.metode_setBABsim_c]]
             for i in range(tam):
                 cofc[i] = c_double_complex(self.cofs[i].real, self.cofs[i].imag)
             funmet[tipus][AB](tam, cofc, alpc, self.depth, self.rknd)
@@ -529,31 +555,67 @@ class Metode():
                     k += 1     
 
     def __setXXc(self):
-        global mXX
+        global metc
         tam = len(self.cofs)
+        tipus = palindromic(self.cofs)
+        tipus = 0
         if not istypearray(self.cofs, complex):
             cofc = (ct.c_double*tam)()
-            alpc = (ct.c_double*128)()           
+            alpc = (ct.c_double*128)()
+            funmet = [metc.metode_setXX, metc.metode_setXXsim]
             for i in range(tam):
                 cofc[i] = self.cofs[i]
-            mXX.metode_setXX(tam, cofc, alpc, self.depth)
+            funmet[tipus](tam, cofc, alpc, self.depth)
             k = 0
-            for i in range(1, len(self.w)):
+            for i in range(1, len(self.w), 1 + tipus):
                 for j in range(1, len(self.w[i])):
                     self.w[i][j] = alpc[k]
                     k += 1   
         else:
             cofc = (c_double_complex*tam)()
-            alpc = (c_double_complex*128)()            
+            alpc = (c_double_complex*128)()
+            funmet = [metc.metode_setXX, metc.metode_setXXsim]
             for i in range(tam):
                 cofc[i] = c_double_complex(self.cofs[i].real, self.cofs[i].imag)
-            mXX.metode_setXX_c(tam, cofc, alpc, self.depth)
+            funmet[tipus](tam, cofc, alpc, self.depth)
             k = 0
-            for i in range(1, len(self.w)):
+            for i in range(1, len(self.w), 1 + tipus):
                 for j in range(1, len(self.w[i])):
                     self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
                     k += 1                  
-                
+
+    def __setSSc(self, base):
+        global metc
+        tam = len(self.cofs)
+        tipus = palindromic(self.cofs)
+        tipus = 0
+        if not istypearray(self.cofs, complex):
+            cofc = (ct.c_double*tam)()
+            alpc = (ct.c_double*128)()
+            #funmet = [[metc.metode_setS2, metc.metode_setS4], [metc.metode_setS2sim, metc.metode_setS4sim]]
+            funmet = [[metc.metode_setS2, metc.metode_setS4], [metc.metode_setS2sim, ]]
+            for i in range(tam):
+                cofc[i] = self.cofs[i]
+            funmet[tipus][base//2 - 1](tam, cofc, alpc, self.depth)
+            k = 0
+            for i in range(1, len(self.w) + tipus):
+                for j in range(1, len(self.w[i])):
+                    self.w[i][j] = alpc[k]
+                    k += 1   
+        else:
+            cofc = (c_double_complex*tam)()
+            alpc = (c_double_complex*128)()
+            #funmet = [[metc.metode_setS2_c, metc.metode_setS4_c], [metc.metode_setS2sim_c, metc.metode_setS4sim_c]]
+            funmet = [[metc.metode_setS2_c, metc.metode_setS4_c], [metc.metode_setS2sim_c, ]]
+            for i in range(tam):
+                cofc[i] = c_double_complex(self.cofs[i].real, self.cofs[i].imag)
+            funmet[tipus][base//2 - 1](tam, cofc, alpc, self.depth)
+            k = 0
+            for i in range(1, len(self.w), 1 + tipus):
+                for j in range(1, len(self.w[i])):
+                    self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
+                    k += 1   
+                    
     def __recur_AB(self, x, AB):
         bet = self.__init_mat()
         if AB == 0:
@@ -601,21 +663,21 @@ class Metode():
         bet = rc.recS6sim(self.w, bet, x, self.depth)
         self.w = bet.copy()
 
-    def __recur_S8(self, x, tip):
-        bet = self.__init_mat()
-        if tip == 0:
-            printe("Per mètodes SS(S8) no estan implementades les iteracions sense cap tipus de simetria")
-            exit(-1)         
-        bet = rc.recS8sim(self.w, bet, x, self.depth)
-        self.w = bet.copy()
+    # def __recur_S8(self, x, tip):
+    #     bet = self.__init_mat()
+    #     if tip == 0:
+    #         printe("Per mètodes SS(S8) no estan implementades les iteracions sense cap tipus de simetria")
+    #         exit(-1)         
+    #     bet = rc.recS8sim(self.w, bet, x, self.depth)
+    #     self.w = bet.copy()
         
-    def __recur_S10(self, x, tip):
-        bet = self.__init_mat()
-        if tip == 0:
-            printe("Per mètodes SS(S10) no estan implementades les iteracions sense cap tipus de simetria")
-            exit(-1)         
-        bet = rc.recS10sim(self.w, bet, x, self.depth)
-        self.w = bet.copy()
+    # def __recur_S10(self, x, tip):
+    #     bet = self.__init_mat()
+    #     if tip == 0:
+    #         printe("Per mètodes SS(S10) no estan implementades les iteracions sense cap tipus de simetria")
+    #         exit(-1)         
+    #     bet = rc.recS10sim(self.w, bet, x, self.depth)
+    #     self.w = bet.copy()
         
 def palindromic(cofs):
     if cofs == cofs[::-1]:
