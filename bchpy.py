@@ -249,6 +249,8 @@ class Metode():
         self.num = not istypearray(self.cofs, sp.Basic)
         #cofsR = list(reversed(args))
         if self.num:
+            if debug == True:
+                printd("Cridant a C")
             self.__setXXc()
         else:
             for i in range(1, self.depth + 1):
@@ -278,6 +280,8 @@ class Metode():
         self.cofs = list(args)
         self.num = not istypearray(self.cofs, sp.Basic)
         if self.num and base <= 4:
+            if debug == True:
+                printd("Cridant a C")
             self.__setSSc(base)
         else:
             cof_li = self.cofs
@@ -529,6 +533,8 @@ class Metode():
         global metc
         tam = len(self.cofs)
         tipus = palindromic(self.cofs)
+        if (tam % 2) == 0:
+            tipus = 0
         if not iscomp:
             cofc = (ct.c_double*tam)()
             alpc = (ct.c_double*128)()
@@ -558,7 +564,8 @@ class Metode():
         global metc
         tam = len(self.cofs)
         tipus = palindromic(self.cofs)
-        tipus = 0
+        if (tam % 2) != 0:
+            tipus = 0        
         if not istypearray(self.cofs, complex):
             cofc = (ct.c_double*tam)()
             alpc = (ct.c_double*128)()
@@ -567,19 +574,19 @@ class Metode():
                 cofc[i] = self.cofs[i]
             funmet[tipus](tam, cofc, alpc, self.depth)
             k = 0
-            for i in range(1, len(self.w), 1 + tipus):
+            for i in range(1, len(self.w)):
                 for j in range(1, len(self.w[i])):
                     self.w[i][j] = alpc[k]
                     k += 1   
         else:
             cofc = (c_double_complex*tam)()
             alpc = (c_double_complex*128)()
-            funmet = [metc.metode_setXX, metc.metode_setXXsim]
+            funmet = [metc.metode_setXX_c, metc.metode_setXXsim_c]
             for i in range(tam):
                 cofc[i] = c_double_complex(self.cofs[i].real, self.cofs[i].imag)
             funmet[tipus](tam, cofc, alpc, self.depth)
             k = 0
-            for i in range(1, len(self.w), 1 + tipus):
+            for i in range(1, len(self.w)):
                 for j in range(1, len(self.w[i])):
                     self.w[i][j] = complex(alpc[k].real, alpc[k].imag)
                     k += 1                  

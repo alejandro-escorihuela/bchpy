@@ -9,6 +9,8 @@
 #include <math.h>
 #include "esq.h"
 
+void recXasim_c(double complex * res, double complex x, int order);
+void recXbsim_c(double complex * res, double complex x, int order);
 void recXa_c(double complex * res, double complex x, int order);
 void recXb_c(double complex * res, double complex x, int order);
 

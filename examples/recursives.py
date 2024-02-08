@@ -80,7 +80,6 @@ if __name__ == "__main__":
     #     xb += (-1)**i*x**(i + 1)*Eel(i + 1, 1, "C")
     #     for j in range(rl.tamC[i]):
     #         esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "C")
-
     # esq = bch20(xa, esq, depth = ord_bch, debug = True)
     # metBD = Metode(ord_bch, "C")
     # metBD.importFromExpr(esq, debug = True)
@@ -103,17 +102,17 @@ if __name__ == "__main__":
         xb += (-1)**i*x**(i + 1)*Eel(i + 1, 1, "C")
         for j in range(rl.tamC[i]):
             esq += alp[i + 1, j + 1]*Eel(i + 1, j + 1, "C")
-
-    # esq = bch20(esq, xa, depth = ord_bch, debug = True)
-    # esq = bch20(xb, esq.expand(), depth = ord_bch, debug = True)
-    # metBD = Metode(ord_bch, "C")
-    # metBD.importFromExpr(esq, debug = True)
-    # # print(xa)
-    # # print(xb)
-    # # print(metBD)
-    # printmetC(metBD, ord_bch, simconj = False, cq = 1, base = "C")
-    # t1 = tm.time()
-    # print(t1 - t0, "s")
+    print(xa)
+    print(xb)
+    print(esq)            
+    esq = bch20(esq, xb, depth = ord_bch, debug = True)
+    esq = bch20(xa, esq.expand(), depth = ord_bch, debug = True)
+    metBD = Metode(ord_bch, "C")
+    metBD.importFromExpr(esq, debug = True)
+    print(metBD)
+    printmetC(metBD, ord_bch, simconj = False, cq = 1, base = "C")
+    t1 = tm.time()
+    print(t1 - t0, "s")
     
     # print("exp(w(i,j)*Mij)=exp(x*M11+x**3*M31+x**5*M51+...)*exp(alp(i,j)*Mij)*exp(x*M11+x**3*M31+x**5*M51+...)")
     # x, y = sp.symbols("x y")

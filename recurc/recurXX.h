@@ -8,6 +8,8 @@
 #include <math.h>
 #include "esq.h"
 
+void recXasim(double * res, double x, int order);
+void recXbsim(double * res, double x, int order);
 void recXa(double * res, double x, int order);
 void recXb(double * res, double x, int order);
 

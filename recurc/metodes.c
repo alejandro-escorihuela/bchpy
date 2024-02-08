@@ -7,6 +7,7 @@
 
 void metode_setABAsim(int tam, double * cofs, double * res, int order, int rkn) {
   int i, s = (tam - 1)/2;
+  
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0;
   if (s % 2 == 0)
@@ -22,6 +23,7 @@ void metode_setABAsim(int tam, double * cofs, double * res, int order, int rkn) 
 
 void metode_setBABsim(int tam, double * cofs, double * res, int order, int rkn) {
   int i, s = (tam - 1)/2;
+  
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0;
   if (s % 2 == 0)
@@ -37,6 +39,7 @@ void metode_setBABsim(int tam, double * cofs, double * res, int order, int rkn) 
 
 void metode_setABA(int tam, double * cofs, double * res, int order, int rkn) {
   int i;
+  
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0;
   res[0] = cofs[0];
@@ -49,6 +52,7 @@ void metode_setABA(int tam, double * cofs, double * res, int order, int rkn) {
 
 void metode_setBAB(int tam, double * cofs, double * res, int order, int rkn) {
   int i;
+  
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0;
   res[1] = cofs[0];
@@ -60,7 +64,15 @@ void metode_setBAB(int tam, double * cofs, double * res, int order, int rkn) {
 }
 
 void metode_setXXsim(int tam, double * cofs, double * res, int order) {
-
+  int i, s = tam/2;
+  
+  for (i = 0; i < TAMBCH; i++)
+    res[i] = 0.0;
+  for (i = s - 1; i >= 0; i--)
+    if (i % 2 == 0)
+      recXasim(res, cofs[i], order);
+    else
+      recXbsim(res, cofs[i], order);
 }
 
 void metode_setXX(int tam, double * cofs, double * res, int order) {
@@ -120,6 +132,7 @@ void metode_setS4(int tam, double * cofs, double * res, int order) {
 
 void metode_setABAsim_c(int tam, double complex * cofs, double complex * res, int order, int rkn) {
   int i, s = (tam - 1)/2;
+  
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0 + 0.0*I;
   if (s % 2 == 0)
@@ -135,6 +148,7 @@ void metode_setABAsim_c(int tam, double complex * cofs, double complex * res, in
 
 void metode_setBABsim_c(int tam, double complex * cofs, double complex * res, int order, int rkn) {
   int i, s = (tam - 1)/2;
+  
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0 + 0.0*I;
   if (s % 2 == 0)
@@ -150,6 +164,7 @@ void metode_setBABsim_c(int tam, double complex * cofs, double complex * res, in
 
 void metode_setABA_c(int tam, double complex * cofs, double complex * res, int order, int rkn) {
   int i;
+  
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0 + 0.0*I;
   res[0] = cofs[0];
@@ -162,6 +177,7 @@ void metode_setABA_c(int tam, double complex * cofs, double complex * res, int o
 
 void metode_setBAB_c(int tam, double complex * cofs, double complex * res, int order, int rkn) {
   int i;
+  
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0 + 0.0*I;
   res[1] = cofs[0];
@@ -173,7 +189,15 @@ void metode_setBAB_c(int tam, double complex * cofs, double complex * res, int o
 }
 
 void metode_setXXsim_c(int tam, double complex * cofs, double complex * res, int order) {
-
+  int i, s = tam/2;
+  
+  for (i = 0; i < TAMBCH; i++)
+    res[i] = 0.0 + 0.0*I;
+  for (i = s - 1; i >= 0; i--)
+    if (i % 2 == 0)
+      recXasim_c(res, cofs[i], order);
+    else
+      recXbsim_c(res, cofs[i], order);
 }
 
 void metode_setXX_c(int tam, double complex * cofs, double complex * res, int order) {
