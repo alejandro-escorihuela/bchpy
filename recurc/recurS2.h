@@ -8,6 +8,7 @@
 #include <math.h>
 #include "esq.h"
 
+void recS2sim(double * res, double x, int order);
 void recS2(double * res, double x, int order);
 
 /* Composició SS(S2)

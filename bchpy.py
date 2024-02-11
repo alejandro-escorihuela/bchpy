@@ -535,6 +535,7 @@ class Metode():
         tipus = palindromic(self.cofs)
         if (tam % 2) == 0:
             tipus = 0
+        # rkn en no simètric no funciona a partir d'ordre 8
         if not iscomp:
             cofc = (ct.c_double*tam)()
             alpc = (ct.c_double*128)()
@@ -595,25 +596,22 @@ class Metode():
         global metc
         tam = len(self.cofs)
         tipus = palindromic(self.cofs)
-        tipus = 0
         if not istypearray(self.cofs, complex):
             cofc = (ct.c_double*tam)()
             alpc = (ct.c_double*128)()
-            #funmet = [[metc.metode_setS2, metc.metode_setS4], [metc.metode_setS2sim, metc.metode_setS4sim]]
-            funmet = [[metc.metode_setS2, metc.metode_setS4], [metc.metode_setS2sim, ]]
+            funmet = [[metc.metode_setS2, metc.metode_setS4], [metc.metode_setS2sim, metc.metode_setS4sim]]
             for i in range(tam):
                 cofc[i] = self.cofs[i]
             funmet[tipus][base//2 - 1](tam, cofc, alpc, self.depth)
             k = 0
-            for i in range(1, len(self.w) + tipus):
+            for i in range(1, len(self.w), 1 + tipus):
                 for j in range(1, len(self.w[i])):
                     self.w[i][j] = alpc[k]
                     k += 1   
         else:
             cofc = (c_double_complex*tam)()
             alpc = (c_double_complex*128)()
-            #funmet = [[metc.metode_setS2_c, metc.metode_setS4_c], [metc.metode_setS2sim_c, metc.metode_setS4sim_c]]
-            funmet = [[metc.metode_setS2_c, metc.metode_setS4_c], [metc.metode_setS2sim_c, ]]
+            funmet = [[metc.metode_setS2_c, metc.metode_setS4_c], [metc.metode_setS2sim_c, metc.metode_setS4sim_c]]
             for i in range(tam):
                 cofc[i] = c_double_complex(self.cofs[i].real, self.cofs[i].imag)
             funmet[tipus][base//2 - 1](tam, cofc, alpc, self.depth)

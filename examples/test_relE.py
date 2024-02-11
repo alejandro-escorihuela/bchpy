@@ -14,7 +14,7 @@ from qolib import *
 if __name__ == "__main__":
     A = Operator("A")
     B = Operator("B")
-
+    
     E = llegir_base("niats_base.txt", A, B)
     ord_bch = len(rl.tamE) + 1
     for i in range(1, ord_bch):

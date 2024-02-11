@@ -8,6 +8,7 @@
 #include <math.h>
 #include "esq.h"
 
+void recS4sim_c(double complex * res, double complex x, int order);
 void recS4_c(double complex * res, double complex x, int order);
 
 /* Composició SS(S4)

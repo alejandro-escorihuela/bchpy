@@ -39,7 +39,7 @@ void metode_setBABsim(int tam, double * cofs, double * res, int order, int rkn) 
 
 void metode_setABA(int tam, double * cofs, double * res, int order, int rkn) {
   int i;
-  
+
   for (i = 0; i < TAMBCH; i++)
     res[i] = 0.0;
   res[0] = cofs[0];
@@ -92,6 +92,18 @@ void metode_setXX(int tam, double * cofs, double * res, int order) {
 }
 
 void metode_setS2sim(int tam, double * cofs, double * res, int order) {
+  int i, m = tam/2;
+  int vp[13] = {0, -1, 1, -1, 2, -1, 4, -1, 8, -1, 16, -1, 34};
+  double auxp;
+  
+  for (i = 0; i < TAMBCH; i++)
+    res[i] = 0.0;
+  res[vp[0]] = cofs[m];
+  auxp = cofs[m]*cofs[m];
+  for (i = 2; i <= order; i += 2)
+    res[vp[i]] = res[vp[i - 2]]*auxp;
+  for (i = m - 1; i >= 0; i--)
+    recS2sim(res, cofs[i], order);
 }
 
 
@@ -104,13 +116,26 @@ void metode_setS2(int tam, double * cofs, double * res, int order) {
     res[i] = 0.0;
   res[vp[0]] = cofs[0];
   auxp = cofs[0]*cofs[0];
-  for (i = 2; i <= order; i+=2)
+  for (i = 2; i <= order; i += 2)
     res[vp[i]] = res[vp[i - 2]]*auxp;
   for (i = 1; i < tam; i++)
       recS2(res, cofs[i], order);  
 }
 
 void metode_setS4sim(int tam, double * cofs, double * res, int order) {
+  int i, m = tam/2;
+  int vp[15] = {0, -1, -1, -1, 1, -1, 2, -1, 4, -1, 7, -1, 12, -1, 21};
+  double auxp;
+  
+  for (i = 0; i < TAMBCH; i++)
+    res[i] = 0.0;
+  res[vp[0]] = cofs[m];
+  res[vp[4]] = pow(cofs[m], 5);
+  auxp = cofs[m]*cofs[m];
+  for (i = 6; i <= order; i+=2)
+    res[vp[i]] = res[vp[i - 2]]*auxp;
+  for (i = m - 1; i >= 0; i--)
+      recS4sim(res, cofs[i], order);  
 }
 
 
@@ -217,7 +242,18 @@ void metode_setXX_c(int tam, double complex * cofs, double complex * res, int or
 }
 
 void metode_setS2sim_c(int tam, double complex * cofs, double complex * res, int order) {
-
+  int i, m = tam/2;
+  int vp[13] = {0, -1, 1, -1, 2, -1, 4, -1, 8, -1, 16, -1, 34};
+  double complex auxp;
+  
+  for (i = 0; i < TAMBCH; i++)
+    res[i] = 0.0 + 0.0*I;
+  res[vp[0]] = cofs[m];
+  auxp = cofs[m]*cofs[m];
+  for (i = 2; i <= order; i += 2)
+    res[vp[i]] = res[vp[i - 2]]*auxp;
+  for (i = m - 1; i >= 0; i--)
+    recS2sim_c(res, cofs[i], order);
 }
 
 void metode_setS2_c(int tam, double complex * cofs, double complex * res, int order) {
@@ -236,6 +272,19 @@ void metode_setS2_c(int tam, double complex * cofs, double complex * res, int or
 }
 
 void metode_setS4sim_c(int tam, double complex * cofs, double complex * res, int order) {
+  int i, m = tam/2;
+  int vp[15] = {0, -1, -1, -1, 1, -1, 2, -1, 4, -1, 7, -1, 12, -1, 21};
+  double complex auxp;
+  
+  for (i = 0; i < TAMBCH; i++)
+    res[i] = 0.0;
+  res[vp[0]] = cofs[m];
+  res[vp[4]] = cpow(cofs[m], 5);
+  auxp = cofs[m]*cofs[m];
+  for (i = 6; i <= order; i+=2)
+    res[vp[i]] = res[vp[i - 2]]*auxp;
+  for (i = m - 1; i >= 0; i--)
+      recS4sim_c(res, cofs[i], order);    
 }
 
 
