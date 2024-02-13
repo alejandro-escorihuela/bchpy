@@ -14,12 +14,12 @@ from qolib import *
 
 if __name__ == "__main__":
     impfits = True
-    n_max = 11
+    n_max = 9
     
     A = Operator("A")
     B = Operator("B")
     
-    E = llegir_base("niats_base11.txt", A, B)
+    E = llegir_base("../txt/niats_base.txt", A, B)
     if (len(E) - 1 < n_max):
         print("La dimensió de la base llegida és menor que l'ordre a calcular. (" + str(len(E) - 1) + "<" + str(n_max) + ")")
     
@@ -60,14 +60,18 @@ if __name__ == "__main__":
                                 nume, deno = sp.fraction(sol[m])
                                 cadrel += "[" + str(nume) + ", " + str(deno) + ", " + str(n) + ", " + str(c[n].index(m) + 1) + "], "
                                 # açò està mal. no és correcte.
-                                # factex = ""
-                                # if abs(nume) != 1 and deno != 1:
-                                #     factex = str(nume)
-                                #     if deno != 1:
-                                #         factex = "\\frac{" + factex + "}{" + str(deno) + "}"
-                                # cadtex += "+" + factex + "E_{" + str(n) + "," + str(c[n].index(m) + 1) + "}"
+                                if deno != 1:
+                                    factex = "\\frac{" + str(abs(nume)) + "}{" + str(deno) + "}"
+                                elif abs(nume) != 1:
+                                    factex = str(abs(nume))
+                                else:
+                                    factex = ""
+                                signe = "+"
+                                if nume < 0:
+                                    signe = "-"
+                                cadtex += signe + factex + "E_{" + str(n) + "," + str(c[n].index(m) + 1) + "}"
                         cadrel = cadrel[:-2] + "]"
-                        print(cad)
+                        print(cadtex)
                         if impfits:
                             fitR.write(cadrel + "\n")
     if impfits:
