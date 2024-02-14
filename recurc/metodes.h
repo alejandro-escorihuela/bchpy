@@ -16,6 +16,8 @@
 #include "recurS4.h"
 #include "recurS4c.h"
 
+void rknitzarsim(double * res);
+void rknitzar(double * res);
 void metode_setABAsim(int tam, double * cofs, double * res, int order, int rkn);
 void metode_setBABsim(int tam, double * cofs, double * res, int order, int rkn);
 void metode_setABA(int tam, double * cofs, double * res, int order, int rkn);
@@ -27,7 +29,8 @@ void metode_setS2(int tam, double * cofs, double * res, int order);
 void metode_setS4sim(int tam, double * cofs, double * res, int order);
 void metode_setS4(int tam, double * cofs, double * res, int order);
 
-
+void rknitzarsim_c(complex double * res);
+void rknitzar_c(complex double * res);
 void metode_setABAsim_c(int tam, double complex * cofs, double complex * res, int order, int rkn);
 void metode_setBABsim_c(int tam, double complex * cofs, double complex * res, int order, int rkn);
 void metode_setABA_c(int tam, double complex * cofs, double complex * res, int order, int rkn);

@@ -100,8 +100,8 @@ if __name__ == "__main__":
             correcte = correcte and abs(wrkn[i][j]) < tol
     if not correcte:
         printe("Resultat erroni en Mètode RKN ABA simètric d'ordre 8")
-        met.cprint()
-        
+    met.cprint()
+    exit(-1)
     # ## Mètode d'escissió QA d'ordre 10
     # cofs = [0.3408726997217003, 0.6308398907950986, 0.5681165147290248, 0.6358118974865499, -0.194520172938841, -0.9046834271927621,
     #         -0.6985031964489967, -0.4814340856952135, 0.5611473127614152, 0.9689829571497421, 0.7120730850545042, 0.4317725809642063,

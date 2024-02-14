@@ -533,8 +533,8 @@ class Metode():
         global metc
         tam = len(self.cofs)
         tipus = palindromic(self.cofs)
-        if (tam % 2) == 0:
-            tipus = 0
+        # if (tam % 2) == 0:
+        tipus = 0
         # rkn en no simètric no funciona a partir d'ordre 8
         if not iscomp:
             cofc = (ct.c_double*tam)()

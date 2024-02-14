@@ -5,6 +5,20 @@
 #include <stdlib.h>
 #include "metodes.h"
 
+void rknitzar(double * res) {
+  res[44] += 0.5*res[56];
+  res[46] -= 0.5*res[56];
+  res[47] -= 1.5*res[56];
+  res[48] -= 1.5*res[57] + 3.5*res[58];
+  res[49] -= res[56];
+  res[50] += 4*res[56];
+  res[51] += 3*res[57] + 6*res[58];
+  res[52] -= res[56];
+  res[53] -= 3*res[57] + 9*res[58];
+  res[54] += 3*res[57] + 9*res[58];
+  res[56] = res[57] = res[58] = 0.0;
+}
+
 void metode_setABAsim(int tam, double * cofs, double * res, int order, int rkn) {
   int i, s = (tam - 1)/2;
   
@@ -48,6 +62,8 @@ void metode_setABA(int tam, double * cofs, double * res, int order, int rkn) {
       recA(res, cofs[i], order, rkn);
     else
       recB(res, cofs[i], order, rkn);
+  if (rkn != 0)
+    rknitzar(res);
 }
 
 void metode_setBAB(int tam, double * cofs, double * res, int order, int rkn) {
@@ -61,6 +77,8 @@ void metode_setBAB(int tam, double * cofs, double * res, int order, int rkn) {
       recB(res, cofs[i], order, rkn);
     else
       recA(res, cofs[i], order, rkn);
+  if (rkn != 0)
+    rknitzar(res);  
 }
 
 void metode_setXXsim(int tam, double * cofs, double * res, int order) {
@@ -155,6 +173,20 @@ void metode_setS4(int tam, double * cofs, double * res, int order) {
       recS4(res, cofs[i], order);  
 }
 
+void rknitzar_c(complex double * res) {
+  res[44] += 0.5*res[56];
+  res[46] -= 0.5*res[56];
+  res[47] -= 1.5*res[56];
+  res[48] -= 1.5*res[57] + 3.5*res[58];
+  res[49] -= res[56];
+  res[50] += 4*res[56];
+  res[51] += 3*res[57] + 6*res[58];
+  res[52] -= res[56];
+  res[53] -= 3*res[57] + 9*res[58];
+  res[54] += 3*res[57] + 9*res[58];
+  res[56] = res[57] = res[58] = 0.0 + 0.0*I;
+}
+
 void metode_setABAsim_c(int tam, double complex * cofs, double complex * res, int order, int rkn) {
   int i, s = (tam - 1)/2;
   
@@ -198,6 +230,8 @@ void metode_setABA_c(int tam, double complex * cofs, double complex * res, int o
       recA_c(res, cofs[i], order, rkn);
     else
       recB_c(res, cofs[i], order, rkn);
+  if (rkn != 0)
+    rknitzar_c(res);  
 }
 
 void metode_setBAB_c(int tam, double complex * cofs, double complex * res, int order, int rkn) {
@@ -211,6 +245,8 @@ void metode_setBAB_c(int tam, double complex * cofs, double complex * res, int o
       recB_c(res, cofs[i], order, rkn);
     else
       recA_c(res, cofs[i], order, rkn);
+  if (rkn != 0)
+    rknitzar_c(res);  
 }
 
 void metode_setXXsim_c(int tam, double complex * cofs, double complex * res, int order) {
