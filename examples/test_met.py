@@ -23,7 +23,7 @@ def baserkn(w):
     wrkn.append(w[6][:6])
     wrkn.append(w[7][:11])
     wrkn.append(w[8][:15])
-    wrkn.append(w[9][1:10] + w[9][11:27])
+    wrkn.append(w[9][1:8] + [w[9][9]] + w[9][11:28])
     return wrkn    
 
 def baseq(w):
@@ -37,7 +37,10 @@ def baseq(w):
     wq.append(w[6][3:6])
     wq.append(w[7][5:11])
     wq.append(w[8][9:15])
-    wq.append(w[9][17:27])
+    wq.append(w[9][17:28])
+    wq[9][2] += wq[9][0]
+    wq[9][6] -= 0.25*wq[9][0]
+    wq[9] = wq[9][1:]
     return wq    
 
 
@@ -101,26 +104,26 @@ if __name__ == "__main__":
     if not correcte:
         printe("Resultat erroni en Mètode RKN ABA simètric d'ordre 8")
         met.cprint()
-    #exit(-1)
+
     # ## Mètode d'escissió QA d'ordre 10
-    # cofs = [0.3408726997217003, 0.6308398907950986, 0.5681165147290248, 0.6358118974865499, -0.194520172938841, -0.9046834271927621,
-    #         -0.6985031964489967, -0.4814340856952135, 0.5611473127614152, 0.9689829571497421, 0.7120730850545042, 0.4317725809642063,
-    #         0.00720904268022022, -0.40182836826909507, -0.5635668124920818, -0.800022967832949, -0.6820859994059998, 0.16950505672124352,
-    #         0.74122378181587, 0.743992980440794, -0.3180809750107615, -0.49293651456761456, 0.052229439067892125]
-    # cofs = cofs + cofs[-2::-1]
-    # met = Metode(depth = 9, basis_type = "E", rkn = True)
-    # t0 = tm.time()
-    # met.setABA(*cofs)
-    # print("Temps QA sim d'ordre 10          = %f" % (tm.time() - t0))
-    # correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
-    # wq = baseq(met.w)
-    # for i in range(2, 10):
-    #     for j in range(len(wq[i])):
-    #         correcte = correcte and abs(wq[i][j]) < tol
-    # if not correcte:
-    #     printe("Resultat erroni en Mètode QA simètric d'ordre 10")
-    #     met.cprint()
-        
+    cofs = [0.09316322989914702, 0.35622376178217025, 0.45580928594336767, 0.1411074232684012, -0.4985432764186144, -0.09511629882755356, 0.5791245032531255,
+            -0.15341146505895217, -0.23974376319742727, 0.5275238814170558, 0.7346124834298806, 0.017929363049292716, -0.7011997037018233, -0.8831000573247433,
+            0.016322679583435713, 0.855096409180011, 0.6906350665645231, -0.03415795394869423, -0.7247819362769603, -0.37871206362819315, 0.3532116968929268,
+            0.14661700009120554, -0.5172205319431629]
+    cofs = cofs + cofs[-2::-1]
+    met = Metode(depth = 9, basis_type = "E", rkn = True)
+    t0 = tm.time()
+    met.setABA(*cofs)
+    print("Temps QA sim d'ordre 10          = %f" % (tm.time() - t0))
+    correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
+    wq = baseq(met.w)
+    for i in range(2, 10):
+        for j in range(len(wq[i])):
+            correcte = correcte and abs(wq[i][j]) < tol
+    if not correcte:
+        printe("Resultat erroni en Mètode QA simètric d'ordre 10")
+        met.cprint()
+
     ## Mètode d'escissió ABA d'ordre 6
     cofs = [0.0502627644003922, 0.148816447901042, 0.413514300428344, -0.132385865767784, 0.0450798897943977, 0.067307604692185,
             -0.188054853819569, 0.432666402578175, 0.54196067845078, -0.016404589403617997, -0.7255255585086897, -0.016404589403617997,
