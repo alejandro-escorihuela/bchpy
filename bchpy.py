@@ -287,12 +287,15 @@ class Metode():
             cof_li = self.cofs
             tipus = palindromic(cof_li)
             senar = (len(cof_li) % 2) != 0
+            ini_it = 0
             if tipus == 1:
                 cof_li = cof_li[len(cof_li)//2:]
-            self.w[1][1] = cof_li[0]
-            for i in range(base + 1, self.depth + 1, 2):
-                self.w[i][1] = cof_li[0]**i
-            for i in range(1, len(cof_li)):
+            if senar:
+                ini_it = 1
+                self.w[1][1] = cof_li[0]
+                for i in range(base + 1, self.depth + 1, 2):
+                    self.w[i][1] = cof_li[0]**i
+            for i in range(ini_it, len(cof_li)):
                 if debug == True:
                     txt_p = "Iteració " + str(i) + " amb mètode S" + str(base) + " del tipus " + str(tipus)
                     printd(txt_p)
