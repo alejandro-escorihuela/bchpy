@@ -241,7 +241,7 @@ class Metode():
         
     def setXX(self, *args, debug = False):
         if self.t != "C":
-            printe("Per mètodes XX* la base ha de ser Z i no %s" % (self.t))
+            printe("Per mètodes XX* la base ha de ser C i no %s" % (self.t))
             exit(-1)         
         if self.setw == True:
             self.w = self.__init_mat()        
