@@ -26,7 +26,7 @@ void rknitzarsim(double * res) {
   res[52] -= 3*res[59] + 9*res[61];
   res[53] += res[55];
   res[54] += 3*res[59] + 9*res[61];
-  res[35] = res[37] = res[55] = res[58] = res[59] = res[60] = res[61] = res[62] = 0.0;
+  /* res[35] = res[37] = res[55] = res[58] = res[59] = res[60] = res[61] = res[62] = 0.0; */
 }
 
 void rknitzar(double * res) {
@@ -61,7 +61,7 @@ void rknitzar(double * res) {
   res[95] -= 3*res[102] + 9*res[104];
   res[96] += res[98];
   res[97] += 3*res[102] + 9*res[104];
-  res[78] = res[80] = res[98] = res[101] = res[102] = res[103] = res[104] = res[105] = 0.0;
+  /* res[78] = res[80] = res[98] = res[101] = res[102] = res[103] = res[104] = res[105] = 0.0; */
 }
 
 void metode_setABAsim(int tam, double * cofs, double * res, int order, int rkn) {
