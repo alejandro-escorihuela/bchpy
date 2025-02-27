@@ -10,6 +10,6 @@ You can read this in [catalan](README.ca.md).
 * [NumPy](https://github.com/numpy/numpy)
 * [BCH formula up to terms of degree 20](https://www.ehu.eus/ccwmuura/bch.html)
 ## Autors
-* **Cosmo Cat**  [cosmogat](https://github.com/cosmogat)
+* **A. Escorihuela i Tomàs**  [alejandro-escorihuela](https://github.com/alejandro-escorihuela)
 ## License
 See the [LICENSE](LICENSE)

@@ -10,6 +10,6 @@ Pots llegir aquest arxiu en [anglès](README.md).
 * [NumPy](https://github.com/numpy/numpy)
 * [Fórmula BCH fins ordre 20](https://www.ehu.eus/ccwmuura/bch.html)
 ## Autors
-* **Cosmo Cat**  [cosmogat](https://github.com/cosmogat)
+* **A. Escorihuela i Tomàs**  [alejandro-escorihuela](https://github.com/alejandro-escorihuela)
 ## Llicència
 Mireu [LICENSE](LICENSE)
