@@ -41,7 +41,7 @@ def ef(s, m, vec, sc):
 
 def eferr(cofs, ABA = True, sc = False, rkn = False):
     a, b = cofs
-    met = Metode(depth = 9, basis_type = "E", numeric = True)
+    met = Metode(depth = 9, basis_type = "E")
     cc = []
     if ABA:
         s = len(b)
@@ -68,9 +68,9 @@ def eferr(cofs, ABA = True, sc = False, rkn = False):
 
 def eferrSS(cofs, base = 2):
     if base == 2:
-        met = Metode(depth = 9, basis_type = "M", numeric = True)
+        met = Metode(depth = 9, basis_type = "M")
     else:
-        met = Metode(depth = 9, basis_type = "M" + str(base), numeric = True)
+        met = Metode(depth = 9, basis_type = "M" + str(base))
     cc = []
     met.setSS(*cofs, base = base, debug = False)      
     ret = []
