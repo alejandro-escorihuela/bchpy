@@ -34,10 +34,9 @@ def ef(s, m, vec, sc):
             err += vec[i]**2
     err = np.sqrt(float(err))
     err = err**(1/(m - 1))
-    if err < 0.01:
-        return 0.0
-    else:
-        return s*err
+    # if err < 0.01:
+    #     return 0.0
+    return s*err
 
 def eferr(cofs, ABA = True, sc = False, rkn = False):
     a, b = cofs
