@@ -32,7 +32,10 @@ def ef(s, m, vec, sc):
     else:
         for i in range(len(vec)):
             err += vec[i]**2
-    err = np.sqrt(float(err))
+    if isinstance(err, complex):
+        err = np.sqrt(err)
+    else:
+        err = np.sqrt(float(err))
     err = err**(1/(m - 1))
     # if err < 0.01:
     #     return 0.0
