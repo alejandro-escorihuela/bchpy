@@ -9,13 +9,14 @@ void recS2sim_c(double complex * res, double complex x, int order) {
   int i;
   double complex alp[TAMBCH];
   double complex potx[14] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  double complex pal0[14] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  double complex pal0[11] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   
   copyesq_c(alp, res);
-  for (i = 1; i <= order; i++) {
+  for (i = 1; i <= order; i++)
     potx[i] = x*potx[i - 1];
+
+  for (i = 1; i < 11; i++)
     pal0[i] = alp[0]*pal0[i - 1];
-  }
   res[0] = 2*x + alp[0];
   res[1] = 2*potx[3] + alp[1];
   res[2] = 2*potx[5] + alp[2];
@@ -104,13 +105,14 @@ void recS2_c(double complex * res, double complex x, int order) {
   int i;
   double complex alp[TAMBCH];
   double complex potx[14] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-  double complex pal0[14] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+  double complex pal0[11] = {1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
   
   copyesq_c(alp, res);
-  for (i = 1; i <= order; i++) {
+  for (i = 1; i <= order; i++)
     potx[i] = x*potx[i - 1];
+
+  for (i = 1; i < 11; i++)
     pal0[i] = alp[0]*pal0[i - 1];
-  }
   
   res[0] = x + alp[0];
   res[1] = potx[3] + alp[1];

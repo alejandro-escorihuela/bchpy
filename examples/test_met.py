@@ -105,7 +105,7 @@ if __name__ == "__main__":
         printe("Resultat erroni en Mètode RKN ABA simètric d'ordre 8")
         met.cprint()
 
-    # ## Mètode d'escissió QA d'ordre 10
+    # ## Mètode d'escissió CA d'ordre 10
     cofs = [0.09316322989914702, 0.35622376178217025, 0.45580928594336767, 0.1411074232684012, -0.4985432764186144, -0.09511629882755356, 0.5791245032531255,
             -0.15341146505895217, -0.23974376319742727, 0.5275238814170558, 0.7346124834298806, 0.017929363049292716, -0.7011997037018233, -0.8831000573247433,
             0.016322679583435713, 0.855096409180011, 0.6906350665645231, -0.03415795394869423, -0.7247819362769603, -0.37871206362819315, 0.3532116968929268,
@@ -114,14 +114,14 @@ if __name__ == "__main__":
     met = Metode(depth = 9, basis_type = "E", rkn = True)
     t0 = tm.time()
     met.setABA(*cofs)
-    print("Temps QA sim d'ordre 10          = %f" % (tm.time() - t0))
+    print("Temps CA sim d'ordre 10          = %f" % (tm.time() - t0))
     correcte = abs(met.w[1][1] + met.w[1][2] - 2.0) < tol
     wq = baseq(met.w)
     for i in range(2, 10):
         for j in range(len(wq[i])):
             correcte = correcte and abs(wq[i][j]) < tol
     if not correcte:
-        printe("Resultat erroni en Mètode QA simètric d'ordre 10")
+        printe("Resultat erroni en Mètode CA simètric d'ordre 10")
         met.cprint()
 
     ## Mètode d'escissió ABA d'ordre 6
