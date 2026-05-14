@@ -1,0 +1,31 @@
+import sympy as sp
+from sympy.physics.quantum import Operator, Commutator
+import itertools
+import sys
+sys.path.insert(0, '../')
+from qolib import *
+
+n_max = 9
+    
+A = Operator("A")
+B = Operator("B")
+   
+E = llegir_base("../txt/niats_base.txt", A, B)
+
+EBA = Commutator(B,Commutator(B,Commutator(A,Commutator(A,Commutator(B,Commutator(B,A))))))
+
+c = sp.symbols("c1:19")
+
+for m in range(1, len(E[7])):
+    print(c[m]*E[7][m])
+cesq = sp.S(0)
+for m in range(1, len(E[7])):
+    cesq += c[m - 1]*E[7][m]
+    
+cdre = EBA.doit().expand()
+cesq = cesq.doit().expand()
+
+sol = resoldre(cesq, cdre)
+sol
+(EBA + E[7][10]/3 + E[7][12]/3 + E[7][8]).doit().expand()
+%history -f commutadors.ipy

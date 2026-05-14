@@ -255,7 +255,7 @@ void rknitzarsim_c(double complex * res) {
   res[52] -= 3*res[59] + 9*res[61];
   res[53] += res[55];
   res[54] += 3*res[59] + 9*res[61];
-  res[35] = res[37] = res[55] = res[58] = res[59] = res[60] = res[61] = res[62] = 0.0 + 0.0*I;
+  /* res[35] = res[37] = res[55] = res[58] = res[59] = res[60] = res[61] = res[62] = 0.0 + 0.0*I; */
 }
 
 void rknitzar_c(double complex * res) {
@@ -290,7 +290,7 @@ void rknitzar_c(double complex * res) {
   res[95] -= 3*res[102] + 9*res[104];
   res[96] += res[98];
   res[97] += 3*res[102] + 9*res[104];
-  res[78] = res[80] = res[98] = res[101] = res[102] = res[103] = res[104] = res[105] = 0.0 + 0.0*I;  
+  /* res[78] = res[80] = res[98] = res[101] = res[102] = res[103] = res[104] = res[105] = 0.0 + 0.0*I;   */
 }
 
 void metode_setABAsim_c(int tam, double complex * cofs, double complex * res, int order, int rkn) {
